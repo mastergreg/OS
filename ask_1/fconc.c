@@ -6,7 +6,7 @@
 
 * Creation Date : 20-12-2008
 
-* Last Modified : Thu 10 Nov 2011 04:06:34 PM EET
+* Last Modified : Thu 10 Nov 2011 04:15:45 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -16,6 +16,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 #include "fconc.h"
 
@@ -30,8 +31,7 @@ int main(int argc, char ** argv)
   int C_PERMS = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH ;
   if (argc < 3)
   {
-    print_me("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
-    return -1;
+    print_err("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
   }
   if (argc > 3)
   {
@@ -43,8 +43,7 @@ int main(int argc, char ** argv)
   }
   if (OUT < 0)
   {
-//    printf("Error handling output file\n");
-    return -1;
+    print_err("Error handling output file\n");
   }
 
 
@@ -52,14 +51,14 @@ int main(int argc, char ** argv)
   write_file(OUT,argv[2]);
 
 
-  return 0;
+  exit(EXIT_SUCCESS);
 }
 
 void doWrite(int fd,const char *buff,int len)
 {
   if ( write(fd,buff,len) != len)
   {
-//    printf("Error in writing\n");
+    print_err("Error in writing\n");
   }
   
 }
@@ -73,31 +72,33 @@ void write_file(int fd,const char *infile)
   A = open(infile,O_RDONLY);
   if (A ==-1)
   {
-//    printf("%s: No such file or directory\n",infile);
-    return;
+    print_err("No such file or directory\n");
   }
   //time to read
   while( (chars_read = read(A,buffer,BUFFER_SIZE)) > 0)
   {
+    //and write
     doWrite(fd,buffer,chars_read);
   }
   if ( chars_read == -1 )
   {
-    write(1,"Read Error\n",11);
+    print_err("Read Error\n");
   }
 
+  //ok close
   if ( close(A) == - 1 )
   {
-//    printf("Close Error\n");
+    print_err("Close Error\n");
   }
 
   
 }
 
-void print_me(const char *p)
+void print_err(const char *p)
 {
   int len = 0;
-  char *b = p;
+  const char *b = p;
   while( *b++ != '\0' ) len++;
-  write(1,p,len);
+  write(2,p,len);
+  exit(-1);
 }
