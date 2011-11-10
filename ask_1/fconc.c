@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <fcntl.h>
-
 #include "fconc.h"
 
 int main(int argc, char ** argv)
@@ -39,7 +38,7 @@ int main(int argc, char ** argv)
       return -1;
    }
 
-   doWrite(
+   doWrite();
 
 
 
