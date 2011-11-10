@@ -6,7 +6,7 @@
 
 * Creation Date : 20-12-2008
 
-* Last Modified : Thu 10 Nov 2011 04:15:45 PM EET
+* Last Modified : Thu 10 Nov 2011 04:34:16 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -29,13 +29,14 @@ int main(int argc, char ** argv)
   int OUT;
   int W_FLAGS = O_CREAT | O_WRONLY | O_TRUNC;
   int C_PERMS = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH ;
+  int counter=0;
   if (argc < 3)
   {
     print_err("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
   }
   if (argc > 3)
   {
-    OUT = open(argv[3],W_FLAGS,C_PERMS);
+    OUT = open(argv[argc-1],W_FLAGS,C_PERMS);
   }
   else
   {
@@ -45,11 +46,10 @@ int main(int argc, char ** argv)
   {
     print_err("Error handling output file\n");
   }
-
-
-  write_file(OUT,argv[1]);
-  write_file(OUT,argv[2]);
-
+  for(counter = 1 ; counter < argc-1 ; counter++ )
+  {
+    write_file(OUT,argv[counter]);
+  }
 
   exit(EXIT_SUCCESS);
 }
