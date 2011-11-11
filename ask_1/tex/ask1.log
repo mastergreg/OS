@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 18:26
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 21:20
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -749,14 +749,14 @@ runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
 erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/makefile)...ex
 ecuted.
 
- (./ask1.out.pyg)
+ (./ask1.out.pyg [5])
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l text -f latex -F tokenmerge        -P linenos -P "verbo
 ptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/strace_ou
 tfile)...executed.
 
- (./ask1.out.pyg [5])
+ (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
  [6] (./ask1.aux
@@ -764,7 +764,7 @@ runsystem(rm ask1.out.pyg)...executed.
 Here is how much of TeX's memory you used:
  12122 strings out of 495650
  208485 string characters out of 3187082
- 290988 words of memory out of 3000000
+ 291988 words of memory out of 3000000
  15052 multiletter control sequences out of 15000+200000
  4737 words of font info for 40 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
