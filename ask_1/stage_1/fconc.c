@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Fri 11 Nov 2011 06:21:05 PM EET
+* Last Modified : Fri 11 Nov 2011 09:17:03 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -52,11 +52,14 @@ int main(int argc, char ** argv)
 
 void doWrite(int fd,const char *buff,int len)
 {
-  if ( write(fd,buff,len) != len)
+  int written;
+  do
   {
-    print_err("Error in writing\n");
-  }
-  
+    if ( (written = write(fd,buff,len)) < 0 )
+    {
+      print_err("Error in writing\n");
+    }
+  } while(written < len );
 }
 
 
@@ -95,6 +98,6 @@ void print_err(const char *p)
   int len = 0;
   const char *b = p;
   while( *b++ != '\0' ) len++;
-  write(2,p,len);
+  doWrite(2,p,len); //doWrite to stderr
   exit(-1);
 }
