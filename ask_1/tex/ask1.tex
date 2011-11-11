@@ -1,0 +1,86 @@
+\documentclass[a4paper,10pt]{article} \usepackage{anysize}
+\marginsize{2cm}{2cm}{1cm}{1cm}
+%\textwidth 6.0in \textheight = 664pt
+\usepackage{xltxtra} 
+\usepackage{xunicode} \usepackage{graphicx}
+\usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
+\usepackage{minted}  
+\usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
+\usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
+\begin{document}
+
+\include{title/title}
+
+\section*{} \setcounter{section}{1}
+\subsection{Σύνδεση με αρχείο αντικειμένων} Ο πηγαίος κώδικας της main.c που
+κληθήκαμε να γράψουμε ήταν ο εξής:
+
+\inputminted[linenos]{c}{../zing/main.c}
+
+Στη συνέχεια δημιουργήσαμε το makefile για  τη μεταγλώττιση του προγράμματος
+με τα εξής περιεχόμενα:
+
+\inputminted[linenos,obeytabs]{basemake}{../zing/makefile}
+
+Τρέχοντας στο shell την εντολή make έχουμε την παρακάτω έξοδο
+\begin{minted}[linenos]{text}
+gcc -c main.c -o main.o -Wall -m32
+gcc main.o zing.o -o main -Wall -m32
+\end{minted}
+και τη δημιουργία των αρχείων main.o και του εκτελέσιμου main.\\
+Εκτελώντας το main, το πρόγραμμα δίνει την παρακάτω έξοδο:
+\begin{minted}[linenos]{text}
+oslabb03 ~/code/zing $ ./main
+Hello oslabb03!
+\end{minted}
+
+
+\section*{Απαντήσεις στις θεωρητικές ερωτήσεις}
+\begin{enumerate}
+\item Η επικεφαλίδα που χρησιμοποιήσαμε περιέχει τις απαραίτητες  δηλώσεις για τη
+διεπαφή των αρχείων κώδικα του προγράμματος μας. 
+Η άσκηση αυτή μας παρείχε το object file zing.o , αλλά η συνάρτηση zing( )
+δηλώνεται στο zing.h, χωρίς τη χρήση του οποίου δε θα μπορούσαμε να την
+καλέσουμε επιτυχώς στη main.
+
+\item Απαντήθηκε παραπάνω.
+
+\item Αντί να έχουμε όλες τις συναρτήσεις σε ένα αρχείο θα μπορούσαμε να
+χρησιμοποιούμε ένα αρχείο για κάθε συνάρτηση με το αντίστοιχο αρχείο
+επικεφαλίδας. Έτσι η μεταγλώτισση θα γίνεται για κάθε αρχείο χωριστά. Συνεπώς
+αλλάζοντας ένα αρχείο ο χρόνος μεταγλώττισης θα είναι μικρότερος. Επίσης με
+αυτό τον τρόπο μπορούμε να κάνουμε παράλληλη μεταγώττιση αρχείων σε περίπτωση 
+που το σύστημα μας δίνει αυτή τη δυνατότητα.
+
+\item Στην περίπτωση αυτή βλέπουμε πως το αρχείο foo.c μεταγλωττίστηκε στο
+αρχείο foo.c. Τώρα πλέον το foo.c είναι το εκτελέσιμο και ο πηγαίος κώδικας
+χάθηκε.
+\end{enumerate}
+
+
+\pagebreak
+
+\subsection{Συνένωση δύο αρχείων σε τρίτο}
+
+Ο πηγαίος κώδικας που χρησιμοποιήσαμε αρχικά ήταν ο εξής:
+\inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.h}
+
+\inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.c}
+
+\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
+
+
+Η έξοδος της strace είναι η παρακάτω:
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_1/strace_outfile}
+
+\subsection{Bonus}
+Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
+\inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
+
+\inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
+
+\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
+Η έξοδος της strace είναι η παρακάτω:
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_2/strace_outfile}
+
+\end{document}

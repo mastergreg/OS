@@ -2,11 +2,7 @@
 
 * File Name : fconc.c
 
-* Purpose :
-
-* Creation Date : 20-12-2008
-
-* Last Modified : Thu 10 Nov 2011 04:34:16 PM EET
+* Last Modified : Fri 11 Nov 2011 06:21:29 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
