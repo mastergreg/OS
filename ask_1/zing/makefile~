@@ -1,6 +1,0 @@
-
-all:	main
-main: main.o
-	gcc main.o zing.o -o main -Wall
-main.o:
-	gcc -c main.c -o main.o -Wall
