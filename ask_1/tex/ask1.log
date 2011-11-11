@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 16:06
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 18:26
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -657,10 +657,8 @@ Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 ])
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
-\openout3 = `ask1.pyg'.
-
 runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
-ons= " -o ask1.out.pyg ask1.pyg)...executed.
+ons= " -o ask1.out.pyg ../zing/main.c)...executed.
 
  (./ask1.out.pyg
 LaTeX Font Info:    Try loading font information for EU1+lmtt on input line 1.
@@ -669,22 +667,16 @@ File: eu1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 LaTeX Font Info:    Font shape `EU1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `EU1/lmtt/b/n' tried instead on input line 3.
+(Font)              Font shape `EU1/lmtt/b/n' tried instead on input line 5.
 )
 runsystem(rm ask1.out.pyg)...executed.
 
-runsystem(rm ask1.pyg)...executed.
-
-\openout3 = `ask1.pyg'.
-
 runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
-erboptions= " -o ask1.out.pyg ask1.pyg)...executed.
+erboptions= ,obeytabs" -o ask1.out.pyg ../zing/makefile)...executed.
 
 
 (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
-
-runsystem(rm ask1.pyg)...executed.
 
 \openout3 = `ask1.pyg'.
 
@@ -708,42 +700,74 @@ runsystem(rm ask1.pyg)...executed.
 
  [1
 
-] [2]
-Font mapping `TeX-text.tec' for font `Times New Roman' not found.
-Font mapping `TeX-text.tec' for font `Times New Roman' not found.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 71.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 71.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 71.
-Font mapping `TeX-text.tec' for font `Times New Roman Italic' not found.
-File: files/peirama1.1.png Graphic file (type QTm)
+]
+runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
+ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/fconc.h)...executed.
 
-<use  "files/peirama1.1.png" >
-Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 90.
- [3]
-File: files/7-segment_display.png Graphic file (type QTm)
- <use  "files/7-segment_display.png" >
-[4]
-File: files/7-segment.png Graphic file (type QTm)
- <use  "files/7-segment.png" >
-Missing character: There is no Ω in font cmmi10!
- [5]
-Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
-Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
-File: files/diakoptes.png Graphic file (type QTm)
- <use  "files/diakoptes.png" > [6]
-(./ask1.aux (./title/title.aux)) ) 
+ (./ask1.out.pyg
+Font mapping `TeX-text.tec' for font `Times New Roman' not found.
+LaTeX Font Info:    Font shape `EU1/lmtt/bx/n' in size <8> not available
+(Font)              Font shape `EU1/lmtt/b/n' tried instead on input line 14.
+)
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
+ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/fconc.c)...executed.
+
+
+(./ask1.out.pyg [2])
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
+erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/makefile)...ex
+ecuted.
+
+ (./ask1.out.pyg)
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l text -f latex -F tokenmerge        -P linenos -P "verbo
+ptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/strace_ou
+tfile)...executed.
+
+ (./ask1.out.pyg [3])
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
+ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.h)...executed.
+
+ (./ask1.out.pyg)
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
+ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.c)...executed.
+
+
+(./ask1.out.pyg [4])
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
+erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/makefile)...ex
+ecuted.
+
+ (./ask1.out.pyg)
+runsystem(rm ask1.out.pyg)...executed.
+
+runsystem(pygmentize -l text -f latex -F tokenmerge        -P linenos -P "verbo
+ptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/strace_ou
+tfile)...executed.
+
+ (./ask1.out.pyg [5])
+runsystem(rm ask1.out.pyg)...executed.
+
+ [6] (./ask1.aux
+(./title/title.aux)) ) 
 Here is how much of TeX's memory you used:
- 12139 strings out of 495650
- 208852 string characters out of 3187082
- 287988 words of memory out of 3000000
- 15070 multiletter control sequences out of 15000+200000
- 7489 words of font info for 51 fonts, out of 3000000 for 9000
+ 12122 strings out of 495650
+ 208485 string characters out of 3187082
+ 290988 words of memory out of 3000000
+ 15052 multiletter control sequences out of 15000+200000
+ 4737 words of font info for 40 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
- 44i,8n,49p,559b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 44i,7n,49p,559b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
 
 Output written on ask1.pdf (7 pages).
