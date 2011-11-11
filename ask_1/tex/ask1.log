@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 15:59
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 16:03
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -656,7 +656,6 @@ Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 
 ])
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
-Missing character: There is no η in font cmmi10!
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
 \openout3 = `ask1.pyg'.
 
@@ -709,34 +708,34 @@ runsystem(rm ask1.pyg)...executed.
 
  [1
 
-]
+] [2]
 Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 55.
+(Font)              <12> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 55.
+(Font)              <8> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 55.
+(Font)              <6> on input line 71.
 Font mapping `TeX-text.tec' for font `Times New Roman Italic' not found.
 File: files/peirama1.1.png Graphic file (type QTm)
 
 <use  "files/peirama1.1.png" >
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 74.
- [2]
+(Font)              <5> on input line 90.
+ [3]
 File: files/7-segment_display.png Graphic file (type QTm)
  <use  "files/7-segment_display.png" >
-[3]
+[4]
 File: files/7-segment.png Graphic file (type QTm)
  <use  "files/7-segment.png" >
 Missing character: There is no Ω in font cmmi10!
- [4]
+ [5]
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
 Font mapping `TeX-text.tec' for font `Times New Roman Bold' not found.
 File: files/diakoptes.png Graphic file (type QTm)
- <use  "files/diakoptes.png" > [5]
+ <use  "files/diakoptes.png" > [6]
 (./ask1.aux (./title/title.aux)) ) 
 Here is how much of TeX's memory you used:
  12139 strings out of 495650
@@ -747,4 +746,4 @@ Here is how much of TeX's memory you used:
  36 hyphenation exceptions out of 8191
  44i,8n,49p,559b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ask1.pdf (6 pages).
+Output written on ask1.pdf (7 pages).
