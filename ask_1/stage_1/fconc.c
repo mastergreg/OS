@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Fri 11 Nov 2011 09:17:03 PM EET
+* Last Modified : Sun 13 Nov 2011 05:31:14 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -10,15 +10,7 @@
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-
 #include "fconc.h"
-
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1024
-#endif
 
 int main(int argc, char ** argv)
 {
@@ -41,12 +33,8 @@ int main(int argc, char ** argv)
   {
     print_err("Error handling output file\n");
   }
-
-
   write_file(OUT,argv[1]);
   write_file(OUT,argv[2]);
-
-
   exit(EXIT_SUCCESS);
 }
 
@@ -83,14 +71,11 @@ void write_file(int fd,const char *infile)
   {
     print_err("Read Error\n");
   }
-
   //ok close
   if ( close(A) == - 1 )
   {
     print_err("Close Error\n");
   }
-
-  
 }
 
 void print_err(const char *p)

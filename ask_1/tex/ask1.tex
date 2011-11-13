@@ -73,7 +73,6 @@ Hello oslabb03!
 
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_1/strace_outfile}
-\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_1/strace_outfile}
 
 \subsection{Bonus}
 
@@ -89,5 +88,18 @@ Hello oslabb03!
 \inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
+\item Όντως τρέχοντας το εκτελέσιμο whoops η έξοδος ήταν αυτή:
+
+\begin{minted}{text}
+$ /home/oslab/oslabb03/code/whoops/whoops
+Problem!
+\end{minted}
+Η έξοδος της strace είναι η παρακάτω:
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../whoops/strace_outfile}
+Όπως βλέπουμε στη γραμμή 22 το πρόγραμμά μας προσπαθεί να διαβάσει το αρχείο
+/etc/shadow στο οποίο δεν έχει πρόσβαση ο χρήστης που το τρέχει συνεπώς το
+λειτουργικό σύστημα δεν επιτρέπει στην εφαρμογή να διαβάσει από το
+συγκεκριμένο αρχείο από όπου και προκύπτει το πρόβλημα το οποίο μας γράφει το
+πρόγραμμά μας στο stderr όπως φαίνεται στη γραμμή 23.
 \end{enumerate}
 \end{document}

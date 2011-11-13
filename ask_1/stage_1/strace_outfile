@@ -1,25 +1,25 @@
 execve("./fconc", ["./fconc", "A", "B", "C"], [/* 48 vars */]) = 0
-brk(0)                                  = 0x9525000
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76ef000
+brk(0)                                  = 0x8836000
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7785000
 access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
 open("/etc/ld.so.cache", O_RDONLY)      = 3
 fstat64(3, {st_mode=S_IFREG|0644, st_size=118009, ...}) = 0
-mmap2(NULL, 118009, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb76d2000
+mmap2(NULL, 118009, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7768000
 close(3)                                = 0
 open("/lib/libc.so.6", O_RDONLY)        = 3
 read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\0\244\1\0004\0\0\0"..., 512) = 512
 fstat64(3, {st_mode=S_IFREG|0755, st_size=1429996, ...}) = 0
-mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7572000
-mprotect(0xb76cb000, 4096, PROT_NONE)   = 0
-mmap2(0xb76cc000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb76cc000
-mmap2(0xb76cf000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb76cf000
+mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7608000
+mprotect(0xb7761000, 4096, PROT_NONE)   = 0
+mmap2(0xb7762000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb7762000
+mmap2(0xb7765000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7765000
 close(3)                                = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7571000
-set_thread_area({entry_number:-1 -> 6, base_addr:0xb75716c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
-mprotect(0xb76cc000, 8192, PROT_READ)   = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7607000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xb76076c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0xb7762000, 8192, PROT_READ)   = 0
 mprotect(0x8049000, 4096, PROT_READ)    = 0
-mprotect(0xb770d000, 4096, PROT_READ)   = 0
-munmap(0xb76d2000, 118009)              = 0
+mprotect(0xb77a3000, 4096, PROT_READ)   = 0
+munmap(0xb7768000, 118009)              = 0
 open("C", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
 open("A", O_RDONLY)                     = 4
 read(4, "asdf\n", 1024)                 = 5
