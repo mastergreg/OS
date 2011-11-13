@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  13 NOV 2011 16:56
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  13 NOV 2011 17:12
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -760,16 +760,18 @@ tfile)...executed.
 (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
+ (../bonus/strace_outfile [4]) (../zing/gdb1.txt)
+(../zing/gdb2.txt)
 runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
 ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.h)...executed.
 
- (./ask1.out.pyg [4])
+ (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
 ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.c)...executed.
 
- (./ask1.out.pyg [5])
+ (./ask1.out.pyg [5] [6])
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
@@ -780,15 +782,14 @@ ecuted.
 runsystem(rm ask1.out.pyg)...executed.
 
 
-(../stage_2/strace_outfile [6]) (../zing/gdb1.txt) (../zing/gdb2.txt) [7]
-(./ask1.aux (./title/title.aux)) ) 
+(../stage_2/strace_outfile [7]) [8] (./ask1.aux (./title/title.aux)) ) 
 Here is how much of TeX's memory you used:
- 13302 strings out of 495650
- 225842 string characters out of 3187082
- 428124 words of memory out of 3000000
+ 13305 strings out of 495650
+ 225897 string characters out of 3187082
+ 460124 words of memory out of 3000000
  16207 multiletter control sequences out of 15000+200000
  4737 words of font info for 40 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
- 44i,7n,49p,559b,1509s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 44i,7n,49p,559b,1681s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ask1.pdf (8 pages).
+Output written on ask1.pdf (9 pages).

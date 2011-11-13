@@ -76,14 +76,18 @@ Hello oslabb03!
 \inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_1/strace_outfile}
 
 \subsection{Bonus}
-Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
+
+\begin{enumerate}
+\item Η εντολή strace strace μας έδωσε την ακόλουθη έξοδο:
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../bonus/strace_outfile}
+\item Με τη χρήση του gdb στα αρχεία main.o και zing είχαμε την παρακάτω έξοδο.
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb1.txt}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb2.txt}
+\item Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
 \inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
-Με τη χρήση του gdb στα αρχεία main.o και zing είχαμε την παρακάτω έξοδο.
-\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb1.txt}
-\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb2.txt}
-
+\end{enumerate}
 \end{document}
