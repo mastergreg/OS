@@ -5,6 +5,7 @@
 \usepackage{xunicode} \usepackage{graphicx}
 \usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
 \usepackage{minted}  
+\usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
 \usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
 \begin{document}
@@ -71,16 +72,18 @@ Hello oslabb03!
 
 
 Η έξοδος της strace είναι η παρακάτω:
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_1/strace_outfile}
 \inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_1/strace_outfile}
 
 \subsection{Bonus}
 Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
-
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
-
 \inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
 Η έξοδος της strace είναι η παρακάτω:
-\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_2/strace_outfile}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
+Με τη χρήση του gdb στα αρχεία main.o και zing είχαμε την παρακάτω έξοδο.
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb1.txt}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb2.txt}
 
 \end{document}

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  11 NOV 2011 21:20
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  13 NOV 2011 16:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -509,19 +509,44 @@ runsystem(which -s pygmentize && touch ask1.aex)...executed.
 runsystem(rm ask1.aex)...executed.
 
 )
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count177
+\lst@gtempboxa=\box32
+\lst@token=\toks42
+\lst@length=\count178
+\lst@currlwidth=\dimen119
+\lst@column=\count179
+\lst@pos=\count180
+\lst@lostspace=\dimen120
+\lst@width=\dimen121
+\lst@newlines=\count181
+\lst@lineno=\count182
+\lst@maxwidth=\dimen122
+
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count183
+\lst@skipnumbers=\count184
+\lst@framebox=\box33
+)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
 (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2009/05/18 v2.2 Customized lists
-\enit@toks=\toks42
+\enit@toks=\toks43
 \labelindent=\skip52
-\enit@outerparindent=\dimen119
-\enitdp@desc=\count177
+\enit@outerparindent=\dimen123
+\enitdp@desc=\count185
 )
 (/usr/share/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2007/10/04 v 0.95: framed or shaded text with page breaks
-\fb@frw=\dimen120
-\fb@frh=\dimen121
-\FrameRule=\dimen122
-\FrameSep=\dimen123
+\fb@frw=\dimen124
+\fb@frh=\dimen125
+\FrameRule=\dimen126
+\FrameSep=\dimen127
 )
 (/usr/share/texmf-dist/tex/latex/relsize/relsize.sty
 Package: relsize 2003/07/04 ver 3.1
@@ -529,11 +554,11 @@ Package: relsize 2003/07/04 ver 3.1
  fontspec info: Font Times New Roman does not contain any OpenType `Script' inf
 ormation.
 
-\g_fontspec_family_Times New Roman_int=\count178
+\g_fontspec_family_Times New Roman_int=\count186
  fontspec info: Defining font family 'TimesNewRoman(0)' for font 'Times New Rom
 an' with options [Mapping=TeX-text].
 
-\g_fontspec_TimesNewRoman(0)_prop=\toks43
+\g_fontspec_TimesNewRoman(0)_prop=\toks44
  fontspec info: Defining shape 'normal' with NFSS spec.:
 (fontspec)  <->"Times New Roman/ICU:mapping=TeX-text;"
 
@@ -551,91 +576,92 @@ Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 (./title/title.aux))
 \openout1 = `ask1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
  fontspec info: Adjusting the maths setup (use [no-math] to avoid this).
 
 \symlegacymaths=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 10.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 10.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 10.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 10.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 10.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 10.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 10.
-LaTeX Font Info:    Redeclaring math accent \check on input line 10.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 10.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 10.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \colon on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 10.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 10.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 10.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 11.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 11.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 11.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 11.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 11.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 11.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 11.
+LaTeX Font Info:    Redeclaring math accent \check on input line 11.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 11.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 11.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \colon on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 11.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 11.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 11.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `normal' on input line 10.
+(Font)              `operators' in the math version `normal' on input line 11.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> EU1/TimesNewRoman(0)/m/n on input line 
-10.
+11.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `bold' on input line 10.
+(Font)              `operators' in the math version `bold' on input line 11.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> EU1/TimesNewRoman(0)/m/n on input line
- 10.
+ 11.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  EU1/TimesNewRoman(0)/m/n --> EU1/TimesNewRoman(0)/m/n o
-n input line 10.
+n input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  EU1/TimesNewRoman(0)/m/n --> EU1/TimesNewRoman(0)/m/n o
-n input line 10.
+n input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 (Font)                  OT1/cmr/m/it --> EU1/TimesNewRoman(0)/m/it on input lin
-e 10.
+e 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 (Font)                  OT1/cmr/bx/n --> EU1/TimesNewRoman(0)/bx/n on input lin
-e 10.
+e 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 10.
+(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/m/n on input line 10.
+(Font)                  OT1/cmtt/m/n --> EU1/lmtt/m/n on input line 11.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  EU1/TimesNewRoman(0)/m/n --> EU1/TimesNewRoman(0)/bx/n 
-on input line 10.
+on input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
 (Font)                  EU1/TimesNewRoman(0)/m/n --> EU1/TimesNewRoman(0)/bx/n 
-on input line 10.
+on input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> EU1/TimesNewRoman(0)/bx/it on input l
-ine 10.
+ine 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 10.
+(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 11.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 10.
+(Font)                  OT1/cmtt/m/n --> EU1/lmtt/bx/n on input line 11.
 runsystem(pygmentize -S default -f latex > ask1.pyg)...executed.
 
  (./ask1.pyg)
+\c@lstlisting=\count187
 \openout2 = `title/title.aux'.
 
  (./title/title.tex
@@ -725,49 +751,44 @@ ecuted.
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
+ (../stage_1/strace_outfile [3])
 runsystem(pygmentize -l text -f latex -F tokenmerge        -P linenos -P "verbo
 ptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/strace_ou
 tfile)...executed.
 
- (./ask1.out.pyg [3])
+
+(./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
 ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.h)...executed.
 
- (./ask1.out.pyg)
+ (./ask1.out.pyg [4])
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
 ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.c)...executed.
 
-
-(./ask1.out.pyg [4])
+ (./ask1.out.pyg [5])
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
 erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/makefile)...ex
 ecuted.
 
- (./ask1.out.pyg [5])
-runsystem(rm ask1.out.pyg)...executed.
-
-runsystem(pygmentize -l text -f latex -F tokenmerge        -P linenos -P "verbo
-ptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/strace_ou
-tfile)...executed.
-
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
- [6] (./ask1.aux
-(./title/title.aux)) ) 
+
+(../stage_2/strace_outfile [6]) (../zing/gdb1.txt) (../zing/gdb2.txt) [7]
+(./ask1.aux (./title/title.aux)) ) 
 Here is how much of TeX's memory you used:
- 12122 strings out of 495650
- 208485 string characters out of 3187082
- 291988 words of memory out of 3000000
- 15052 multiletter control sequences out of 15000+200000
+ 13302 strings out of 495650
+ 225842 string characters out of 3187082
+ 428124 words of memory out of 3000000
+ 16207 multiletter control sequences out of 15000+200000
  4737 words of font info for 40 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
- 44i,7n,49p,559b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 44i,7n,49p,559b,1509s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ask1.pdf (7 pages).
+Output written on ask1.pdf (8 pages).
