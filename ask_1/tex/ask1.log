@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  13 NOV 2011 17:38
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.1)  13 NOV 2011 17:55
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -693,7 +693,7 @@ File: eu1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 Font mapping `TeX-text.tec' for font `Times New Roman' not found.
 LaTeX Font Info:    Font shape `EU1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `EU1/lmtt/b/n' tried instead on input line 5.
+(Font)              Font shape `EU1/lmtt/b/n' tried instead on input line 4.
 )
 runsystem(rm ask1.out.pyg)...executed.
 
@@ -745,8 +745,8 @@ ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/fconc.c)...executed.
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
-erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/makefile)...ex
-ecuted.
+erboptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_1/makef
+ile)...executed.
 
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
@@ -767,8 +767,8 @@ ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.c)...executed.
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l basemake -f latex -F tokenmerge        -P linenos -P "v
-erboptions= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/makefile)...ex
-ecuted.
+erboptions= ,obeytabs,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/makef
+ile)...executed.
 
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.

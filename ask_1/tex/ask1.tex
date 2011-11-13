@@ -65,10 +65,8 @@ Hello oslabb03!
 
 Ο πηγαίος κώδικας που χρησιμοποιήσαμε αρχικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.h}
-
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.c}
-
-\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
 
 
 Η έξοδος της strace είναι η παρακάτω:
@@ -85,7 +83,7 @@ Hello oslabb03!
 \item Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
-\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
 \item Όντως τρέχοντας το εκτελέσιμο whoops η έξοδος ήταν αυτή:
@@ -97,9 +95,9 @@ Problem!
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../whoops/strace_outfile}
 Όπως βλέπουμε στη γραμμή 22 το πρόγραμμά μας προσπαθεί να διαβάσει το αρχείο
-/etc/shadow στο οποίο δεν έχει πρόσβαση ο χρήστης που το τρέχει συνεπώς το
-λειτουργικό σύστημα δεν επιτρέπει στην εφαρμογή να διαβάσει από το
-συγκεκριμένο αρχείο από όπου και προκύπτει το πρόβλημα το οποίο μας γράφει το
-πρόγραμμά μας στο stderr όπως φαίνεται στη γραμμή 23.
+/etc/shadow. Όμως ο χρήστης που τρέχει το πρόγραμμα whoops δεν έχει δικαίωμα
+να διαβάσει το συγκεκριμένο αρχείο οπότε το λειτουργικό σύστημα δεν επιστρέφει 
+κάποιο file descriptor στην εφαρμογή για να διαβάσει. Από εκεί προκύπτει το πρόβλημα 
+το οποίο μας γράφει το πρόγραμμά μας στο stderr όπως φαίνεται στη γραμμή 23.
 \end{enumerate}
 \end{document}
