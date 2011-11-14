@@ -1,10 +1,10 @@
 \documentclass[a4paper,10pt]{article} \usepackage{anysize}
 \marginsize{2cm}{2cm}{1cm}{1cm}
 %\textwidth 6.0in \textheight = 664pt
-\usepackage{xltxtra} 
+\usepackage{xltxtra}
 \usepackage{xunicode} \usepackage{graphicx}
 \usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
-\usepackage{minted}  
+\usepackage{minted}
 \usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
 \usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
@@ -39,7 +39,7 @@ Hello oslabb03!
 \section*{Απαντήσεις στις θεωρητικές ερωτήσεις}
 \begin{enumerate}
 \item Η επικεφαλίδα που χρησιμοποιήσαμε περιέχει τις απαραίτητες  δηλώσεις για τη
-διεπαφή των αρχείων κώδικα του προγράμματος μας. 
+διεπαφή των αρχείων κώδικα του προγράμματος μας.
 Η άσκηση αυτή μας παρείχε το object file zing.o , αλλά η συνάρτηση zing( )
 δηλώνεται στο zing.h, χωρίς τη χρήση του οποίου δε θα μπορούσαμε να την
 καλέσουμε επιτυχώς στη main.
@@ -50,7 +50,7 @@ Hello oslabb03!
 χρησιμοποιούμε ένα αρχείο για κάθε συνάρτηση με το αντίστοιχο αρχείο
 επικεφαλίδας. Έτσι η μεταγλώτισση θα γίνεται για κάθε αρχείο χωριστά. Συνεπώς
 αλλάζοντας ένα αρχείο ο χρόνος μεταγλώττισης θα είναι μικρότερος. Επίσης με
-αυτό τον τρόπο μπορούμε να κάνουμε παράλληλη μεταγώττιση αρχείων σε περίπτωση 
+αυτό τον τρόπο μπορούμε να κάνουμε παράλληλη μεταγώττιση αρχείων σε περίπτωση
 που το σύστημα μας δίνει αυτή τη δυνατότητα.
 
 \item Στην περίπτωση αυτή βλέπουμε πως το αρχείο foo.c μεταγλωττίστηκε στο
@@ -77,15 +77,14 @@ Hello oslabb03!
 \begin{enumerate}
 \item Η εντολή strace strace μας έδωσε την ακόλουθη έξοδο:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../bonus/strace_outfile}
-\item Με τη χρήση του gdb στα αρχεία main.o και zing είχαμε την παρακάτω έξοδο.
-\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb1.txt}
-\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb2.txt}
+\item Την αλλαγή αυτή την κάνει ο linker σε στάδιο μετά τη μεταγλώττιση. Συγκεκριμένα, οφείλεται στο ότι o linker θα αποτιμήσει
+την τιμή της διεύθυνσης που βρίσκεται η συνάρτηση, αφού πάρει το αρχείο zing.o, όπου και θα μας δώσει το τελικό εκτελέσιμο zing.
+\pagebreak
 \item Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
 \inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
-Η έξοδος της strace είναι η παρακάτω:
-\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
+\pagebreak
 \item Όντως τρέχοντας το εκτελέσιμο whoops η έξοδος ήταν αυτή:
 
 \begin{minted}{text}
@@ -96,8 +95,8 @@ Problem!
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../whoops/strace_outfile}
 Όπως βλέπουμε στη γραμμή 22 το πρόγραμμά μας προσπαθεί να διαβάσει το αρχείο
 /etc/shadow. Όμως ο χρήστης που τρέχει το πρόγραμμα whoops δεν έχει δικαίωμα
-να διαβάσει το συγκεκριμένο αρχείο οπότε το λειτουργικό σύστημα δεν επιστρέφει 
-κάποιο file descriptor στην εφαρμογή για να διαβάσει. Από εκεί προκύπτει το πρόβλημα 
+να διαβάσει το συγκεκριμένο αρχείο οπότε το λειτουργικό σύστημα δεν επιστρέφει
+κάποιο file descriptor στην εφαρμογή για να διαβάσει. Από εκεί προκύπτει το πρόβλημα
 το οποίο μας γράφει το πρόγραμμά μας στο stderr όπως φαίνεται στη γραμμή 23.
 \end{enumerate}
 \end{document}
