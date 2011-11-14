@@ -5,6 +5,7 @@
 \usepackage{xunicode} \usepackage{graphicx}
 \usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
 \usepackage{minted}  
+\usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
 \usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
 \begin{document}
@@ -64,23 +65,39 @@ Hello oslabb03!
 
 Ο πηγαίος κώδικας που χρησιμοποιήσαμε αρχικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.h}
-
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.c}
-
-\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
 
 
 Η έξοδος της strace είναι η παρακάτω:
-\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_1/strace_outfile}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_1/strace_outfile}
 
 \subsection{Bonus}
-Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
+
+\begin{enumerate}
+\item Η εντολή strace strace μας έδωσε την ακόλουθη έξοδο:
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../bonus/strace_outfile}
+\item Με τη χρήση του gdb στα αρχεία main.o και zing είχαμε την παρακάτω έξοδο.
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb1.txt}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../zing/gdb2.txt}
+\item Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
-
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
-
-\inputminted[linenos,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
+\inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
 Η έξοδος της strace είναι η παρακάτω:
-\inputminted[linenos,obeytabs,fontsize=\footnotesize]{text}{../stage_2/strace_outfile}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_2/strace_outfile}
+\item Όντως τρέχοντας το εκτελέσιμο whoops η έξοδος ήταν αυτή:
 
+\begin{minted}{text}
+$ /home/oslab/oslabb03/code/whoops/whoops
+Problem!
+\end{minted}
+Η έξοδος της strace είναι η παρακάτω:
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../whoops/strace_outfile}
+Όπως βλέπουμε στη γραμμή 22 το πρόγραμμά μας προσπαθεί να διαβάσει το αρχείο
+/etc/shadow. Όμως ο χρήστης που τρέχει το πρόγραμμα whoops δεν έχει δικαίωμα
+να διαβάσει το συγκεκριμένο αρχείο οπότε το λειτουργικό σύστημα δεν επιστρέφει 
+κάποιο file descriptor στην εφαρμογή για να διαβάσει. Από εκεί προκύπτει το πρόβλημα 
+το οποίο μας γράφει το πρόγραμμά μας στο stderr όπως φαίνεται στη γραμμή 23.
+\end{enumerate}
 \end{document}

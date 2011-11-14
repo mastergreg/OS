@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Fri 11 Nov 2011 06:21:29 PM EET
+* Last Modified : Sun 13 Nov 2011 05:37:15 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -10,15 +10,7 @@
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-
 #include "fconc.h"
-
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1024
-#endif
 
 int main(int argc, char ** argv)
 {
@@ -46,17 +38,19 @@ int main(int argc, char ** argv)
   {
     write_file(OUT,argv[counter]);
   }
-
   exit(EXIT_SUCCESS);
 }
 
 void doWrite(int fd,const char *buff,int len)
 {
-  if ( write(fd,buff,len) != len)
+  int written;
+  do
   {
-    print_err("Error in writing\n");
-  }
-  
+    if ( (written = write(fd,buff,len)) < 0 )
+    {
+      print_err("Error in writing\n");
+    }
+  } while(written < len );
 }
 
 
@@ -80,14 +74,11 @@ void write_file(int fd,const char *infile)
   {
     print_err("Read Error\n");
   }
-
   //ok close
   if ( close(A) == - 1 )
   {
     print_err("Close Error\n");
   }
-
-  
 }
 
 void print_err(const char *p)
@@ -95,6 +86,6 @@ void print_err(const char *p)
   int len = 0;
   const char *b = p;
   while( *b++ != '\0' ) len++;
-  write(2,p,len);
+  doWrite(2,p,len); //doWrite to stderr
   exit(-1);
 }
