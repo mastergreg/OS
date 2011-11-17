@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Thu 17 Nov 2011 02:55:02 AM EET
+* Last Modified : Thu 17 Nov 2011 03:33:52 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -27,14 +27,15 @@ int main(int argc, char ** argv)
   {
     print_err("Error handling tmp file, is another instance running?\n");
   }
+  struct flock lock;
+  fcntl(TMP,F_GETLK,lock);
+  lock.l_type = F_WRLCK;
+  fcntl(TMP,F_SETLK,lock);
   write_file(TMP,argv[1]);
   write_file(TMP,argv[2]);
+  lock.l_type = F_UNLCK;
+  fcntl(TMP,F_SETLK,lock);
   close(TMP);
-  TMP = open("/tmp/fconc.out.tmp",O_RDONLY);
-  if (TMP < 0)
-  {
-    print_err("Error handling tmp file, is another instance running?\n");
-  }
   if (argc > 3)
   {
     OUT = open(argv[3],W_FLAGS,C_PERMS);
