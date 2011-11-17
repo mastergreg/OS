@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Thu 17 Nov 2011 03:42:32 AM EET
+* Last Modified : Thu 17 Nov 2011 10:16:16 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -21,12 +21,14 @@ int main(int argc, char ** argv)
   struct flock lock;
   if (argc < 3)
   {
-    print_err("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
+    perror("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
+    exit(EX_USAGE);
   }
   TMP = open("/tmp/fconc.out.tmp",W_FLAGS,C_PERMS);
   if (TMP < 0)
   {
-    print_err("Error handling tmp file, is another instance running?\n");
+    perror("Error opening tmp file, is another instance running?\n");
+    exit(EX_TEMPFAIL);
   }
   fcntl(TMP,F_GETLK,lock);  //get lock info on fd
   lock.l_type = F_WRLCK;    //set lock to write lock
@@ -46,7 +48,8 @@ int main(int argc, char ** argv)
   }
   if (OUT < 0)
   {
-    print_err("Error handling output file\n");
+    perror("Error handling output file\n");
+    exit(EX_IOERR);
   }
   fcntl(OUT,F_GETLK,lock);
   lock.l_type = F_WRLCK;
@@ -57,7 +60,8 @@ int main(int argc, char ** argv)
   close(OUT);
   if (unlink("/tmp/fconc.out.tmp") != 0)
   {
-    print_err("Error deleting temporary file, please remove /tmp/fconc.out.tmp\n");
+    perror("Error deleting temporary file, please remove /tmp/fconc.out.tmp\n");
+    exit(EX__BASE);
   }
   exit(EXIT_SUCCESS);
 }
@@ -69,7 +73,8 @@ void doWrite(int fd,const char *buff,int len)
   {
     if ( (written = write(fd,buff,len)) < 0 )
     {
-      print_err("Error in writing\n");
+      perror("Error in writing\n");
+      exit(EX_IOERR);
     }
   } while(written < len );
 }
@@ -84,7 +89,10 @@ void write_file(int fd,const char *infile)
   A = open(infile,O_RDONLY);
   if (A ==-1)
   {
-    print_err("No such file or directory\n");
+    char error_message[BUFFER_SIZE];
+    sprintf(error_message,"%s",infile);
+    perror(error_message);
+    exit(EX_NOINPUT);
   }
   fcntl(A,F_GETLK,lock);  //get lock info on A
   lock.l_type = F_RDLCK;  //set lock to read lock
@@ -97,22 +105,16 @@ void write_file(int fd,const char *infile)
   }
   if ( chars_read == -1 )
   {
-    print_err("Read Error\n");
+    perror("Read Error\n");
+    exit(EX_IOERR);
   }
   lock.l_type = F_UNLCK;  //set lock to unlock
   fcntl(A,F_SETLK,lock);  //set lock on A
   //ok close
   if ( close(A) == - 1 )
   {
-    print_err("Close Error\n");
+    perror("Close Error\n");
+    exit(EX_IOERR);
   }
 }
 
-void print_err(const char *p)
-{
-  int len = 0;
-  const char *b = p;
-  while( *b++ != '\0' ) len++;
-  doWrite(2,p,len); //doWrite to stderr
-  exit(-1);
-}
