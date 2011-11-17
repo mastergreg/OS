@@ -1,34 +1,58 @@
-execve("./fconc", ["./fconc", "A", "B", "C"], [/* 48 vars */]) = 0
-brk(0)                                  = 0x8836000
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7785000
+execve("./fconc", ["./fconc", "A", "B", "C"], [/* 47 vars */]) = 0
+brk(0)                                  = 0x8365000
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7841000
 access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
 open("/etc/ld.so.cache", O_RDONLY)      = 3
-fstat64(3, {st_mode=S_IFREG|0644, st_size=118009, ...}) = 0
-mmap2(NULL, 118009, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7768000
+fstat64(3, {st_mode=S_IFREG|0644, st_size=102531, ...}) = 0
+mmap2(NULL, 102531, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7827000
 close(3)                                = 0
 open("/lib/libc.so.6", O_RDONLY)        = 3
 read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\0\244\1\0004\0\0\0"..., 512) = 512
 fstat64(3, {st_mode=S_IFREG|0755, st_size=1429996, ...}) = 0
-mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7608000
-mprotect(0xb7761000, 4096, PROT_NONE)   = 0
-mmap2(0xb7762000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb7762000
-mmap2(0xb7765000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7765000
+mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb76c7000
+mprotect(0xb7820000, 4096, PROT_NONE)   = 0
+mmap2(0xb7821000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb7821000
+mmap2(0xb7824000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7824000
 close(3)                                = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7607000
-set_thread_area({entry_number:-1 -> 6, base_addr:0xb76076c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
-mprotect(0xb7762000, 8192, PROT_READ)   = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76c6000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xb76c66c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0xb7821000, 8192, PROT_READ)   = 0
 mprotect(0x8049000, 4096, PROT_READ)    = 0
-mprotect(0xb77a3000, 4096, PROT_READ)   = 0
-munmap(0xb7768000, 118009)              = 0
-open("C", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
+mprotect(0xb785f000, 4096, PROT_READ)   = 0
+munmap(0xb7827000, 102531)              = 0
+open("/tmp/fconc.out.tmp", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
+fcntl64(3, F_GETLK, {type=0xffffffba /* F_??? */, whence=0xffffffff /* SEEK_??? */, start=1958774271, len=139823908, pid=404042597}) = -1 EINVAL (Invalid argument)
+fcntl64(3, F_SETLK, {type=0x4589 /* F_??? */, whence=0xffffe9b8 /* SEEK_??? */, start=-1006, len=-1007971443}) = -1 EINVAL (Invalid argument)
 open("A", O_RDONLY)                     = 4
-read(4, "asdf\n", 1024)                 = 5
-write(3, "asdf\n", 5)                   = 5
+fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+read(4, "test\ntest\ntest\ntest\ntest\ntest\nte"..., 1024) = 40
+write(3, "test\ntest\ntest\ntest\ntest\ntest\nte"..., 40) = 40
 read(4, "", 1024)                       = 0
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
 close(4)                                = 0
 open("B", O_RDONLY)                     = 4
+fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
 read(4, "lkjh\n", 1024)                 = 5
 write(3, "lkjh\n", 5)                   = 5
 read(4, "", 1024)                       = 0
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
 close(4)                                = 0
+fcntl64(3, F_SETLK, {type=0xffffb845 /* F_??? */, whence=0x12e9 /* SEEK_??? */, start=-1912602628, len=-37491821}) = -1 EINVAL (Invalid argument)
+close(3)                                = 0
+open("C", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
+fcntl64(3, F_GETLK, {type=0xffffb845 /* F_??? */, whence=0x12e9 /* SEEK_??? */, start=-1912602628, len=-37491821, pid=3296037375}) = -1 EINVAL (Invalid argument)
+fcntl64(3, F_SETLK, {type=0x4589 /* F_??? */, whence=0xffffe9b8 /* SEEK_??? */, start=-1006, len=-1007971443}) = -1 EINVAL (Invalid argument)
+open("/tmp/fconc.out.tmp", O_RDONLY)    = 4
+fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+read(4, "test\ntest\ntest\ntest\ntest\ntest\nte"..., 1024) = 45
+write(3, "test\ntest\ntest\ntest\ntest\ntest\nte"..., 45) = 45
+read(4, "", 1024)                       = 0
+fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+close(4)                                = 0
+fcntl64(3, F_SETLK, {type=0xffffb845 /* F_??? */, whence=0x12e9 /* SEEK_??? */, start=-1912602628, len=-37491821}) = -1 EINVAL (Invalid argument)
+close(3)                                = 0
+unlink("/tmp/fconc.out.tmp")            = 0
 exit_group(0)                           = ?
