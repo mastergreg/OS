@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.14)  15 NOV 2011 01:10
+=======
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (TeX Live 2011) (format=xelatex 2011.11.16)  17 NOV 2011 02:59
+>>>>>>> OS-master
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -890,11 +894,19 @@ akefile)...executed.
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
+<<<<<<< HEAD
  (../stage_1/strace_outfile [3])
 (../bonus/strace_outfile) [4]
 runsystem(pygmentize -l c -f latex -F tokenmerge            -P linenos -P "verb
 options= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.h)...execut
 ed.
+=======
+ [3] (../stage_1/strace_outfile)
+(../bonus/strace_outfile [4]) (../zing/gdb1.txt) (../zing/gdb2.txt)
+runsystem(pygmentize -l c -f latex -F tokenmerge        -P linenos -P "verbopti
+ons= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.h)...executed.
+
+>>>>>>> OS-master
 
  (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
@@ -903,7 +915,7 @@ runsystem(pygmentize -l c -f latex -F tokenmerge            -P linenos -P "verb
 options= ,fontsize=\footnotesize " -o ask1.out.pyg ../stage_2/fconc.c)...execut
 ed.
 
- (./ask1.out.pyg [5])
+ (./ask1.out.pyg [5] [6])
 runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(pygmentize -l basemake -f latex -F tokenmerge            -P linenos -
@@ -914,7 +926,11 @@ akefile)...executed.
 (./ask1.out.pyg)
 runsystem(rm ask1.out.pyg)...executed.
 
+<<<<<<< HEAD
  [6]
+=======
+(../stage_2/strace_outfile [7])
+>>>>>>> OS-master
 \openout3 = `ask1.pyg'.
 
 runsystem(pygmentize -l text -f latex -F tokenmerge             -P "verboptions
@@ -925,6 +941,7 @@ runsystem(rm ask1.out.pyg)...executed.
 
 runsystem(rm ask1.pyg)...executed.
 
+<<<<<<< HEAD
  (../whoops/strace_outfile) [7]
 (./ask1.aux (./title/title.aux)) ) 
 Here is how much of TeX's memory you used:
@@ -937,3 +954,17 @@ Here is how much of TeX's memory you used:
  50i,7n,37p,638b,1473s stack positions out of 5000i,500n,10000p,200000b,50000s
 
 Output written on ask1.pdf (8 pages).
+=======
+ (../whoops/strace_outfile)
+[8] (./ask1.aux (./title/title.aux)) ) 
+Here is how much of TeX's memory you used:
+ 13308 strings out of 495650
+ 225955 string characters out of 3187207
+ 562124 words of memory out of 3000000
+ 16207 multiletter control sequences out of 15000+200000
+ 4737 words of font info for 40 fonts, out of 3000000 for 9000
+ 36 hyphenation exceptions out of 8191
+ 44i,7n,49p,559b,1681s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on ask1.pdf (9 pages).
+>>>>>>> OS-master
