@@ -2,7 +2,7 @@
 
 * File Name : fconc.h
 
-* Last Modified : Sun 13 Nov 2011 05:31:09 PM EET
+* Last Modified : Thu 17 Nov 2011 10:17:41 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,8 +20,9 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <sysexits.h>
 
 void doWrite(int fd, const char *buff, int len);
 void write_file(int fd, const char *infile);
-void print_err(const char *p);
 #endif //FCONC_H
