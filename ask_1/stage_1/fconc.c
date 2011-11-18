@@ -2,11 +2,7 @@
 
 * File Name : fconc.c
 
-<<<<<<< HEAD
-* Last Modified : Thu 17 Nov 2011 10:20:08 PM EET
-=======
-* Last Modified : Fri 18 Nov 2011 09:26:16 PM EET
->>>>>>> OS-master
+* Last Modified : Fri 18 Nov 2011 09:25:21 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -22,7 +18,6 @@ int main(int argc, char ** argv)
   int TMP;
   int W_FLAGS = O_CREAT | O_WRONLY | O_TRUNC;
   int C_PERMS = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH ;
-  int counter=0;
   struct flock lock;
   if (argc < 3)
   {
@@ -38,10 +33,8 @@ int main(int argc, char ** argv)
   fcntl(TMP,F_GETLK,lock);  //get lock info on fd
   lock.l_type = F_WRLCK;    //set lock to write lock
   fcntl(TMP,F_SETLK,lock);  //set the lock on fd
-  for(counter = 1 ; counter < argc-1 ; counter++ )
-  {
-    write_file(TMP,argv[counter]);
-  }
+  write_file(TMP,argv[1]);  //write on fd
+  write_file(TMP,argv[2]);
   lock.l_type = F_UNLCK;    //set lock to unlock
   fcntl(TMP,F_SETLK,lock);  //set the lock on fd
   close(TMP);               //close fd
@@ -88,6 +81,7 @@ void doWrite(int fd,const char *buff,int len)
   } while(written < len );
 }
 
+
 void write_file(int fd,const char *infile)
 {
   int A;
@@ -125,3 +119,4 @@ void write_file(int fd,const char *infile)
     exit(EX_IOERR);
   }
 }
+
