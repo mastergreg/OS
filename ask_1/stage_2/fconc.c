@@ -2,7 +2,7 @@
 
 * File Name : fconc.c
 
-* Last Modified : Fri 18 Nov 2011 09:26:16 PM EET
+* Last Modified : Mon 21 Nov 2011 09:32:24 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
  
@@ -41,14 +41,7 @@ int main(int argc, char ** argv)
   lock.l_type = F_UNLCK;    //set lock to unlock
   fcntl(TMP,F_SETLK,lock);  //set the lock on fd
   close(TMP);               //close fd
-  if (argc > 3)
-  {
-    OUT = open(argv[3],W_FLAGS,C_PERMS);
-  }
-  else
-  {
-    OUT = open("fconc.out",W_FLAGS,C_PERMS);
-  }
+  OUT = open(argv[argc-1],W_FLAGS,C_PERMS);
   if (OUT < 0)
   {
     perror("Error handling output file\n");
