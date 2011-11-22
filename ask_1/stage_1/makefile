@@ -7,7 +7,10 @@ fconc.o: 	fconc.c fconc.h
 clean:
 	rm fconc.o fconc C
 test:
+	echo -n "Goodbye " > A;
+	echo "and thanks for all the fish" > B;
 	./fconc A B C
+	cat C
 strace:
 	strace -o strace_outfile ./fconc A B C
 
