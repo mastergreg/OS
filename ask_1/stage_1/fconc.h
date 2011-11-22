@@ -22,6 +22,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <sysexits.h>
+#include <string.h>
 
 void doWrite(int fd, const char *buff, int len);
 void write_file(int fd, const char *infile);

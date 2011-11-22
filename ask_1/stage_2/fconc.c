@@ -2,14 +2,10 @@
 
 * File Name : fconc.c
 
-<<<<<<< HEAD
-* Last Modified : Thu 17 Nov 2011 10:20:08 PM EET
-=======
 * Last Modified : Fri 18 Nov 2011 09:26:16 PM EET
->>>>>>> OS-master
 
 * Created By : Greg Liras <gregliras@gmail.com>
- 
+
 * Created By : Vasilis Gerakaris <vgerak@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
@@ -18,6 +14,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 int main(int argc, char ** argv)
 {
+
   int OUT;
   int TMP;
   int W_FLAGS = O_CREAT | O_WRONLY | O_TRUNC;
@@ -77,6 +74,7 @@ void doWrite(int fd,const char *buff,int len)
 {
   int written = 0;
   int current = 0;
+
   do
   {
     if ( (current = write(fd,buff+written,len-written)) < 0 )
@@ -94,6 +92,7 @@ void write_file(int fd,const char *infile)
   char buffer[BUFFER_SIZE];
   int chars_read=0;
   struct flock lock;
+
   A = open(infile,O_RDONLY);
   if (A ==-1)
   {
