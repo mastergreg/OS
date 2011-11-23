@@ -1,74 +1,116 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : fconc.c
+ * File Name : fconc.c
 
-* Last Modified : Fri 18 Nov 2011 09:26:16 PM EET
+ * Last Modified : Wed 23 Nov 2011 02:26:16 AM EET
 
-* Created By : Greg Liras <gregliras@gmail.com>
+ * Created By : Greg Liras <gregliras@gmail.com>
 
-* Created By : Vasilis Gerakaris <vgerak@gmail.com>
+ * Created By : Vasilis Gerakaris <vgerak@gmail.com>
 
-_._._._._._._._._._._._._._._._._._._._._.*/
+ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include "fconc.h"
 
 int main(int argc, char ** argv)
 {
-
   int OUT;
   int TMP;
+  int i;
+  const char * output;
+  int duplicate = 0;
   int W_FLAGS = O_CREAT | O_WRONLY | O_TRUNC;
   int C_PERMS = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH ;
-  int counter=0;
   struct flock lock;
-  if (argc < 3)
+
+  if (argc == 1)
   {
-    perror("Usage: ./fconc infile1 infile2 [outfile (default:fconc.out)]\n");
+    perror("Use at least 1 file name when calling fconc\n");
     exit(EX_USAGE);
   }
-  TMP = open("/tmp/fconc.out.tmp",W_FLAGS,C_PERMS);
-  if (TMP < 0)
+  if (argc == 2)
   {
-    perror("Error opening tmp file, is another instance running?\n");
-    exit(EX_TEMPFAIL);
-  }
-  fcntl(TMP,F_GETLK,lock);  //get lock info on fd
-  lock.l_type = F_WRLCK;    //set lock to write lock
-  fcntl(TMP,F_SETLK,lock);  //set the lock on fd
-  for(counter = 1 ; counter < argc-1 ; counter++ )
-  {
-    write_file(TMP,argv[counter]);
-  }
-  lock.l_type = F_UNLCK;    //set lock to unlock
-  fcntl(TMP,F_SETLK,lock);  //set the lock on fd
-  close(TMP);               //close fd
-  if (argc > 3)
-  {
-    OUT = open(argv[3],W_FLAGS,C_PERMS);
+    //perror("File will not be modified\n");
+    exit(1);
   }
   else
   {
-    OUT = open("fconc.out",W_FLAGS,C_PERMS);
+    output = argv[argc-1];
   }
-  if (OUT < 0)
+
+  for (i=1; i<(argc-1); i++)
   {
-    perror("Error handling output file\n");
-    exit(EX_IOERR);
+    if (strcmp (argv[i], output) ==0 )
+    {
+      duplicate = 1;
+      break;
+    }
   }
-  fcntl(OUT,F_GETLK,lock);
-  lock.l_type = F_WRLCK;
-  fcntl(OUT,F_SETLK,lock);
-  write_file(OUT,"/tmp/fconc.out.tmp");
-  lock.l_type = F_UNLCK;
-  fcntl(OUT,F_SETLK,lock);
-  close(OUT);
-  if (unlink("/tmp/fconc.out.tmp") != 0)
+
+  if (duplicate)
   {
-    perror("Error deleting temporary file, please remove /tmp/fconc.out.tmp\n");
-    exit(EX__BASE);
+
+    TMP = open("/tmp/fconc.out.tmp",W_FLAGS,C_PERMS);
+    if (TMP < 0)
+    {
+      perror("Error opening tmp file, is another instance running?\n");
+      exit(EX_TEMPFAIL);
+    }
+    fcntl(TMP,F_GETLK,lock);  //get lock info on fd
+    lock.l_type = F_WRLCK;    //set lock to write lock
+    fcntl(TMP,F_SETLK,lock);  //set the lock on fd
+    for(i=1; i <(argc-1); i++)
+    {
+      write_file(TMP,argv[i]);
+    }
+    lock.l_type = F_UNLCK;    //set lock to unlock
+    fcntl(TMP,F_SETLK,lock);  //set the lock on fd
+    close(TMP);               //close fd
+    OUT = open(output,W_FLAGS,C_PERMS);
+
+    if (OUT < 0)
+    {
+      perror("Error handling output file\n");
+      exit(EX_IOERR);
+    }
+    fcntl(OUT,F_GETLK,lock);
+    lock.l_type = F_WRLCK;
+    fcntl(OUT,F_SETLK,lock);
+
+    write_file(OUT,"/tmp/fconc.out.tmp");
+    lock.l_type = F_UNLCK;
+    fcntl(OUT,F_SETLK,lock);
+    close (OUT);
+    if (unlink("/tmp/fconc.out.tmp") != 0)
+    {
+      perror("Error deleting temporary file, please remove /tmp/fconc.out.tmp\n");
+      exit(EX__BASE);
+    }
   }
+
+  else
+  {
+    OUT = open(output,W_FLAGS,C_PERMS);
+    if (OUT < 0)
+    {
+      perror("Error handling output file\n");
+      exit(EX_IOERR);
+    }
+    fcntl(OUT,F_GETLK,lock);
+    lock.l_type = F_WRLCK;
+    fcntl(OUT,F_SETLK,lock);
+    for (i=1;i<(argc-1);i++)
+    {
+      write_file(OUT,argv[i]);
+    }
+    lock.l_type = F_UNLCK;
+    fcntl(OUT,F_SETLK,lock);
+    close(OUT);
+  }
+
   exit(EXIT_SUCCESS);
 }
+
 
 void doWrite(int fd,const char *buff,int len)
 {
