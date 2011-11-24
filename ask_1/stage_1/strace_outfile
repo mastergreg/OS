@@ -1,5 +1,5 @@
-execve("./fconc", ["./fconc", "A", "B", "C"], [/* 23 vars */]) = 0
-brk(0)                                  = 0x80a9000
+execve("./fconc", ["./fconc", "A", "B", "C"], [/* 22 vars */]) = 0
+brk(0)                                  = 0x9820000
 access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
 mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x4001e000
 access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)

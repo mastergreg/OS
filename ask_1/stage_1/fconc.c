@@ -2,7 +2,7 @@
 
  * File Name : fconc.c
 
- * Last Modified : Thu 24 Nov 2011 03:36:34 PM EET
+ * Last Modified : Thu 24 Nov 2011 04:37:48 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -159,7 +159,7 @@ void lock_file(int fd,int lock_type)
 {
     struct flock lock;
     lock.l_type = lock_type;  //set lock to lock_type
-    lock.l_whence = 0;
+    lock.l_whence = SEEK_SET;
     lock.l_start = 0;
     lock.l_len = 0;
     if ( fcntl(fd,F_SETLKW,&lock) == -1)
