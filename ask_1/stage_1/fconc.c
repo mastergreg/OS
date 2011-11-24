@@ -97,10 +97,9 @@ int main(int argc, char ** argv)
     lock.l_type = F_WRLCK;
     fcntl(OUT,F_SETLK,lock);
 
-    {
-      write_file(OUT,argv[1]);
-      write_file(OUT,argv[2]);
-    }
+    write_file(OUT,argv[1]);
+    write_file(OUT,argv[2]);
+
     lock.l_type = F_UNLCK;
     fcntl(OUT,F_SETLK,lock);
     close(OUT);
