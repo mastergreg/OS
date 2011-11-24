@@ -1,8 +1,8 @@
 all: 		fconc
 fconc:		fconc.o
-	gcc fconc.o -o fconc -m32
+	gcc -g fconc.o -o fconc -m32
 fconc.o: 	fconc.c fconc.h
-	gcc -c fconc.c -o fconc.o -Wall -m32
+	gcc -g -c fconc.c -o fconc.o -Wall -Wextra -m32
 .PHONY: clean test strace
 clean:
 	rm fconc.o fconc C

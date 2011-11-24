@@ -2,7 +2,7 @@
 
 * File Name : fconc.h
 
-* Last Modified : Thu 17 Nov 2011 10:07:16 PM EET
+* Last Modified : Thu Nov 24 11:37:08 2011
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -19,6 +19,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sysexits.h>

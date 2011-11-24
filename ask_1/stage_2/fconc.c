@@ -2,7 +2,7 @@
 
  * File Name : fconc.c
 
- * Last Modified : Wed 23 Nov 2011 07:39:18 PM EET
+ * Last Modified : Thu Nov 24 11:34:39 2011
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 
   if (argc == 1)
   {
-    perror("Use at least 1 file name when calling fconc\n");
+    perror("Use at least 1 file name when calling fconc");
     exit(EX_USAGE);
   }
   if (argc == 2)

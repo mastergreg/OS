@@ -1,8 +1,8 @@
 all: 		fconc
 fconc:		fconc.o
-	gcc fconc.o -o fconc
+	gcc fconc.o -o fconc -m32
 fconc.o: 	fconc.c fconc.h
-	gcc -c fconc.c -o fconc.o -Wall
+	gcc -c fconc.c -o fconc.o -Wall -m32
 .PHONY: clean test
 clean:
 	rm fconc.o fconc A B C D E F

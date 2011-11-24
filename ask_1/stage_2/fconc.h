@@ -2,7 +2,7 @@
 
 * File Name : fconc.h
 
-* Last Modified : Thu 17 Nov 2011 10:17:41 PM EET
+* Last Modified : Thu Nov 24 11:33:17 2011
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,6 +18,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #endif //BUFFER_SIZE
 
 #include <unistd.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
