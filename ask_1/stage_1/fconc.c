@@ -2,7 +2,7 @@
 
  * File Name : fconc.c
 
- * Last Modified : Thu 24 Nov 2011 04:37:48 PM EET
+ * Last Modified : Thu 24 Nov 2011 04:45:28 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -103,7 +103,6 @@ int main(int argc, char ** argv)
             exit(EX_IOERR);
         }
     }
-
     exit(EXIT_SUCCESS);
 }
 
@@ -129,7 +128,7 @@ void write_file(int fd,const char *infile)
     char buffer[BUFFER_SIZE];
     int chars_read=0;
     A = open(infile,O_RDONLY);
-    if (A ==-1)
+    if (A < 0)
     {
         char error_message[BUFFER_SIZE];
         snprintf(error_message,BUFFER_SIZE,"%s",infile);
@@ -142,13 +141,13 @@ void write_file(int fd,const char *infile)
         //and write
         doWrite(fd,buffer,chars_read);
     }
-    if ( chars_read == -1 )
+    if ( chars_read < 0 )
     {
         perror("Read Error\n");
         exit(EX_IOERR);
     }
     unlock_file(A);
-    if ( close(A) == - 1 )
+    if ( close(A) < 0 )
     {
         perror("Close Error\n");
         exit(EX_IOERR);

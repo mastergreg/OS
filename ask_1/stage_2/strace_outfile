@@ -1,28 +1,27 @@
-execve("./fconc", ["./fconc", "A", "B", "C", "D", "E", "F"], [/* 46 vars */]) = 0
-brk(0)                                  = 0x9655000
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb77f5000
+execve("./fconc", ["./fconc", "A", "B", "C", "D", "E", "F"], [/* 22 vars */]) = 0
+brk(0)                                  = 0x8bec000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x4001e000
 access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
 open("/etc/ld.so.cache", O_RDONLY)      = 3
-fstat64(3, {st_mode=S_IFREG|0644, st_size=105890, ...}) = 0
-mmap2(NULL, 105890, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb77db000
+fstat64(3, {st_mode=S_IFREG|0644, st_size=64827, ...}) = 0
+mmap2(NULL, 64827, PROT_READ, MAP_PRIVATE, 3, 0) = 0x40020000
 close(3)                                = 0
-open("/lib/libc.so.6", O_RDONLY)        = 3
-read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\0\244\1\0004\0\0\0"..., 512) = 512
-fstat64(3, {st_mode=S_IFREG|0755, st_size=1429996, ...}) = 0
-mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb767b000
-mprotect(0xb77d4000, 4096, PROT_NONE)   = 0
-mmap2(0xb77d5000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb77d5000
-mmap2(0xb77d8000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb77d8000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/i686/cmov/libc.so.6", O_RDONLY) = 3
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\320m\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1323460, ...}) = 0
+mmap2(NULL, 1333608, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x40030000
+mmap2(0x40170000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x13f) = 0x40170000
+mmap2(0x40173000, 10600, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x40173000
 close(3)                                = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb767a000
-set_thread_area({entry_number:-1 -> 6, base_addr:0xb767a6c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
-mprotect(0xb77d5000, 8192, PROT_READ)   = 0
-mprotect(0x8049000, 4096, PROT_READ)    = 0
-mprotect(0xb7813000, 4096, PROT_READ)   = 0
-munmap(0xb77db000, 105890)              = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x40176000
+set_thread_area({entry_number:-1 -> 6, base_addr:0x401766c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0x40170000, 8192, PROT_READ)   = 0
+mprotect(0x4001b000, 4096, PROT_READ)   = 0
+munmap(0x40020000, 64827)               = 0
 open("F", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
-fcntl64(3, F_GETLK, {type=0xffff8955 /* F_??? */, whence=0x57e5 /* SEEK_??? */, start=15225686, len=1526726656, pid=328844161}) = -1 EINVAL (Invalid argument)
-fcntl64(3, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(3, F_SETLKW, {type=F_WRLCK, whence=SEEK_SET, start=0, len=0}) = 0
 open("A", O_RDONLY)                     = 4
 fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
 fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
@@ -63,6 +62,6 @@ write(3, "And that's file E\n", 18)     = 18
 read(4, "", 1024)                       = 0
 fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
 close(4)                                = 0
-fcntl64(3, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(3, F_SETLKW, {type=F_UNLCK, whence=SEEK_SET, start=0, len=0}) = 0
 close(3)                                = 0
 exit_group(0)                           = ?

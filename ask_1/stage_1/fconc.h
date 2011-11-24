@@ -1,14 +1,14 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : fconc.h
+ * File Name : fconc.h
 
-* Last Modified : Thu 24 Nov 2011 03:36:19 PM EET
+ * Last Modified : Thu 24 Nov 2011 04:47:01 PM EET
 
-* Created By : Greg Liras <gregliras@gmail.com>
+ * Created By : Greg Liras <gregliras@gmail.com>
 
-* Created By : Vasilis Gerakaris <vgerak@gmail.com>
+ * Created By : Vasilis Gerakaris <vgerak@gmail.com>
 
-_._._._._._._._._._._._._._._._._._._._._.*/
+ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #ifndef FCONC_H
 #define FCONC_H
