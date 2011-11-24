@@ -2,7 +2,7 @@
 
  * File Name : fconc.c
 
- * Last Modified : Wed 23 Nov 2011 02:26:16 AM EET
+ * Last Modified : Wed 23 Nov 2011 07:39:18 PM EET
 
  * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -30,8 +30,8 @@ int main(int argc, char ** argv)
   }
   if (argc == 2)
   {
-    //perror("File will not be modified\n");
-    exit(1);
+    //No need to chance anything
+    exit(0);
   }
   else
   {
