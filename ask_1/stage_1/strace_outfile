@@ -1,44 +1,40 @@
-execve("./fconc", ["./fconc", "A", "B", "C"], [/* 46 vars */]) = 0
-brk(0)                                  = 0x9746000
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb784f000
+execve("./fconc", ["./fconc", "A", "B", "C"], [/* 45 vars */]) = 0
+brk(0)                                  = 0x81fa000
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb77e8000
 access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
 open("/etc/ld.so.cache", O_RDONLY)      = 3
-fstat64(3, {st_mode=S_IFREG|0644, st_size=105890, ...}) = 0
-mmap2(NULL, 105890, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7835000
+fstat64(3, {st_mode=S_IFREG|0644, st_size=109780, ...}) = 0
+mmap2(NULL, 109780, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb77cd000
 close(3)                                = 0
 open("/lib/libc.so.6", O_RDONLY)        = 3
-read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\0\244\1\0004\0\0\0"..., 512) = 512
-fstat64(3, {st_mode=S_IFREG|0755, st_size=1429996, ...}) = 0
-mmap2(NULL, 1440296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb76d5000
-mprotect(0xb782e000, 4096, PROT_NONE)   = 0
-mmap2(0xb782f000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x159) = 0xb782f000
-mmap2(0xb7832000, 10792, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7832000
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\260\244\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1441908, ...}) = 0
+mmap2(NULL, 1452600, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb766a000
+mmap2(0xb77c7000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x15d) = 0xb77c7000
+mmap2(0xb77ca000, 10808, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb77ca000
 close(3)                                = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76d4000
-set_thread_area({entry_number:-1 -> 6, base_addr:0xb76d46c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
-mprotect(0xb782f000, 8192, PROT_READ)   = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7669000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xb76696c0, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0xb77c7000, 8192, PROT_READ)   = 0
 mprotect(0x8049000, 4096, PROT_READ)    = 0
-mprotect(0xb786d000, 4096, PROT_READ)   = 0
-munmap(0xb7835000, 105890)              = 0
+mprotect(0xb7807000, 4096, PROT_READ)   = 0
+munmap(0xb77cd000, 109780)              = 0
 open("C", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
-fcntl64(3, F_GETLK, {type=0xffff8955 /* F_??? */, whence=0x57e5 /* SEEK_??? */, start=15225686, len=1526726656, pid=330941313}) = -1 EINVAL (Invalid argument)
-fcntl64(3, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(3, F_SETLKW, {type=F_WRLCK, whence=SEEK_SET, start=0, len=0}) = 0
 open("A", O_RDONLY)                     = 4
-fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
-fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLKW, {type=F_RDLCK, whence=SEEK_SET, start=0, len=0}) = 0
 read(4, "Goodbye ", 1024)               = 8
 write(3, "Goodbye ", 8)                 = 8
 read(4, "", 1024)                       = 0
-fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLKW, {type=F_UNLCK, whence=SEEK_SET, start=0, len=0}) = 0
 close(4)                                = 0
 open("B", O_RDONLY)                     = 4
-fcntl64(4, F_GETLK, {...})              = -1 EFAULT (Bad address)
-fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLKW, {type=F_RDLCK, whence=SEEK_SET, start=0, len=0}) = 0
 read(4, "and thanks for all the fish\n", 1024) = 28
 write(3, "and thanks for all the fish\n", 28) = 28
 read(4, "", 1024)                       = 0
-fcntl64(4, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(4, F_SETLKW, {type=F_UNLCK, whence=SEEK_SET, start=0, len=0}) = 0
 close(4)                                = 0
-fcntl64(3, F_SETLK, {...})              = -1 EFAULT (Bad address)
+fcntl64(3, F_SETLKW, {type=F_UNLCK, whence=SEEK_SET, start=0, len=0}) = 0
 close(3)                                = 0
 exit_group(0)                           = ?

@@ -7,7 +7,7 @@
 \usepackage{minted}
 \usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
-\usepackage{float} \setmainfont[Mapping=TeX-text]{Times New Roman}
+\usepackage{float} \setmainfont[Mapping=TeX-text]{DejaVu Sans}
 \begin{document}
 
 \include{title/title}
@@ -68,7 +68,8 @@ Hello oslabb03!
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_1/fconc.c}
 \inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_1/makefile}
 
-\pagebreak
+\vspace{2cm}
+
 Η έξοδος της strace είναι η παρακάτω:
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{../stage_1/strace_outfile}
 
@@ -82,8 +83,10 @@ Hello oslabb03!
 την τιμή της διεύθυνσης που βρίσκεται η συνάρτηση, αφού πάρει το αρχείο zing.o, όπου και θα μας δώσει το τελικό εκτελέσιμο zing.
 \item Ο πηγαίος κώδικας που χρησιμοποιήσαμε τελικά ήταν ο εξής:
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.h}
+\pagebreak
 \inputminted[linenos,fontsize=\footnotesize]{c}{../stage_2/fconc.c}
 \inputminted[linenos,obeytabs,fontsize=\footnotesize]{basemake}{../stage_2/makefile}
+\pagebreak
 \item Όντως τρέχοντας το εκτελέσιμο whoops η έξοδος ήταν αυτή:
 
 \begin{minted}{text}
