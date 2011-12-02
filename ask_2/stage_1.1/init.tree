@@ -10,25 +10,16 @@
 # . nodes must be placed in a DFS order
 
 A
-3
-B
-C
-D
-
-B
 2
-E
-F
-
-E
-0
-
-F
-0
-
+B
 C
-0
+
+B
+1
+D
 
 D
 0
 
+C
+0

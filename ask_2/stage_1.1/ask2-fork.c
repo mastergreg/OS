@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 
 #include "proc-common.h"
+#include "tree.h"
 
 #define SLEEP_PROC_SEC  10
 #define SLEEP_TREE_SEC  3
@@ -15,20 +16,42 @@
  * A-+-B---D
  *   `-C
  */
-void fork_procs(void)
+void fork_procs(struct tree_node *me)
 {
-	/*
-	 * initial process is A.
-	 */
+    /*
+     * initial process is A.
+     */
+    int i;
+    pid_t pid;
+    int status;
 
-	change_pname("A");
-	printf("A: Sleeping...\n");
-	sleep(SLEEP_PROC_SEC);
+    change_pname(me->name);
+    /* loop to fork for all my children */
 
-	/* ... */
+    for (i=0;i<me->nr_children;i++)
+    {
+        pid = fork();
+        if (pid < 0) {
+            perror("main: fork");
+            exit(1);
+        }
+        if (pid == 0) {
+            /* Child */
+            me=&me->children[i];
+            fork_procs(me);
+            exit(1);
+        }
 
-	printf("A: Exiting...\n");
-	exit(16);
+    }
+    printf("%s: Sleeping...\n",me->name);
+    sleep(SLEEP_PROC_SEC);
+
+    /* ... */
+    pid = wait(&status);
+    explain_wait_status(pid, status);
+
+    printf("%s: Exiting...\n",me->name);
+    exit(16);
 }
 
 /*
@@ -45,39 +68,40 @@ void fork_procs(void)
  */
 int main(void)
 {
-	pid_t pid;
-	int status;
+    pid_t pid;
+    int status;
+    struct tree_node * root = get_tree_from_file("init.tree");
 
-	/* Fork root of process tree */
-	pid = fork();
-	if (pid < 0) {
-		perror("main: fork");
-		exit(1);
-	}
-	if (pid == 0) {
-		/* Child */
-		fork_procs();
-		exit(1);
-	}
+    /* Fork root of process tree */
+    pid = fork();
+    if (pid < 0) {
+        perror("main: fork");
+        exit(1);
+    }
+    if (pid == 0) {
+        /* Child */
+        fork_procs(root);
+        exit(1);
+    }
 
-	/*
-	 * Father
-	 */
-	/* for ask2-signals */
-	/* wait_for_ready_children(1); */
+    /*
+     * Father
+     */
+    /* for ask2-signals */
+    /* wait_for_ready_children(1); */
 
-	/* for ask2-{fork, tree} */
-	sleep(SLEEP_TREE_SEC);
+    /* for ask2-{fork, tree} */
+    sleep(SLEEP_TREE_SEC);
 
-	/* Print the process tree root at pid */
-	show_pstree(pid);
+    /* Print the process tree root at pid */
+    show_pstree(pid);
 
-	/* for ask2-signals */
-	/* kill(pid, SIGCONT); */
+    /* for ask2-signals */
+    /* kill(pid, SIGCONT); */
 
-	/* Wait for the root of the process tree to terminate */
-	pid = wait(&status);
-	explain_wait_status(pid, status);
+    /* Wait for the root of the process tree to terminate */
+    pid = wait(&status);
+    explain_wait_status(pid, status);
 
-	return 0;
+    return 0;
 }
