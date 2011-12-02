@@ -47,8 +47,12 @@ void fork_procs(struct tree_node *me)
     sleep(SLEEP_PROC_SEC);
 
     /* ... */
-    pid = wait(&status);
-    explain_wait_status(pid, status);
+    if (me->nr_children>0)
+    {
+        pid = wait(&status);
+        printf("%s said:\n",me->name);
+        explain_wait_status(pid, status);
+    }
 
     printf("%s: Exiting...\n",me->name);
     exit(16);
