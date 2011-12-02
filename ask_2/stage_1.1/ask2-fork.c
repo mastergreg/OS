@@ -43,19 +43,34 @@ void fork_procs(struct tree_node *me)
         }
 
     }
-    printf("%s: Sleeping...\n",me->name);
-    sleep(SLEEP_PROC_SEC);
+    if(me->nr_children==0)
+    {
+        printf("%s: Sleeping...\n",me->name);
+        sleep(SLEEP_PROC_SEC);
+    }
 
     /* ... */
-    if (me->nr_children>0)
+    for(i=0;i<me->nr_children;i++)
     {
         pid = wait(&status);
-        printf("%s said:\n",me->name);
         explain_wait_status(pid, status);
     }
 
     printf("%s: Exiting...\n",me->name);
-    exit(16);
+    switch(me->name[0])
+    {
+        case 'A':
+            exit(16);
+            break;
+        case 'B':
+            exit(19);
+        case 'C':
+            exit(17);
+        case 'D':
+            exit(13);
+        default:
+            exit(1);
+    }
 }
 
 /*
