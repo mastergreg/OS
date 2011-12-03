@@ -1,5 +1,6 @@
 *.swp
 *.aux
+*.pyg
 *.log
 *.o
 A
