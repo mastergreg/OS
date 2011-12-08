@@ -25,37 +25,62 @@ void fork_procs(struct tree_node *me)
     int status;
     pid_t pid;
     pid_t *children_pids;
+    int pipes[4];
+    int answers[2];
     children_pids=(pid_t *)calloc(me->nr_children,sizeof(pid_t));
-
     change_pname(me->name);
     /* loop to fork for all my children */
 
+
     for (i=0;i<me->nr_children;i++)
     {
+        if(pipe(pipes+2*i) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
         pid = fork();
-        if (pid < 0) {
+        if (pid < 0)
+        {
             perror("fork_procs: fork");
             exit(1);
         }
-        if (pid == 0) {
+        if (pid == 0) 
+        {
             /* Child */
+            close(*(pipes + 2*i)); //child closes read
             me = me->children+i;
             fork_procs(me);
             exit(1);
         }
+        close(*(pipes + 2*i + 1)); //father closes write
         *(children_pids+i)=pid;
 
     }
     wait_for_ready_children(me->nr_children);
-    printf("%s: pausing...\n",me->name);
-    raise(SIGSTOP);
+    //should the father wait for ready children?
     for (i=0;i<me->nr_children;i++)
     {
         pid = *(children_pids+i);
-        kill(pid,SIGCONT);
+        while(read(pipes[2*i],answers+i,1)>0)
+        {//just read!!!
+        }
+        //need to add sanity checks
         waitpid(pid,&status,WUNTRACED);
         explain_wait_status(pid,status);
     }
+
+    if(me->nr_children>0)
+    {
+        switch(*(me->name))
+            case '+'
+                while(write(
+
+
+    }
+
+
+
 
     /* ... */
     //if (me->nr_children>0)
@@ -94,11 +119,13 @@ int main(int argc,char **argv)
 
     /* Fork root of process tree */
     pid = fork();
-    if (pid < 0) {
+    if (pid < 0) 
+    {
         perror("main: fork");
         exit(1);
     }
-    if (pid == 0) {
+    if (pid == 0)
+    {
         /* Child */
         fork_procs(root);
         exit(1);
