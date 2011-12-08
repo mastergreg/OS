@@ -49,7 +49,7 @@ void fork_procs(struct tree_node *me)
     wait_for_ready_children(me->nr_children);
     printf("%s: pausing...\n",me->name);
     raise(SIGSTOP);
-    for (i=0;i<me->nr_children;i++)
+    for (i=0;i<(me->nr_children);i++)
     {
         pid = *(children_pids+i);
         kill(pid,SIGCONT);
@@ -123,8 +123,8 @@ int main(int argc,char **argv)
     /* kill(pid, SIGCONT); */
 
     /* Wait for the root of the process tree to terminate */
-    pid = wait(&status);
-    explain_wait_status(pid, status);
+    //pid = wait(&status);
+    //explain_wait_status(pid, status);
 
     return 0;
 }
