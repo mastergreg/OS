@@ -73,22 +73,17 @@ void fork_procs(struct tree_node *me)
     if(me->nr_children>0)
     {
         switch(*(me->name))
-            case '+'
-                while(write(
-
-
+        {
+            case '+':
+                break;
+            case '*':
+                //
+                break;
+            default:
+                break;
+        }
     }
 
-
-
-
-    /* ... */
-    //if (me->nr_children>0)
-    //{
-    //    pid = wait(&status);
-    //    printf("%s said:\n",me->name);
-    //    explain_wait_status(pid, status);
-    //}
 
     printf("%s: Exiting...\n",me->name);
     exit(0);
