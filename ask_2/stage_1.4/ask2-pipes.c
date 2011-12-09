@@ -24,14 +24,16 @@ void fork_procs(struct tree_node *me)
     int i;
     int status;
     pid_t pid;
-    pid_t *children_pids;
+    pid_t children_pids[2];
     int pipes[4];
     int answers[2];
-    children_pids=(pid_t *)calloc(me->nr_children,sizeof(pid_t));
+    int result;
+    int iocheck;
     change_pname(me->name);
     /* loop to fork for all my children */
 
 
+    //{{{ Fork all children recursively
     for (i=0;i<me->nr_children;i++)
     {
         if(pipe(pipes+2*i) == -1)
@@ -45,46 +47,75 @@ void fork_procs(struct tree_node *me)
             perror("fork_procs: fork");
             exit(1);
         }
-        if (pid == 0) 
+        else if (pid == 0) 
         {
             /* Child */
-            close(*(pipes + 2*i)); //child closes read
+        //    close(*(pipes + 2*i)); //child closes read
             me = me->children+i;
             fork_procs(me);
             exit(1);
         }
-        close(*(pipes + 2*i + 1)); //father closes write
-        *(children_pids+i)=pid;
-
+        else
+        {
+        //    close(*(pipes + 2*i + 1)); //father closes write
+            *(children_pids+i)=pid;
+        }
     }
+    //}}}
     wait_for_ready_children(me->nr_children);
-    //should the father wait for ready children?
-    for (i=0;i<me->nr_children;i++)
+
+    //{{{ Read from both children descriptors
+    for (i=0;i<(me->nr_children);i++)
     {
         pid = *(children_pids+i);
-        while(read(pipes[2*i],answers+i,1)>0)
-        {//just read!!!
+        iocheck = read(pipes[2*i],answers+i,sizeof(int));
+        if(iocheck==-1)
+        {
+            perror("read error");
+            exit(1);
         }
-        //need to add sanity checks
+        kill(pid,SIGCONT);
+        printf("%s i wrote %d\n",me->name,answers[i]);
+    }
+    //}}}
+    //{{{ Write to father descriptor
+    for (i=0;i<(me->nr_children);i++)
+    {
+        pid = *(children_pids+i);
         waitpid(pid,&status,WUNTRACED);
         explain_wait_status(pid,status);
     }
+    //}}}
 
-    if(me->nr_children>0)
+    switch(*(me->name))
     {
-        switch(*(me->name))
-        {
-            case '+':
-                break;
-            case '*':
-                //
-                break;
-            default:
-                break;
-        }
+        case '+':
+            result=answers[0]+answers[1];
+            break;
+        case '*':
+            result=answers[0]*answers[1];
+            break;
+        default:
+            sscanf(me->name,"%d",&result);
+            break;
     }
-
-
+    printf("%s said %d\n",me->name,result);
+    if(getpid()==children_pids[0])
+    {
+        iocheck = write(pipes[1],&result,sizeof(int));
+    }
+    else
+    {
+        iocheck = write(pipes[3],&result,sizeof(int));
+    }
+    if (iocheck ==-1)
+    {
+        perror("write error");
+        exit(1);
+    }
+    
+    printf("%s: pausing...\n",me->name);
+    raise(SIGSTOP);
     printf("%s: Exiting...\n",me->name);
     exit(0);
 }
@@ -143,10 +174,6 @@ int main(int argc,char **argv)
 
     /* for ask2-signals */
     /* kill(pid, SIGCONT); */
-
-    /* Wait for the root of the process tree to terminate */
-    pid = wait(&status);
-    explain_wait_status(pid, status);
 
     return 0;
 }
