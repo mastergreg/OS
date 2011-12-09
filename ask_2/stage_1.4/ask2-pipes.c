@@ -16,7 +16,7 @@
  * A-+-B---D
  *   `-C
  */
-void fork_procs(struct tree_node *me)
+void fork_procs(struct tree_node *me,int ffd)
 {
     /*
      * initial process is A.
@@ -26,21 +26,39 @@ void fork_procs(struct tree_node *me)
     pid_t pid;
     pid_t children_pids[2];
     int pipes[4];
+    int father=-1;
+    int is_father=0;
     int answers[2];
     int result;
     int iocheck;
+    father=ffd;
     change_pname(me->name);
     /* loop to fork for all my children */
+    if(me->nr_children>0)
+    {
+        //i am a father
+        is_father = 1;
+        if(pipe(pipes) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+        if(pipe(pipes+2) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    } 
+    else
+    {
+        //no i am only a child
+        is_father = 0;
+    }
 
 
     //{{{ Fork all children recursively
     for (i=0;i<me->nr_children;i++)
     {
-        if(pipe(pipes+2*i) == -1)
-        {
-            perror("pipe");
-            exit(EXIT_FAILURE);
-        }
         pid = fork();
         if (pid < 0)
         {
@@ -50,39 +68,39 @@ void fork_procs(struct tree_node *me)
         else if (pid == 0) 
         {
             /* Child */
-        //    close(*(pipes + 2*i)); //child closes read
+            //close(pipes[2*i]); //child closes read
+            father=pipes[2*i+1];
             me = me->children+i;
-            fork_procs(me);
+            fork_procs(me,father);
             exit(1);
         }
         else
         {
-        //    close(*(pipes + 2*i + 1)); //father closes write
-            *(children_pids+i)=pid;
+            //close(pipes[2*i+1]); //father closes write
+            children_pids[i]=pid;
         }
     }
     //}}}
-    wait_for_ready_children(me->nr_children);
 
     //{{{ Read from both children descriptors
     for (i=0;i<(me->nr_children);i++)
     {
         pid = *(children_pids+i);
+        //here is a bug \./
         iocheck = read(pipes[2*i],answers+i,sizeof(int));
         if(iocheck==-1)
         {
             perror("read error");
             exit(1);
         }
-        kill(pid,SIGCONT);
-        printf("%s i wrote %d\n",me->name,answers[i]);
+        printf("%s: i read %d\n",me->name,answers[i]);
     }
     //}}}
-    //{{{ Write to father descriptor
+
+   //{{{ 
     for (i=0;i<(me->nr_children);i++)
     {
-        pid = *(children_pids+i);
-        waitpid(pid,&status,WUNTRACED);
+        pid = wait(&status);
         explain_wait_status(pid,status);
     }
     //}}}
@@ -100,22 +118,13 @@ void fork_procs(struct tree_node *me)
             break;
     }
     printf("%s said %d\n",me->name,result);
-    if(getpid()==children_pids[0])
-    {
-        iocheck = write(pipes[1],&result,sizeof(int));
-    }
-    else
-    {
-        iocheck = write(pipes[3],&result,sizeof(int));
-    }
+    iocheck = write(father,&result,sizeof(int));
     if (iocheck ==-1)
     {
         perror("write error");
         exit(1);
     }
     
-    printf("%s: pausing...\n",me->name);
-    raise(SIGSTOP);
     printf("%s: Exiting...\n",me->name);
     exit(0);
 }
@@ -153,7 +162,7 @@ int main(int argc,char **argv)
     if (pid == 0)
     {
         /* Child */
-        fork_procs(root);
+        fork_procs(root,1);
         exit(1);
     }
 
@@ -164,9 +173,6 @@ int main(int argc,char **argv)
     /* wait_for_ready_children(1); */
 
     /* for ask2-{fork, tree} */
-    wait_for_ready_children(1);
-    show_pstree(pid);
-    kill(pid,SIGCONT);
     waitpid(pid,&status,WUNTRACED);
     explain_wait_status(pid,status);
 
