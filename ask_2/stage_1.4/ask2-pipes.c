@@ -26,18 +26,14 @@ void fork_procs(struct tree_node *me,int ffd)
     pid_t pid;
     pid_t children_pids[2];
     int pipes[4];
-    int father=-1;
-    int is_father=0;
     int answers[2];
     int result;
     int iocheck;
-    father=ffd;
     change_pname(me->name);
     /* loop to fork for all my children */
     if(me->nr_children>0)
     {
         //i am a father
-        is_father = 1;
         if(pipe(pipes) == -1)
         {
             perror("pipe");
@@ -49,11 +45,6 @@ void fork_procs(struct tree_node *me,int ffd)
             exit(EXIT_FAILURE);
         }
     } 
-    else
-    {
-        //no i am only a child
-        is_father = 0;
-    }
 
 
     //{{{ Fork all children recursively
@@ -68,15 +59,14 @@ void fork_procs(struct tree_node *me,int ffd)
         else if (pid == 0) 
         {
             /* Child */
-            //close(pipes[2*i]); //child closes read
-            father=pipes[2*i+1];
+            close(pipes[2*i]); //child closes read
             me = me->children+i;
-            fork_procs(me,father);
+            fork_procs(me,pipes[2*i+1]);
             exit(1);
         }
         else
         {
-            //close(pipes[2*i+1]); //father closes write
+            close(pipes[2*i+1]); //father closes write
             children_pids[i]=pid;
         }
     }
@@ -118,7 +108,7 @@ void fork_procs(struct tree_node *me,int ffd)
             break;
     }
     printf("%s said %d\n",me->name,result);
-    iocheck = write(father,&result,sizeof(int));
+    iocheck = write(ffd,&result,sizeof(int));
     if (iocheck ==-1)
     {
         perror("write error");
