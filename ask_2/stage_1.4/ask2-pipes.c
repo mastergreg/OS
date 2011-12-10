@@ -26,18 +26,14 @@ void fork_procs(struct tree_node *me,int ffd)
     pid_t pid;
     pid_t children_pids[2];
     int pipes[4];
-    int father=-1;
-    int is_father=0;
     int answers[2];
     int result;
     int iocheck;
-    father=ffd;
     change_pname(me->name);
     /* loop to fork for all my children */
     if(me->nr_children>0)
     {
         //i am a father
-        is_father = 1;
         if(pipe(pipes) == -1)
         {
             perror("pipe");
@@ -48,11 +44,6 @@ void fork_procs(struct tree_node *me,int ffd)
             perror("pipe");
             exit(EXIT_FAILURE);
         }
-    }
-    else
-    {
-        //no i am only a child
-        is_father = 0;
     }
 
 
@@ -69,9 +60,8 @@ void fork_procs(struct tree_node *me,int ffd)
         {
             /* Child */
             close(pipes[2*i]); //child closes read
-            father=pipes[2*i+1];
             me = me->children+i;
-            fork_procs(me,father);
+            fork_procs(me,pipes[2*i+1]);
             exit(1);
         }
         else
@@ -119,7 +109,7 @@ void fork_procs(struct tree_node *me,int ffd)
             break;
     }
     printf("%s said %d\n",me->name,result);
-    iocheck = write(father,&result,sizeof(int));
+    iocheck = write(ffd,&result,sizeof(int));
     if (iocheck ==-1)
     {
         perror("write error");
@@ -151,6 +141,15 @@ int main(int argc,char **argv)
     }
     pid_t pid;
     int status;
+    int initpipe[2];
+    int final_answer;
+    int iocheck;
+    if(pipe(initpipe) == -1)
+    {
+        perror("main:pipe");
+        exit(EXIT_FAILURE);
+    }
+
     struct tree_node * root = get_tree_from_file(argv[1]);
     printf("\n Expression tree to calculate: \n");
     printf("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n");
@@ -167,13 +166,23 @@ int main(int argc,char **argv)
     if (pid == 0)
     {
         /* Child */
-        fork_procs(root,1);
+        close(initpipe[0]);
+        fork_procs(root,initpipe[1]);
         exit(1);
     }
 
     /*
      * Father
      */
+    close(initpipe[1]);
+    iocheck = read(initpipe[0],&final_answer,sizeof(int));
+    if(iocheck==-1)
+    {
+        perror("main:read");
+        exit(EXIT_FAILURE);
+    }
+    printf("\033[1;31mThe answer is %d\033[0m\n",final_answer);
+
 
     waitpid(pid,&status,WUNTRACED);
     explain_wait_status(pid,status);
