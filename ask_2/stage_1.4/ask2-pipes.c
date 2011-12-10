@@ -1,0 +1,185 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#include "proc-common.h"
+#include "tree.h"
+
+#define SLEEP_PROC_SEC  10
+#define SLEEP_TREE_SEC  3
+
+/*
+ * Create this process tree:
+ * A-+-B---D
+ *   `-C
+ */
+void fork_procs(struct tree_node *me,int ffd)
+{
+    /*
+     * initial process is A.
+     */
+    int i;
+    int status;
+    pid_t pid;
+    pid_t children_pids[2];
+    int pipes[4];
+    int father=-1;
+    int is_father=0;
+    int answers[2];
+    int result;
+    int iocheck;
+    father=ffd;
+    change_pname(me->name);
+    /* loop to fork for all my children */
+    if(me->nr_children>0)
+    {
+        //i am a father
+        is_father = 1;
+        if(pipe(pipes) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+        if(pipe(pipes+2) == -1)
+        {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    } 
+    else
+    {
+        //no i am only a child
+        is_father = 0;
+    }
+
+
+    //{{{ Fork all children recursively
+    for (i=0;i<me->nr_children;i++)
+    {
+        pid = fork();
+        if (pid < 0)
+        {
+            perror("fork_procs: fork");
+            exit(1);
+        }
+        else if (pid == 0) 
+        {
+            /* Child */
+            //close(pipes[2*i]); //child closes read
+            father=pipes[2*i+1];
+            me = me->children+i;
+            fork_procs(me,father);
+            exit(1);
+        }
+        else
+        {
+            //close(pipes[2*i+1]); //father closes write
+            children_pids[i]=pid;
+        }
+    }
+    //}}}
+
+    //{{{ Read from both children descriptors
+    for (i=0;i<(me->nr_children);i++)
+    {
+        pid = *(children_pids+i);
+        //here is a bug \./
+        iocheck = read(pipes[2*i],answers+i,sizeof(int));
+        if(iocheck==-1)
+        {
+            perror("read error");
+            exit(1);
+        }
+        printf("%s: i read %d\n",me->name,answers[i]);
+    }
+    //}}}
+
+   //{{{ 
+    for (i=0;i<(me->nr_children);i++)
+    {
+        pid = wait(&status);
+        explain_wait_status(pid,status);
+    }
+    //}}}
+
+    switch(*(me->name))
+    {
+        case '+':
+            result=answers[0]+answers[1];
+            break;
+        case '*':
+            result=answers[0]*answers[1];
+            break;
+        default:
+            sscanf(me->name,"%d",&result);
+            break;
+    }
+    printf("%s said %d\n",me->name,result);
+    iocheck = write(father,&result,sizeof(int));
+    if (iocheck ==-1)
+    {
+        perror("write error");
+        exit(1);
+    }
+    
+    printf("%s: Exiting...\n",me->name);
+    exit(0);
+}
+
+/*
+ * The initial process forks the root of the process tree,
+ * waits for the process tree to be completely created,
+ * then takes a photo of it using show_pstree().
+ *
+ * How to wait for the process tree to be ready?
+ * In ask2-{fork, tree}:
+ *      wait for a few seconds, hope for the best.
+ * In ask2-signals:
+ *      use wait_for_ready_children() to wait until
+ *      the first process raises SIGSTOP.
+ */
+int main(int argc,char **argv)
+{
+    if(argc!=2)
+    {
+        printf("Usage:%s <input.tree> \n",argv[0]);
+        exit(1);
+    }
+    pid_t pid;
+    int status;
+    struct tree_node * root = get_tree_from_file(argv[1]);
+
+    /* Fork root of process tree */
+    pid = fork();
+    if (pid < 0) 
+    {
+        perror("main: fork");
+        exit(1);
+    }
+    if (pid == 0)
+    {
+        /* Child */
+        fork_procs(root,1);
+        exit(1);
+    }
+
+    /*
+     * Father
+     */
+    /* for ask2-signals */
+    /* wait_for_ready_children(1); */
+
+    /* for ask2-{fork, tree} */
+    waitpid(pid,&status,WUNTRACED);
+    explain_wait_status(pid,status);
+
+    /* Print the process tree root at pid */
+
+    /* for ask2-signals */
+    /* kill(pid, SIGCONT); */
+
+    return 0;
+}

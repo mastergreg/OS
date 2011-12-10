@@ -1,0 +1,62 @@
+\documentclass[a4paper,10pt]{article} \usepackage{anysize}
+\marginsize{2cm}{2cm}{1cm}{1cm}
+%\textwidth 6.0in \textheight = 664pt
+\usepackage{xltxtra}
+\usepackage{xunicode} \usepackage{graphicx}
+\usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
+\usepackage{float} \setmainfont[Mapping=TeX-text]{CMU Serif}
+\begin{document}
+
+\include{title/title}
+
+\section*{} \setcounter{section}{1}
+\subsection{Δημιουργία δεδομένου δέντρου διεργασιών} Ο πηγαίος κώδικας της main.c που
+κληθήκαμε να γράψουμε ήταν ο εξής:
+
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-fork.c}
+\emph{Ερωτήσεις}
+\begin{enumerate}
+\item Αν η διεργασία A τερματίσει πρόωρα τα παιδιά της (B,C) θα συνεχίσουν να
+εκτελούνται και υιοθετούνται από την INIT. Όταν αυτά τερματίσουν η INIT θα
+κάνει wait και θα φύγουν από τη μνήμη.
+\item Φαίνεται μία ακόμη διεργασία. Αυτή είναι η διεργασία που ξεκίνησε τα
+forks δημιουργώντας την A.
+\item Σε διαφορετική περίπτωση ένας χρήστης θα μπορούσε να εκτελέσει
+απεριόριστα διεργασίες. Κάτι τέτοιο δεν επιτρέπεται μιας και η ανεξέλεγκτη
+κατανάλωση πόρων συστήματος μπορεί να καταστήσει το σύστημά μας μη
+λειτουργικό, κάτι που ο διαχειριστής πρέπει να αποφύγει.
+\end{enumerate}
+
+
+\subsection{Δημιουργία αυθαίρετου δέντρου διεργασιών} Ο πηγαίος κώδικας της main.c που
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-tree.c}
+\emph{Ερωτήσεις}
+\begin{enumerate}
+\item Οι διεργασίες γεννιούνται κατά επίπεδο. Παρόλα αυτά, δεν είναι
+εξασφαλισμένη η σειρά που θα εκτελεστούν οι διεργασίες. Έχει να κάνει με τη
+χρονοδρομολόγηση (δηλαδή το D του προηγούμενου ερωτήματος θα μπορούσε να
+εκτελεστεί πριν από το C αν η χρονοδρομολόγηση το ευνοούσε. 
+Ωστόσο το κβάντο χρόνου είναι τέτοιο η εμφάνιση των
+μηνυμάτων δημιουργίας μοιάζει σχεδόν σειριακή.
+\end{enumerate}
+
+
+\subsection{Αποστολή και χειρισμός σημάτων}
+
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-signals.c}
+\emph{Ερωτήσεις}
+\begin{enumerate}
+\item Είναι σαφώς καύτερη και πιο αξιόπιστη καθώς δεν στηρίζεται στη
+χρονοδρομολόγηση των διεργασιών.
+\item Προτού στείλουμε σήματα στα παιδιά πρέπει να έχουμε βεβαιωθεί πως αυτά
+είναι σε ready state ώστε να δεχτούν σήμα. Αν το κάνουμε νωρίτερα αυτό θα
+αγνοηθεί. Συνεπώς περιμένουμε μέχρι όλα τα παιδιά να κάνουν raise(SIGSTOP)
+ώστε να δεχτούν το SIGCONT.
+\end{enumerate}
+
+\subsection{Παράλληλος υπολογισμός αριθμητικής έφρασης}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-pipes.c}
+\end{document}
