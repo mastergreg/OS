@@ -44,7 +44,7 @@ void fork_procs(struct tree_node *me,int ffd)
             perror("pipe");
             exit(EXIT_FAILURE);
         }
-    } 
+    }
 
 
     //{{{ Fork all children recursively
@@ -56,7 +56,7 @@ void fork_procs(struct tree_node *me,int ffd)
             perror("fork_procs: fork");
             exit(1);
         }
-        else if (pid == 0) 
+        else if (pid == 0)
         {
             /* Child */
             close(pipes[2*i]); //child closes read
@@ -77,24 +77,25 @@ void fork_procs(struct tree_node *me,int ffd)
     {
         pid = *(children_pids+i);
         //here is a bug \./
+        //it's squashed now _._
         iocheck = read(pipes[2*i],answers+i,sizeof(int));
         if(iocheck==-1)
         {
             perror("read error");
             exit(1);
         }
-        printf("%s: i read %d\n",me->name,answers[i]);
+        printf("%s: \t I read %d\n",me->name,answers[i]);
     }
     //}}}
 
-   //{{{ 
+    // Waiting
     for (i=0;i<(me->nr_children);i++)
     {
         pid = wait(&status);
         explain_wait_status(pid,status);
     }
-    //}}}
 
+    // Generating result
     switch(*(me->name))
     {
         case '+':
@@ -114,7 +115,7 @@ void fork_procs(struct tree_node *me,int ffd)
         perror("write error");
         exit(1);
     }
-    
+
     printf("%s: Exiting...\n",me->name);
     exit(0);
 }
@@ -140,11 +141,24 @@ int main(int argc,char **argv)
     }
     pid_t pid;
     int status;
+    int initpipe[2];
+    int final_answer;
+    int iocheck;
+    if(pipe(initpipe) == -1)
+    {
+        perror("main:pipe");
+        exit(EXIT_FAILURE);
+    }
+
     struct tree_node * root = get_tree_from_file(argv[1]);
+    printf("\n Expression tree to calculate: \n");
+    printf("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n");
+    print_tree(root);
+    printf("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n\n");
 
     /* Fork root of process tree */
     pid = fork();
-    if (pid < 0) 
+    if (pid < 0)
     {
         perror("main: fork");
         exit(1);
@@ -152,24 +166,25 @@ int main(int argc,char **argv)
     if (pid == 0)
     {
         /* Child */
-        fork_procs(root,1);
+        close(initpipe[0]);
+        fork_procs(root,initpipe[1]);
         exit(1);
     }
 
     /*
      * Father
      */
-    /* for ask2-signals */
-    /* wait_for_ready_children(1); */
+    close(initpipe[1]);
+    iocheck = read(initpipe[0],&final_answer,sizeof(int));
+    if(iocheck==-1)
+    {
+        perror("main:read");
+        exit(EXIT_FAILURE);
+    }
 
-    /* for ask2-{fork, tree} */
     waitpid(pid,&status,WUNTRACED);
     explain_wait_status(pid,status);
 
-    /* Print the process tree root at pid */
-
-    /* for ask2-signals */
-    /* kill(pid, SIGCONT); */
-
+    printf("\033[1;31mThe answer is %d\033[0m\n",final_answer);
     return 0;
 }
