@@ -181,11 +181,10 @@ int main(int argc,char **argv)
         perror("main:read");
         exit(EXIT_FAILURE);
     }
-    printf("\033[1;31mThe answer is %d\033[0m\n",final_answer);
-
 
     waitpid(pid,&status,WUNTRACED);
     explain_wait_status(pid,status);
 
+    printf("\033[1;31mThe answer is %d\033[0m\n",final_answer);
     return 0;
 }
