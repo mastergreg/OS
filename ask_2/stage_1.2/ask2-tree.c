@@ -42,8 +42,11 @@ void fork_procs(struct tree_node *me)
             exit(1);
         }
     }
-    printf("%s: Sleeping...\n",me->name);
-    sleep(SLEEP_PROC_SEC);
+    if (me->nr_children==0)
+    {
+        printf("%s: Sleeping...\n",me->name);
+        sleep(SLEEP_PROC_SEC);
+    }
 
     /* ... */
     for(i=0;i<me->nr_children;i++)
