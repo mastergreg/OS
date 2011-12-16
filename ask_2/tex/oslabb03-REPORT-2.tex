@@ -13,10 +13,11 @@
 \include{title/title}
 
 \section*{} \setcounter{section}{1}
-\subsection{Δημιουργία δεδομένου δέντρου διεργασιών} Ο πηγαίος κώδικας της main.c που
-κληθήκαμε να γράψουμε ήταν ο εξής:
+\subsection{Δημιουργία δεδομένου δέντρου διεργασιών} Ο πηγαίος κώδικας της που
+γράψαμε είναι ο παρακάτω:
 
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-fork.c}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-fork.out}
 \emph{Ερωτήσεις}
 \begin{enumerate}
 \item Αν η διεργασία A τερματίσει πρόωρα τα παιδιά της (B,C) θα συνεχίσουν να
@@ -31,8 +32,9 @@ forks δημιουργώντας την A.
 \end{enumerate}
 
 
-\subsection{Δημιουργία αυθαίρετου δέντρου διεργασιών} Ο πηγαίος κώδικας της main.c που
+\subsection{Δημιουργία αυθαίρετου δέντρου διεργασιών} Ο πηγαίος κώδικας:
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-tree.c}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-tree.out}
 \emph{Ερωτήσεις}
 \begin{enumerate}
 \item Οι διεργασίες γεννιούνται κατά επίπεδο. Παρόλα αυτά, δεν είναι
@@ -47,6 +49,7 @@ forks δημιουργώντας την A.
 \subsection{Αποστολή και χειρισμός σημάτων}
 
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-signals.c}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-signals.out}
 \emph{Ερωτήσεις}
 \begin{enumerate}
 \item Είναι σαφώς καύτερη και πιο αξιόπιστη καθώς δεν στηρίζεται στη
@@ -59,4 +62,26 @@ forks δημιουργώντας την A.
 
 \subsection{Παράλληλος υπολογισμός αριθμητικής έφρασης}
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-pipes.c}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-pipes.out}
+\emph{Ερωτήσεις}
+\begin{enumerate}
+\item Κάθε διεργασία χρειάζεται, ένα pipe σε περίπτωση που είναι φύλλο (εκείνο
+δηλαδή που θα χρειαστεί για να γράψει στον πατέρα του), ενώ χρειάζεται τρία
+στη γενική περίπτωση που είναι κόμβος του δέντρου
+(ένα για τον πατέρα του και ένα για κάθε παιδί). Μπορούμε ωστόσο να
+χρησιμοποιήσουμε ένα pipe λιγότερο, χρησιμοποιώντας το ίδιο pipe και για τα
+δύο παιδιά. Αυτό συμβαίνει διότι στην πράξη του πολλαπλασιασμού και της πρόσθεσης
+ισχύει η αντιμεταθετική ιδιότητα. Χρησιμοποιώντας ένα μόνο pipe και για τα
+δύο παιδιά, δεν έχω τη δυνατότητα να διακρίνω ποιο παιδί έγραψε τι μέσα στο
+pipe. Συνεπώς αν θέλαμε να υποστηρίζουμε και αφαίρεση για παράδειγμα στο δέντρο μας τότε θα
+έπρεπε να χρησιμοποιήσουμε ξεχωριστά pipes για να μπορούμε να ξεχωρίσουμε τις
+μεταβλητές μας. Επίσης σημαντικός περιορισμός είναι το πλήθος των bytes που
+γράφουμε μέσα στο pipe. Δε θα μπορούσαμε να χρησιμοποιήσουμε ένα pipe για να
+μεταφέρουμε περισσότερα από 512 bytes, καθώς και πάλι δε θα μπορούσαμε με
+βεβαιότητα να διακρίνουμε ποιος έγραψε κάθε 512-δα μέσα στο pipe.
+\item Σε ένα σύστημα πολλών επεξεργαστών, σε περίπτωση που ζητήσουμε από μία
+μόνο διεργασία να υπολογίσει το δέντρο των μαθηματικών εκφράσεων δεν
+εκμεταλλευόμαστε το hardware. Η παράλληλη επεξεργασία θα μας δώσει ταχύτερη
+εκτέλεση καθώς κάθε πράξη μπορεί να γίνει ανεξάρτητα απο όλες τις υπόλοιπες.
+\end{enumerate}
 \end{document}
