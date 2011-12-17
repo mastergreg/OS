@@ -3,9 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <string.h>
-#ifdef linux
 #include <sys/prctl.h>
-#endif
 #include <sys/wait.h>
 
 #include "tree.h"
