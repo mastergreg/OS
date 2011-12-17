@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean mac unmac
 
 all: ask2-signals
 
@@ -15,5 +15,13 @@ ask2-signals: ask2-signals.o proc-common.o tree.o
 .PHONY:
 	clean
 
-clean: 
+clean:
 	rm -f *.o ask2-signals{,.o} proc-common.o
+
+mac:
+	patch proc-common.c ../mac-port/proc-common-mac.patch
+	patch tree.c ../mac-port/tree-mac.patch
+
+unmac:
+	patch -R proc-common.c ../mac-port/proc-common-mac.patch
+	patch -R tree.c ../mac-port/tree-mac.patch
