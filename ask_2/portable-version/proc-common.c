@@ -22,7 +22,9 @@ change_pname(const char *new_name)
 void
 change_pname(const char *new_name)
 {
-    setproctitle("%s",new_name);
+    free(argv[0]);
+    argv[0]=(char *) malloc(strlen(new_name)*sizeof(char));
+    sprintf(argv[0],"%s",new_name);
 }
 #endif
 
