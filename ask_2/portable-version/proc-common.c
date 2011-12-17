@@ -20,7 +20,7 @@ change_pname(const char *new_name)
 }
 #else   //assuming BSD
 void
-change_pname(const char *new_name,char *argv[0])
+change_pname(const char *new_name,char **argv)
 {
     free(argv[0]);
     argv[0]=(char *) malloc(strlen(new_name)*sizeof(char));
