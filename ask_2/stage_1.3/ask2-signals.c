@@ -4,6 +4,9 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#ifndef linux
+#include <signal.h>
+#endif
 
 #include "proc-common.h"
 #include "tree.h"

@@ -32,9 +32,7 @@ change_pname(const char *new_name)
 {
     //free(proc_name);
     //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
-    unsigned int length = strlen(proc_name)
-    memset(proc_name, '\0', length);
-    sprintf(proc_name,"%s",new_name);
+    setproctitle("%s",new_name);
 }
 #endif
 
