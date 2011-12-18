@@ -1,51 +1,73 @@
-6d5
-< #include <sys/prctl.h>
-9a9,39
-> #ifdef linux
-> #include <sys/prctl.h>
-> void
-> change_pname(const char *new_name)
-> {
-> 	int ret;
-> 	ret = prctl(PR_SET_NAME, new_name);
-> 	if (ret == -1){
-> 		perror("prctl set_name");
-> 		exit(1);
-> 	}
-> }
-> void set_proc_name(char *pn)
-> {
-> }
-> #else   //assuming BSD
-> static char *proc_name;
-> void set_proc_name(char *pn)
-> {
->     proc_name=pn;
-> }
-> void
-> change_pname(const char *new_name)
-> {
->     //free(proc_name);
->     //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
->     unsigned int length = strlen(proc_name)
->     memset(proc_name, '\0', length);
->     sprintf(proc_name,"%s",new_name);
-> }
-> #endif
-23,32d52
-< void
-< change_pname(const char *new_name)
-< {
-< 	int ret;
-< 	ret = prctl(PR_SET_NAME, new_name);
-< 	if (ret == -1){
-< 		perror("prctl set_name");
-< 		exit(1);
-< 	}
-< }
-101a122
-> #ifdef linux
-102a124,126
-> #else //assuming bsd
-> 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
-> #endif
+--- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
++++ proc-common.c	2011-12-18 16:31:07.282841580 +0200
+@@ -3,10 +3,40 @@
+ #include <unistd.h>
+ #include <assert.h>
+ #include <string.h>
+-#include <sys/prctl.h>
+ #include <sys/wait.h>
+ 
+ #include "proc-common.h"
++#ifdef linux
++#include <sys/prctl.h>
++void
++change_pname(const char *new_name)
++{
++	int ret;
++	ret = prctl(PR_SET_NAME, new_name);
++	if (ret == -1){
++		perror("prctl set_name");
++		exit(1);
++	}
++}
++void set_proc_name(char *pn)
++{
++}
++#else   //assuming BSD
++static char *proc_name;
++void set_proc_name(char *pn)
++{
++    proc_name=pn;
++}
++void
++change_pname(const char *new_name)
++{
++    //free(proc_name);
++    //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
++    unsigned int length = strlen(proc_name)
++    memset(proc_name, '\0', length);
++    sprintf(proc_name,"%s",new_name);
++}
++#endif
+ 
+ void
+ wait_forever(void)
+@@ -20,16 +50,6 @@
+  * Changes the process name, as appears in ps or pstree,
+  * using a Linux-specific system call.
+  */
+-void
+-change_pname(const char *new_name)
+-{
+-	int ret;
+-	ret = prctl(PR_SET_NAME, new_name);
+-	if (ret == -1){
+-		perror("prctl set_name");
+-		exit(1);
+-	}
+-}
+ 
+ /*
+  * This function receives an integer status value,
+@@ -99,7 +119,11 @@
+ 	int ret;
+ 	char cmd[1024];
+ 
++#ifdef linux
+ 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -G -c -p %ld; echo; echo",
++#else //assuming bsd
++	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
++#endif
+ 		(long)p);
+ 	cmd[sizeof(cmd)-1] = '\0';
+ 	ret = system(cmd);
