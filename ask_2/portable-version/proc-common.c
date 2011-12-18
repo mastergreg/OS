@@ -19,12 +19,17 @@ change_pname(const char *new_name)
 	}
 }
 #else   //assuming BSD
-void
-change_pname(const char *new_name,char **argv)
+static char *proc_name;
+void set_proc_name(char *pn)
 {
-    free(argv[0]);
-    argv[0]=(char *) malloc(strlen(new_name)*sizeof(char));
-    sprintf(argv[0],"%s",new_name);
+    proc_name=pn;
+}
+void
+change_pname(const char *new_name)
+{
+    free(proc_name);
+    proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
+    sprintf(proc_name,"%s",new_name);
 }
 #endif
 
