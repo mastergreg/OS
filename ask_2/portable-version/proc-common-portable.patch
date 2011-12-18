@@ -1,6 +1,6 @@
 6d5
 < #include <sys/prctl.h>
-9a9,27
+9a9,34
 > #ifdef linux
 > #include <sys/prctl.h>
 > void
@@ -14,13 +14,20 @@
 > 	}
 > }
 > #else   //assuming BSD
+> static char *proc_name;
+> void set_proc_name(char *pn)
+> {
+>     proc_name=pn;
+> }
 > void
 > change_pname(const char *new_name)
 > {
->     setproctitle("%s",new_name);
+>     free(proc_name);
+>     proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
+>     sprintf(proc_name,"%s",new_name);
 > }
 > #endif
-23,32d40
+23,32d47
 < void
 < change_pname(const char *new_name)
 < {
@@ -31,9 +38,9 @@
 < 		exit(1);
 < 	}
 < }
-101a110
+101a117
 > #ifdef linux
-102a112,114
+102a119,121
 > #else //assuming bsd
 > 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
 > #endif
