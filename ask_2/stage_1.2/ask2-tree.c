@@ -82,6 +82,7 @@ int main(int argc,char **argv)
     int status=0;
     struct tree_node * root = get_tree_from_file(argv[1]);
 
+    set_proc_name(argv[0]);
     /* Fork root of process tree */
     pid = fork();
     if (pid < 0) {
