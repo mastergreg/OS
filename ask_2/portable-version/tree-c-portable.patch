@@ -1,0 +1,4 @@
+5a6
+> #ifdef linux
+6a8
+> #endif

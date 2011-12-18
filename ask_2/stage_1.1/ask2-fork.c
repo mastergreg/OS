@@ -91,6 +91,8 @@ int main(void)
     int status;
     struct tree_node * root = get_tree_from_file("init.tree");
 
+    set_proc_name(argv[0]);
+
     /* Fork root of process tree */
     pid = fork();
     if (pid < 0) {

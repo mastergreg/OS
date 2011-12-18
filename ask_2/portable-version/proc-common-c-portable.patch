@@ -1,0 +1,50 @@
+6d5
+< #include <sys/prctl.h>
+9a9,38
+> #ifdef linux
+> #include <sys/prctl.h>
+> void
+> change_pname(const char *new_name)
+> {
+> 	int ret;
+> 	ret = prctl(PR_SET_NAME, new_name);
+> 	if (ret == -1){
+> 		perror("prctl set_name");
+> 		exit(1);
+> 	}
+> }
+> void set_proc_name(char *pn)
+> {
+> }
+> #else   //assuming BSD
+> static char *proc_name;
+> void set_proc_name(char *pn)
+> {
+>     proc_name=pn;
+> }
+> void
+> change_pname(const char *new_name)
+> {
+>     //free(proc_name);
+>     //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
+>     memset(proc_name, '\0', strlen(proc_name));
+>     sprintf(proc_name,"%s",new_name);
+> }
+> #endif
+23,32d51
+< void
+< change_pname(const char *new_name)
+< {
+< 	int ret;
+< 	ret = prctl(PR_SET_NAME, new_name);
+< 	if (ret == -1){
+< 		perror("prctl set_name");
+< 		exit(1);
+< 	}
+< }
+101a121
+> #ifdef linux
+102a123,125
+> #else //assuming bsd
+> 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
+> #endif

@@ -18,6 +18,9 @@ change_pname(const char *new_name)
 		exit(1);
 	}
 }
+void set_proc_name(char *pn)
+{
+}
 #else   //assuming BSD
 static char *proc_name;
 void set_proc_name(char *pn)
