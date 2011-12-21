@@ -29,6 +29,7 @@ change_pname(const char *new_name)
     
 }
 #elif __APPLE__
+extern char ***_NSGetArgv();
 void
 change_pname(const char *new_name)
 {

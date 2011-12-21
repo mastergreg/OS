@@ -1,6 +1,6 @@
 --- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
-+++ proc-common.c	2011-12-22 00:13:47.300391757 +0200
-@@ -3,10 +3,49 @@
++++ proc-common.c	2011-12-22 00:18:39.856734300 +0200
+@@ -3,10 +3,50 @@
  #include <unistd.h>
  #include <assert.h>
  #include <string.h>
@@ -31,6 +31,7 @@
 +    
 +}
 +#elif __APPLE__
++extern char ***_NSGetArgv();
 +void
 +change_pname(const char *new_name)
 +{
@@ -51,7 +52,7 @@
  
  void
  wait_forever(void)
-@@ -20,16 +59,6 @@
+@@ -20,16 +60,6 @@
   * Changes the process name, as appears in ps or pstree,
   * using a Linux-specific system call.
   */
@@ -68,7 +69,7 @@
  
  /*
   * This function receives an integer status value,
-@@ -99,7 +128,11 @@
+@@ -99,7 +129,11 @@
  	int ret;
  	char cmd[1024];
  
