@@ -1,5 +1,5 @@
---- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
-+++ proc-common.c	2011-12-21 20:41:05.544935655 +0200
+--- ../forktree/proc-common.c	2011-12-18 16:55:57.000000000 +0000
++++ proc-common.c	2011-12-21 18:47:40.000000000 +0000
 @@ -3,10 +3,42 @@
  #include <unistd.h>
  #include <assert.h>
@@ -23,7 +23,7 @@
 +		exit(1);
 +	}
 +}
-+#elif __bsdi__   //assuming BSD
++#elif __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __bsdi__ || __DragonFly__   //assuming BSD
 +void
 +change_pname(const char *new_name)
 +{
@@ -65,9 +65,9 @@
  	int ret;
  	char cmd[1024];
  
-+#ifdef linux
++#ifdef __linux__
  	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -G -c -p %ld; echo; echo",
-+#else //assuming bsd
++#elif __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __bsdi__ || __DragonFly__  || __APPLE__ //assuming BSD or macosx
 +	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
 +#endif
  		(long)p);

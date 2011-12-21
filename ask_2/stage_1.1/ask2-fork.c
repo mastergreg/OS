@@ -85,13 +85,12 @@ void fork_procs(struct tree_node *me)
  *      use wait_for_ready_children() to wait until
  *      the first process raises SIGSTOP.
  */
-int main(void)
+int main(int argc,char **argv)
 {
     pid_t pid;
     int status;
     struct tree_node * root = get_tree_from_file("init.tree");
 
-    set_proc_name(argv[0]);
 
     /* Fork root of process tree */
     pid = fork();
