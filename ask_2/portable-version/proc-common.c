@@ -21,7 +21,7 @@ change_pname(const char *new_name)
 		exit(1);
 	}
 }
-#elif __bsdi__   //assuming BSD
+#elif __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __bsdi__ || __DragonFly__   //assuming BSD
 void
 change_pname(const char *new_name)
 {
@@ -121,9 +121,9 @@ show_pstree(pid_t p)
 	int ret;
 	char cmd[1024];
 
-#ifdef linux
+#ifdef __linux__
 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -G -c -p %ld; echo; echo",
-#else //assuming bsd
+#elif __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __bsdi__ || __DragonFly__  || __APPLE__ //assuming BSD or macosx
 	snprintf(cmd, sizeof(cmd), "echo; echo; pstree -g -c -p %ld; echo; echo",
 #endif
 		(long)p);
