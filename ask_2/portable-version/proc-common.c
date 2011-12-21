@@ -37,6 +37,11 @@ change_pname(const char *new_name)
     //memset(proc_name,'\0',old_len);
     //snprintf(proc_name,old_len,"%s",new_name);
     //proc_name[old_len]='\0';
+    char * proc_name = (char *)getprogname();
+    unsigned int old_len=strlen(proc_name);
+    memset(proc_name,'\0',old_len);
+    snprintf(proc_name,old_len,"%s",new_name);
+    proc_name[old_len]='\0';
 }
 #endif
 

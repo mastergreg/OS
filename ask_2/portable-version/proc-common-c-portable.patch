@@ -1,6 +1,6 @@
 --- ../forktree/proc-common.c	2011-12-18 16:55:57.000000000 +0000
-+++ proc-common.c	2011-12-21 18:47:40.000000000 +0000
-@@ -3,10 +3,42 @@
++++ proc-common.c	2011-12-21 19:06:52.000000000 +0000
+@@ -3,10 +3,47 @@
  #include <unistd.h>
  #include <assert.h>
  #include <string.h>
@@ -39,12 +39,17 @@
 +    //memset(proc_name,'\0',old_len);
 +    //snprintf(proc_name,old_len,"%s",new_name);
 +    //proc_name[old_len]='\0';
++    char * proc_name = (char *)getprogname();
++    unsigned int old_len=strlen(proc_name);
++    memset(proc_name,'\0',old_len);
++    snprintf(proc_name,old_len,"%s",new_name);
++    proc_name[old_len]='\0';
 +}
 +#endif
  
  void
  wait_forever(void)
-@@ -20,16 +52,6 @@
+@@ -20,16 +57,6 @@
   * Changes the process name, as appears in ps or pstree,
   * using a Linux-specific system call.
   */
@@ -61,7 +66,7 @@
  
  /*
   * This function receives an integer status value,
-@@ -99,7 +121,11 @@
+@@ -99,7 +126,11 @@
  	int ret;
  	char cmd[1024];
  
