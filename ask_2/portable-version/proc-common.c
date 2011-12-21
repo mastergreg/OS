@@ -37,11 +37,13 @@ change_pname(const char *new_name)
     //memset(proc_name,'\0',old_len);
     //snprintf(proc_name,old_len,"%s",new_name);
     //proc_name[old_len]='\0';
-    char * proc_name = (char *)getprogname();
-    unsigned int old_len=strlen(proc_name);
-    memset(proc_name,'\0',old_len);
-    snprintf(proc_name,old_len,"%s",new_name);
-    proc_name[old_len]='\0';
+    //http://unixjunkie.blogspot.com/2006/07/access-argc-and-argv-from-anywhere.html
+    //uses this _NSGetArgv :S test it billy!
+    char **argv = *_NSGetArgv();
+    unsigned int old_len=strlen(argv[0]);
+    memset(argv[0],'\0',old_len);
+    snprintf(argv[0],old_len,"%s",new_name);
+    argv[0][old_len]='\0';
 }
 #endif
 

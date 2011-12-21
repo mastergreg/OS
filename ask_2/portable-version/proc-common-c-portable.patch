@@ -1,6 +1,6 @@
---- ../forktree/proc-common.c	2011-12-18 16:55:57.000000000 +0000
-+++ proc-common.c	2011-12-21 19:06:52.000000000 +0000
-@@ -3,10 +3,47 @@
+--- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
++++ proc-common.c	2011-12-22 00:13:47.300391757 +0200
+@@ -3,10 +3,49 @@
  #include <unistd.h>
  #include <assert.h>
  #include <string.h>
@@ -39,17 +39,19 @@
 +    //memset(proc_name,'\0',old_len);
 +    //snprintf(proc_name,old_len,"%s",new_name);
 +    //proc_name[old_len]='\0';
-+    char * proc_name = (char *)getprogname();
-+    unsigned int old_len=strlen(proc_name);
-+    memset(proc_name,'\0',old_len);
-+    snprintf(proc_name,old_len,"%s",new_name);
-+    proc_name[old_len]='\0';
++    //http://unixjunkie.blogspot.com/2006/07/access-argc-and-argv-from-anywhere.html
++    //uses this _NSGetArgv :S test it billy!
++    char **argv = *_NSGetArgv();
++    unsigned int old_len=strlen(argv[0]);
++    memset(argv[0],'\0',old_len);
++    snprintf(argv[0],old_len,"%s",new_name);
++    argv[0][old_len]='\0';
 +}
 +#endif
  
  void
  wait_forever(void)
-@@ -20,16 +57,6 @@
+@@ -20,16 +59,6 @@
   * Changes the process name, as appears in ps or pstree,
   * using a Linux-specific system call.
   */
@@ -66,7 +68,7 @@
  
  /*
   * This function receives an integer status value,
-@@ -99,7 +126,11 @@
+@@ -99,7 +128,11 @@
  	int ret;
  	char cmd[1024];
  
