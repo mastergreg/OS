@@ -24,7 +24,6 @@ void wait_for_ready_children(int cnt);
 
 /* Change the name of the process. */
 void change_pname(const char *new_name);
-void set_proc_name(char * pn);
 
 /* Print the process tree rooted at process with PID p. */
 void show_pstree(pid_t p);

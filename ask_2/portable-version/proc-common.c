@@ -6,7 +6,10 @@
 #include <sys/wait.h>
 
 #include "proc-common.h"
-#ifdef linux
+//Using Operating Systems Predefined Macros
+//as defined in [1]
+//[1] http://sourceforge.net/apps/mediawiki/predef/index.php?title=Operating_Systems
+#ifdef __linux__
 #include <sys/prctl.h>
 void
 change_pname(const char *new_name)
@@ -18,26 +21,22 @@ change_pname(const char *new_name)
 		exit(1);
 	}
 }
-void set_proc_name(char *pn)
-{
-}
-#else   //assuming BSD
-static char *proc_name;
-void set_proc_name(char *pn)
-{
-    proc_name=pn;
-}
+#elif __bsdi__   //assuming BSD
 void
 change_pname(const char *new_name)
 {
-    //free(proc_name);
-    //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
-    //setproctitle("%s",new_name);
-    unsigned int old_len=strlen(proc_name);
-    memset(proc_name,'\0',old_len);
-    snprintf(proc_name,old_len,"%s",new_name);
-    proc_name[old_len]='\0';
+    setproctitle("%s",new_name);
     
+}
+#elif __APPLE__
+void
+change_pname(const char *new_name)
+{
+    //nothing here yet
+    //unsigned int old_len=strlen(proc_name);
+    //memset(proc_name,'\0',old_len);
+    //snprintf(proc_name,old_len,"%s",new_name);
+    //proc_name[old_len]='\0';
 }
 #endif
 

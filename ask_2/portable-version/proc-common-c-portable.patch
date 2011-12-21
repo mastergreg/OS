@@ -1,6 +1,6 @@
 --- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
-+++ proc-common.c	2011-12-18 16:31:07.282841580 +0200
-@@ -3,10 +3,40 @@
++++ proc-common.c	2011-12-21 20:41:05.544935655 +0200
+@@ -3,10 +3,42 @@
  #include <unistd.h>
  #include <assert.h>
  #include <string.h>
@@ -8,7 +8,10 @@
  #include <sys/wait.h>
  
  #include "proc-common.h"
-+#ifdef linux
++//Using Operating Systems Predefined Macros
++//as defined in [1]
++//[1] http://sourceforge.net/apps/mediawiki/predef/index.php?title=Operating_Systems
++#ifdef __linux__
 +#include <sys/prctl.h>
 +void
 +change_pname(const char *new_name)
@@ -20,29 +23,28 @@
 +		exit(1);
 +	}
 +}
-+void set_proc_name(char *pn)
-+{
-+}
-+#else   //assuming BSD
-+static char *proc_name;
-+void set_proc_name(char *pn)
-+{
-+    proc_name=pn;
-+}
++#elif __bsdi__   //assuming BSD
 +void
 +change_pname(const char *new_name)
 +{
-+    //free(proc_name);
-+    //proc_name=(char *) malloc(strlen(new_name)*sizeof(char));
-+    unsigned int length = strlen(proc_name)
-+    memset(proc_name, '\0', length);
-+    sprintf(proc_name,"%s",new_name);
++    setproctitle("%s",new_name);
++    
++}
++#elif __APPLE__
++void
++change_pname(const char *new_name)
++{
++    //nothing here yet
++    //unsigned int old_len=strlen(proc_name);
++    //memset(proc_name,'\0',old_len);
++    //snprintf(proc_name,old_len,"%s",new_name);
++    //proc_name[old_len]='\0';
 +}
 +#endif
  
  void
  wait_forever(void)
-@@ -20,16 +50,6 @@
+@@ -20,16 +52,6 @@
   * Changes the process name, as appears in ps or pstree,
   * using a Linux-specific system call.
   */
@@ -59,7 +61,7 @@
  
  /*
   * This function receives an integer status value,
-@@ -99,7 +119,11 @@
+@@ -99,7 +121,11 @@
  	int ret;
  	char cmd[1024];
  
