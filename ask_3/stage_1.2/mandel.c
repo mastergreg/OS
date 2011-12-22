@@ -24,7 +24,7 @@
  * Output at the terminal is is x_chars wide by y_chars long
 */
 int y_chars = 50;
-int x_chars = 90;
+int x_chars = 160;
 
 /*
  * The part of the complex plane to be drawn:
@@ -32,7 +32,7 @@ int x_chars = 90;
 */
 double xmin = -1.8, xmax = 1.0;
 double ymin = -1.0, ymax = 1.0;
-	
+
 /*
  * Every character in the final output is
  * xstep x ystep units wide on the complex plane.
@@ -78,7 +78,7 @@ void compute_mandel_line(int line, int color_val[])
 void output_mandel_line(int fd, int color_val[])
 {
 	int i;
-	
+
 	char point ='@';
 	char newline='\n';
 

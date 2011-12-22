@@ -2,7 +2,11 @@
  * pipesem.c
  */
 
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <sys/types.h>
 
 /* The functions are intentionally left blank :-) */
 
@@ -10,20 +14,50 @@
 
 void pipesem_init(struct pipesem *sem, int val)
 {
-	assert( 0 && "I am empty! please fill me!");
+    if (pipe(&sem->rfd) == -1)
+    {
+        perror("pipe creation error");
+        exit(EXIT_FAILURE);
+    }
+    int token = 1;
+    int iocheck;
+    while (val > 0)
+    {
+        iocheck= write(sem->wfd, &token, sizeof(int));
+        if (iocheck == -1)
+        {
+            perror("write in pipe error");
+            exit(1);
+        }
+        val-- ;
+    }
 }
 
 void pipesem_wait(struct pipesem *sem)
 {
-	assert( 0 && "I am empty! please fill me!");
+    int iocheck;
+    int token = 0;
+    iocheck = read(sem->rfd, &token, sizeof(int));
+    if (iocheck == -1)
+    {
+        perror("read from pipe error");
+        exit(1);
+        if (iocheck == -1)
+        {
+            perror("write in pipe error");
+            exit(1);
+        }
+    }
 }
 
 void pipesem_signal(struct pipesem *sem)
 {
-	assert( 0 && "I am empty! please fill me!");
+    int iocheck,token;
+    iocheck = write(sem->wfd, &token, sizeof(int));
 }
 
 void pipesem_destroy(struct pipesem *sem)
 {
-	assert( 0 && "I am empty! please fill me!");
+    close(sem->wfd);
+    close(sem->rfd);
 }
