@@ -43,8 +43,9 @@ change_pname(const char *new_name)
     char **argv = *_NSGetArgv();
     unsigned int old_len=strlen(argv[0]);
     memset(argv[0],'\0',old_len);
-    sprintf(argv[0],"%s",new_name);
+    snprintf(argv[0],old_len+1,"%s ",new_name);
     argv[0][old_len]='\0';
+    printf("old len = %d\n", old_len);
 }
 #endif
 
