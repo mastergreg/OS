@@ -26,7 +26,7 @@ void
 change_pname(const char *new_name)
 {
     setproctitle("%s",new_name);
-    
+
 }
 #elif __APPLE__
 extern char ***_NSGetArgv();
@@ -43,7 +43,7 @@ change_pname(const char *new_name)
     char **argv = *_NSGetArgv();
     unsigned int old_len=strlen(argv[0]);
     memset(argv[0],'\0',old_len);
-    snprintf(argv[0],old_len,"%s",new_name);
+    sprintf(argv[0],"%s",new_name);
     argv[0][old_len]='\0';
 }
 #endif

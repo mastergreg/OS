@@ -1,5 +1,5 @@
---- ../forktree/proc-common.c	2011-12-15 11:50:05.284780817 +0200
-+++ proc-common.c	2011-12-22 00:18:39.856734300 +0200
+--- ../forktree/proc-common.c	2011-12-10 23:43:20.000000000 +0200
++++ proc-common.c	2011-12-22 10:54:52.000000000 +0200
 @@ -3,10 +3,50 @@
  #include <unistd.h>
  #include <assert.h>
@@ -28,7 +28,7 @@
 +change_pname(const char *new_name)
 +{
 +    setproctitle("%s",new_name);
-+    
++
 +}
 +#elif __APPLE__
 +extern char ***_NSGetArgv();
@@ -45,7 +45,7 @@
 +    char **argv = *_NSGetArgv();
 +    unsigned int old_len=strlen(argv[0]);
 +    memset(argv[0],'\0',old_len);
-+    snprintf(argv[0],old_len,"%s",new_name);
++    sprintf(argv[0],"%s",new_name);
 +    argv[0][old_len]='\0';
 +}
 +#endif
