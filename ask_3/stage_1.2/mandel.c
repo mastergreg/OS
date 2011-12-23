@@ -120,9 +120,13 @@ int main(void)
 	 * draw the Mandelbrot Set, one line at a time.
 	 * Output is sent to file descriptor '1', i.e., standard output.
 	 */
+    int color_val[x_chars];
 	for (line = 0; line < y_chars; line++) {
-		compute_and_output_mandel_line(1, line);
-	}
+        //this can be parallel
+        compute_mandel_line(line, color_val);
+        //this has to be serial
+        output_mandel_line(1, color_val);
+    }
 
 	reset_xterm_color(1);
 	return 0;
