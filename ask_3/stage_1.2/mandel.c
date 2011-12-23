@@ -19,7 +19,7 @@
 #include "pipesem.h"
 
 #define MANDEL_MAX_ITERATION 100000
-#define PROCS 2
+#define PROCS 20
 
 /***************************
  * Compile-time parameters *
@@ -131,17 +131,17 @@ void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
 
 int main(void)
 {
-	int line;
+	int i;
     pid_t p;
     int status;
-    struct pipesem sem0,sem1;
-    struct pipesem semC;
+    struct pipesem sem[PROCS];
+    //struct pipesem semC;
     //struct pipesem sem2,sem3;
-    pipesem_init(&sem0,0);
-    pipesem_init(&sem1,0);
+    //pipesem_init(&sem0,0);
+    //pipesem_init(&sem1,0);
     //pipesem_init(&sem2,0);
     //pipesem_init(&sem3,0);
-    pipesem_init(&semC,0);
+    //pipesem_init(&semC,0);
 
 	xstep = (xmax - xmin) / x_chars;
 	ystep = (ymax - ymin) / y_chars;
@@ -151,31 +151,29 @@ int main(void)
      * Output is sent to file descriptor '1', i.e., standard output.
      */
     /* Create a child */
-    p = fork();
-    if (p < 0) {
-        perror("parent: fork");
-        exit(1);
+    for(i=0;i<PROCS;i++)
+    {
+        pipesem_init(&sem[i],0);
     }
-    if (p == 0) {
-        printf("Child 0 is up\n");
-        child(0,&sem0,&sem1);
-        exit(1);
-    }
-    /* Create a child */
-    p = fork();
-    if (p < 0) {
-        perror("parent: fork");
-        exit(1);
-    }
-    if (p == 0) {
-        printf("Child 1 is up\n");
-        child(1,&sem1,&sem0);
-        exit(1);
+    for(i=0;i<PROCS;i++)
+    {
+        p = fork();
+        if (p < 0) {
+            perror("parent: fork");
+            exit(1);
+        }
+        if (p == 0) {
+            child(i,&sem[i],&sem[(i+1)%PROCS]);
+            exit(1);
+        }
     }
 
-    pipesem_signal(&sem0);
-    wait(&status);
-    wait(&status);
+    pipesem_signal(sem);
+
+    for(i=0;i<PROCS;i++)
+    {
+        wait(&status);
+    }
 
 	reset_xterm_color(1);
 	return 0;
