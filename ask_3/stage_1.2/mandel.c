@@ -12,9 +12,14 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include "mandel-lib.h"
+#include "pipesem.h"
 
 #define MANDEL_MAX_ITERATION 100000
+#define PROCS 2
 
 /***************************
  * Compile-time parameters *
@@ -109,24 +114,68 @@ void compute_and_output_mandel_line(int fd, int line)
 	output_mandel_line(fd, color_val);
 }
 
+void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
+{
+    int line;
+    int color_val[x_chars];
+	for (line = ch_id; line < y_chars; line+=PROCS) {
+        //this can be parallel
+        compute_mandel_line(line, color_val);
+        //this has to be serial
+        pipesem_wait(mysem);
+        output_mandel_line(1, color_val);
+        pipesem_signal(othersem);
+    }
+
+}
+
 int main(void)
 {
 	int line;
+    pid_t p;
+    int status;
+    struct pipesem sem0,sem1;
+    struct pipesem semC;
+    //struct pipesem sem2,sem3;
+    pipesem_init(&sem0,0);
+    pipesem_init(&sem1,0);
+    //pipesem_init(&sem2,0);
+    //pipesem_init(&sem3,0);
+    pipesem_init(&semC,0);
 
 	xstep = (xmax - xmin) / x_chars;
 	ystep = (ymax - ymin) / y_chars;
 
-	/*
-	 * draw the Mandelbrot Set, one line at a time.
-	 * Output is sent to file descriptor '1', i.e., standard output.
-	 */
-    int color_val[x_chars];
-	for (line = 0; line < y_chars; line++) {
-        //this can be parallel
-        compute_mandel_line(line, color_val);
-        //this has to be serial
-        output_mandel_line(1, color_val);
+    /*
+     * draw the Mandelbrot Set, one line at a time.
+     * Output is sent to file descriptor '1', i.e., standard output.
+     */
+    /* Create a child */
+    p = fork();
+    if (p < 0) {
+        perror("parent: fork");
+        exit(1);
     }
+    if (p == 0) {
+        printf("Child 0 is up\n");
+        child(0,&sem0,&sem1);
+        exit(1);
+    }
+    /* Create a child */
+    p = fork();
+    if (p < 0) {
+        perror("parent: fork");
+        exit(1);
+    }
+    if (p == 0) {
+        printf("Child 1 is up\n");
+        child(1,&sem1,&sem0);
+        exit(1);
+    }
+
+    pipesem_signal(&sem0);
+    wait(&status);
+    wait(&status);
 
 	reset_xterm_color(1);
 	return 0;

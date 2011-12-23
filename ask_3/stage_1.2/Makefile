@@ -5,9 +5,9 @@
 CC = gcc
 CFLAGS = -Wall -O2
 
-all: mandel pipesem.o
+all: mandel 
 
-mandel: mandel-lib.o mandel.o
+mandel: mandel-lib.o mandel.o pipesem.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 %.o: %.c
