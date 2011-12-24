@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 
 #include "proc-common.h"
+#include "pipesem.h"
 
 /*
  * This is a pointer to a shared memory area.
@@ -30,14 +31,16 @@ int *shared_memory;
 /* ... */
 
 /* Proc A: n = n + 1 */
-void proc_A(void)
+void proc_A(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 {
 	volatile int *n = &shared_memory[0];
 	/* ... */
 
 	for (;;) {
 		/* ... */
+                pipesem_wait(semA);
 		*n = *n + 1;
+                pipesem_signal(semB);
 		/* ... */
 	}
 
@@ -45,14 +48,17 @@ void proc_A(void)
 }
 
 /* Proc B: n = n - 2 */
-void proc_B(void)
+void proc_B(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 {
 	volatile int *n = &shared_memory[0];
 	/* ... */
 
 	for (;;) {
 		/* ... */
+                pipesem_wait(semB);
+                pipesem_wait(semB);
 		*n = *n - 2;
+                pipesem_signal(semC);
 		/* ... */
 	}
 
@@ -60,7 +66,7 @@ void proc_B(void)
 }
 
 /* Proc C: print n */
-void proc_C(void)
+void proc_C(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 {
 	int val;
 
@@ -69,11 +75,13 @@ void proc_C(void)
 
 	for (;;) {
 		/* ... */
+                pipesem_wait(semC);
 		val = *n;
 		printf("Proc C: n = %d\n", val);
 		if (val != 1) {
 			printf("     ...Aaaaaargh!\n");
 		}
+                pipesem_signal(semA);
 		/* ... */
 	}
 	exit(0);
@@ -83,7 +91,7 @@ void proc_C(void)
  * Use a NULL-terminated array of pointers to functions.
  * Each child process gets to call a different pointer.
  */
-typedef void proc_fn_t(void);
+typedef void proc_fn_t(struct pipesem *semA,struct pipesem *semB, struct pipesem *semC);
 static proc_fn_t *proc_funcs[] = {proc_A, proc_B, proc_C, NULL};
 
 int main(void)
@@ -92,8 +100,12 @@ int main(void)
 	int status;
 	pid_t p;
 	proc_fn_t *proc_fn;
+        struct pipesem semA, semB, semC;
 
 	/* ... */
+        pipesem_init(&semA,1);
+        pipesem_init(&semB,0);
+        pipesem_init(&semC,0);
 
 	/* Create a shared memory area */
 	shared_memory = create_shared_memory_area(sizeof(int));
@@ -111,7 +123,7 @@ int main(void)
 			continue;
 		}
 		/* Child */
-		proc_fn();
+		proc_fn(&semA, &semB, &semC);
 		assert(0);
 	}
 
