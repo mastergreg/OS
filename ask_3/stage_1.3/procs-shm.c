@@ -56,6 +56,7 @@ void proc_B(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 	for (;;) {
 		/* ... */
                 pipesem_wait(semB);
+                pipesem_signal(semA);
                 pipesem_wait(semB);
 		*n = *n - 2;
                 pipesem_signal(semC);
