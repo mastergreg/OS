@@ -45,7 +45,7 @@ int main(void)
 		exit(1);
 	}
 	if (p == 0) {
-		child(&sem);
+                child(&sem);
 		exit(1);
 	}
 
