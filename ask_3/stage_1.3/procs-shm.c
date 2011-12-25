@@ -39,6 +39,7 @@ void proc_A(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 	for (;;) {
 		/* ... */
                 pipesem_wait(semA);
+                printf("A up!\n");
 		*n = *n + 1;
                 pipesem_signal(semB);
 		/* ... */
@@ -58,6 +59,7 @@ void proc_B(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
                 pipesem_wait(semB);
                 pipesem_signal(semA);
                 pipesem_wait(semB);
+                printf("B up!\n");
 		*n = *n - 2;
                 pipesem_signal(semC);
 		/* ... */
@@ -77,6 +79,7 @@ void proc_C(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 	for (;;) {
 		/* ... */
                 pipesem_wait(semC);
+                printf("C up!\n");
 		val = *n;
 		printf("Proc C: n = %d\n", val);
 		if (val != 1) {
