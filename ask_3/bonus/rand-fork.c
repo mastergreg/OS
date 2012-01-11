@@ -26,6 +26,7 @@ int main(int argc, const char *argv[])
 			continue;
 
 		/* child: run process */
+                //srand(time(NULL)*i); //make it really random!
 		printf("%d\n", rand());
 		exit(0);
 	}

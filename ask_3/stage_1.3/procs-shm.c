@@ -22,6 +22,8 @@
 #include "proc-common.h"
 #include "pipesem.h"
 
+#define K 2 //for general case B: n = n-K
+
 /*
  * This is a pointer to a shared memory area.
  * It holds an integer value, that is manipulated
@@ -53,17 +55,21 @@ void proc_B(struct pipesem *semA, struct pipesem *semB, struct pipesem *semC)
 {
 	volatile int *n = &shared_memory[0];
 	/* ... */
+        int j;
 
 	for (;;) {
 		/* ... */
                 pipesem_wait(semB);
-                pipesem_signal(semA);
-                pipesem_wait(semB);
+                /* General case B: n = n-K */
+                for (j = 1; j < K; j++) {
+                    pipesem_signal(semA);
+                    pipesem_wait(semB);
+                }
                 printf("B up!\n");
-		*n = *n - 2;
+                *n = *n - K;
                 pipesem_signal(semC);
-		/* ... */
-	}
+                /* ... */
+        }
 
 	exit(0);
 }
