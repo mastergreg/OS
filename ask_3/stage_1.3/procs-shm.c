@@ -22,7 +22,7 @@
 #include "proc-common.h"
 #include "pipesem.h"
 
-#define K 2 //for general case B: n = n-K
+#define K 5 //for general case B: n = n-K
 
 /*
  * This is a pointer to a shared memory area.
