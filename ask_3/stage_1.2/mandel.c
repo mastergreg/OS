@@ -19,7 +19,7 @@
 #include "pipesem.h"
 
 #define MANDEL_MAX_ITERATION 100000
-#define PROCS 20
+#define PROCS 30
 
 /***************************
  * Compile-time parameters *
@@ -126,7 +126,7 @@ void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
         output_mandel_line(1, color_val);
         pipesem_signal(othersem);
     }
-
+    pipesem_destroy(mysem);
 }
 
 int main(void)
