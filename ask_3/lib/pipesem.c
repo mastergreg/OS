@@ -42,11 +42,6 @@ void pipesem_wait(struct pipesem *sem)
     {
         perror("read from pipe error");
         exit(1);
-        if (iocheck == -1)
-        {
-            perror("write in pipe error");
-            exit(1);
-        }
     }
 }
 
@@ -54,6 +49,11 @@ void pipesem_signal(struct pipesem *sem)
 {
     int iocheck,token;
     iocheck = write(sem->wfd, &token, sizeof(int));
+    if (iocheck == -1)
+    {
+        perror("write in pipe error");
+        exit(1);
+    }
 }
 
 void pipesem_destroy(struct pipesem *sem)
