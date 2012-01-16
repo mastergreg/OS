@@ -17,3 +17,5 @@ resize:
 
 clean:
 	rm -f *.o mandel
+isles:
+	./runem.sh

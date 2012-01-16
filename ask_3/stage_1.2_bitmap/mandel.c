@@ -21,7 +21,7 @@
 
 #define MANDEL_MAX_ITERATION 100000
 #define PROCS 4
-#define RES 800
+#define RES 1024
 
 /***************************
  * Compile-time parameters *
@@ -32,6 +32,8 @@
  */
 int y_chars = RES;
 int x_chars = 1.4*RES;
+int start;
+int end;
 
 
 /*
@@ -151,39 +153,57 @@ void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
 {
     int line;
     int color_val[x_chars];
-    for (line = ch_id; line < y_chars; line+=PROCS) {
+    for (line = start+ch_id; line < end; line+=PROCS) {
         //this can be parallel
         compute_mandel_line(line, color_val);
         //this has to be serial
         pipesem_wait(mysem);
         //output_mandel_line(1, color_val);
-        printf("printing line %d\n",line);
         output_mandel_line_to_ppm(color_val);
         pipesem_signal(othersem);
     }
     pipesem_destroy(mysem);
 }
 
-int main(void)
+int main(int argc,char **argv)
 {
+    const char *filename;
+    if(argc != 3)
+    {
+        start=0;
+        end=y_chars;
+        filename="mandel.ppm";
+
+    }
+    else
+    {
+        sscanf(argv[1],"%d",&start);
+        sscanf(argv[2],"%d",&end);
+        filename=argv[1];
+    }
+
     int i;
     pid_t p;
     int status;
     struct pipesem sem[PROCS];
-    image_fd = open("mandel.ppm",O_CREAT | O_WRONLY | O_TRUNC,\
+    image_fd = open(filename,O_CREAT | O_WRONLY | O_TRUNC,\
             S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
-    int iXmax = x_chars;
-    int iYmax = y_chars;
-    const int MaxColorComponentValue=255; 
-    char *comment="# mandelbrot set";
-    char header[200];
-    int iocheck;
-    snprintf(header,200,"P3\n%s\n%d\t %d\n%d\n",comment,iXmax,iYmax,MaxColorComponentValue);
-    iocheck = write(image_fd,header,strlen(header));
-    if (iocheck == -1 )
+    
+    if(start==0)
     {
-        perror("main:write");
-        exit(1);
+        int iXmax = x_chars;
+        int iYmax = y_chars;
+        const int MaxColorComponentValue=255; 
+        char *comment="# mandelbrot set";
+        char header[200];
+        int iocheck;
+        snprintf(header,200,"P3\n%s\n%d\t %d\n%d\n",comment,iXmax,iYmax,MaxColorComponentValue);
+        iocheck = write(image_fd,header,strlen(header));
+        if (iocheck == -1 )
+        {
+            perror("main:write");
+            exit(1);
+        }
     }
 
 
