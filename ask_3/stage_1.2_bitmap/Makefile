@@ -19,3 +19,5 @@ clean:
 	rm -f *.o mandel
 isles:
 	./runem.sh
+merge:
+	./merge.sh
