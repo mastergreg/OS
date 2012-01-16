@@ -1,7 +1,6 @@
 #!/bin/bash
 
-machines=(anafi
-evia
+machines=(evia
 kefalonia
 kerkyra
 kythnos
@@ -22,6 +21,6 @@ for i in `seq 0 32 992`
 do
     let j=i+32
     m=${machines[$(($i % $nr))]}
-    ssh $m  /home/oslab/oslabb03/Repos/OS/ask_3/stage_1.2_bitmap/mandel $i $j
+    (ssh $m /home/oslab/oslabb03/Repos/OS/ask_3/stage_1.2_bitmap/mandel $i $j && echo $m DONE) &
 done
 

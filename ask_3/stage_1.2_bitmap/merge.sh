@@ -6,4 +6,5 @@ do
     cp ~/$i ./
     cat $i >> mandel_parallel.ppm
 done
+convert mandel_parallel.ppm mandel_parallel.png
 
