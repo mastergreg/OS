@@ -1,7 +1,7 @@
 #!/bin/bash
 
-STEP=256
-HEIGHT=8192
+STEP=32
+HEIGHT=1024
 let H_LIM=$HEIGHT-$STEP
 
 machines=(evia
@@ -36,6 +36,8 @@ do
     (ssh $m /home/oslab/oslabb03/Repos/OS/ask_3/stage_1.2_bitmap/mandel $i $j) &
 done
 
+sleep 2
+
 for i in `seq 0 $STEP $H_LIM`
 do 
     while( true )
@@ -55,15 +57,5 @@ rm mandel_parallel.ppm
 for i in `seq 0 $STEP $H_LIM`
 do
     cat ~/$i >> mandel_parallel.ppm
-    #rm ~/$i
-done
-convert mandel_parallel.ppm mandel_parallel.png
-
-for m in machines
-do
-    ssh $m killall mandel
-done
-for i in `seq 0 $STEP $H_LIM`
-do
     rm ~/$i
 done
