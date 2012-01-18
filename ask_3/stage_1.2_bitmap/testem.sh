@@ -3,10 +3,12 @@ for i in `seq 0 128 4064`
 do 
     while( true )
     do 
-        let lines = $((wc -l $i )) | cut -d' ' -f 1
+        lines=$(wc -l $i | cut -d' ' -f 1)
         if [ $lines -ge 128 ]; then
             echo $i Done
             break 
+        else
+            sleep 1
         fi
     done 
 done

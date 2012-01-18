@@ -21,8 +21,8 @@
 #include "pipesem.h"
 
 #define MANDEL_MAX_ITERATION 100000
-#define PROCS 4
-#define RES 4096
+#define PROCS 2
+#define RES 8192
 
 /***************************
  * Compile-time parameters *
