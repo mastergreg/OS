@@ -12,6 +12,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -21,7 +22,7 @@
 
 #define MANDEL_MAX_ITERATION 100000
 #define PROCS 4
-#define RES 1024
+#define RES 4096
 
 /***************************
  * Compile-time parameters *

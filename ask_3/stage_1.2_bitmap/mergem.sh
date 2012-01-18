@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm mandel_parallel.ppm
-for i in `seq 0 32 992`
+for i in `seq 0 128 4064`
 do
     cat ~/$i >> mandel_parallel.ppm
     #rm ~/$i

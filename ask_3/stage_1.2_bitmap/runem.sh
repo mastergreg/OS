@@ -17,9 +17,9 @@ skyros
 zakynthos
 )
 nr=${#machines[@]}
-for i in `seq 0 32 992`
+for i in `seq 0 128 4064`
 do
-    let j=i+32
+    let j=i+128
     let mindex=i%nr
     for k in $(seq $mindex $nr)
     do
