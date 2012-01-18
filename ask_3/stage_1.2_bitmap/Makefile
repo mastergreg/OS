@@ -4,11 +4,12 @@
 
 CC = gcc
 CFLAGS = -Wall -O3
+LDFLAGS = -lm
 
 all: mandel 
 
 mandel: mandel-lib.o mandel.o pipesem.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<

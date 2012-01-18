@@ -68,7 +68,7 @@ void compute_mandel_line(int line, int color_val[])
     double x, y;
 
     int n;
-    int val;
+    double val;
 
     /* Find out the y value corresponding to this line */
     y = ymax - ystep * line;
@@ -87,32 +87,6 @@ void compute_mandel_line(int line, int color_val[])
     }
 }
 
-/*
- * This function outputs an array of x_char color values
- * to a 256-color xterm.
- */
-void output_mandel_line(int fd, int color_val[])
-{
-    int i;
-
-    char point ='@';
-    char newline='\n';
-
-    for (i = 0; i < x_chars; i++) {
-        /* Set the current color, then output the point */
-        set_xterm_color(fd, color_val[i]);
-        if (write(fd, &point, 1) != 1) {
-            perror("compute_and_output_mandel_line: write point");
-            exit(1);
-        }
-    }
-
-    /* Now that the line is done, output a newline character */
-    if (write(fd, &newline, 1) != 1) {
-        perror("compute_and_output_mandel_line: write newline");
-        exit(1);
-    }
-}
 void output_mandel_line_to_ppm(int color_val[])
 {
     int i;
@@ -126,30 +100,19 @@ void output_mandel_line_to_ppm(int color_val[])
         rgb[1]=(color_val[i]/256)%256;
         rgb[0]=(color_val[i]/256)/256;
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
-        iocheck = write(image_fd,rgb_trio,strlen(rgb_trio));
+        iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
         if(iocheck == -1)
         {
             perror("child:output_mandel:for");
             exit(1);
         }
     }
-    iocheck = write(image_fd,&nl,1);
+    iocheck = insist_write(image_fd,&nl,1);
     if(iocheck == -1)
     {
         perror("child:output_mandel");
         exit(1);
     }
-}
-
-void compute_and_output_mandel_line(int fd, int line)
-{
-    /*
-     * A temporary array, used to hold color values for the line being drawn
-     */
-    int color_val[x_chars];
-
-    compute_mandel_line(line, color_val);
-    output_mandel_line(fd, color_val);
 }
 
 void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
@@ -201,7 +164,7 @@ int main(int argc,char **argv)
         char header[200];
         int iocheck;
         snprintf(header,200,"P3\n%s\n%d\t %d\n%d\n",comment,iXmax,iYmax,MaxColorComponentValue);
-        iocheck = write(image_fd,header,strlen(header));
+        iocheck = insist_write(image_fd,header,strlen(header));
         if (iocheck == -1 )
         {
             perror("main:write");
@@ -242,7 +205,6 @@ int main(int argc,char **argv)
         wait(&status);
     }
 
-    reset_xterm_color(1);
     close(image_fd);
     return 0;
 }
