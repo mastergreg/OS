@@ -10,7 +10,7 @@
 #define MANDEL_LIB_H__
 
 /* Function prototypes */
-int mandel_iterations_at_point(double x, double y, int max);
+double mandel_iterations_at_point(double x, double y, int max);
 ssize_t insist_write(int fd, const char *buf, size_t count);
 
 #endif /* MANDEL_LIB_H__ */

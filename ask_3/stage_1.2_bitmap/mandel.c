@@ -77,7 +77,7 @@ void compute_mandel_line(int line, int color_val[])
     for (x = xmin, n = 0; x <= xmax; x+= xstep, n++) {
 
         /* Compute the point's color value */
-        val = mandel_iterations_at_point(x, y, MANDEL_MAX_ITERATION);
+        val = mandel_iterations_at_point(x, y, 256);
         //if (val > 255)
         //    val = 255;
 
@@ -96,9 +96,9 @@ void output_mandel_line_to_ppm(int color_val[])
     char nl = '\n';
     for(i=0;i<x_chars;i++)
     {
-        rgb[2]=color_val[i]*0.00256;
-        rgb[1]=color_val[i]*0.00256;
-        rgb[0]=color_val[i]*0.00256;
+        rgb[2]=255-color_val[i];
+        rgb[1]=255-color_val[i];
+        rgb[0]=255-color_val[i];
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
         iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
         if(iocheck == -1)
