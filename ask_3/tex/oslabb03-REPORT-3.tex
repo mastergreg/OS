@@ -13,13 +13,9 @@
 \include{title/title}
 
 \section*{} \setcounter{section}{1}
-\subsection{Δημιουργία δεδομένου δέντρου διεργασιών} Ο πηγαίος κώδικας της
-main.c που γράψαμε είναι ο παρακάτω:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-fork.c}
-
-Η έξοδος που προέκυψε κατά την εκτέλεση ήταν η εξής:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-fork.out}
-\pagebreak
+\subsection{Υλοποίηση σημαφόρων με σωληνώσεις του UNIX} 
+Ο πηγαίος κώδικας της pipesem.c που γράψαμε είναι ο παρακάτω:
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/pipesem.c}
 
 \emph{Ερωτήσεις}
 \begin{enumerate}
@@ -35,12 +31,13 @@ forks δημιουργώντας την A.
 \end{enumerate}
 
 
-\subsection{Δημιουργία αυθαίρετου δέντρου διεργασιών} Ο πηγαίος κώδικας
-παρατίθεται παρακάτω:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-tree.c}
+\subsection{Παράλληλος υπολογισμός του συνόλου Mandelbrot} 
+Ο πηγαίος κώδικας παρατίθεται παρακάτω:
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/mandel.c}
 
-Η έξοδος που προέκυψε κατά την εκτέλεση ήταν η εξής:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-tree.out}
+Η έξοδος που προέκυψε κατά την εκτέλεση ήταν η εξής, με τους αντίστοιχους χρόνους πρίν και μετά την παραλληλία:
+% GREG EDW THELOUME FWTO + TA TIME OUTPUTS
+
 \emph{Ερωτήσεις}
 \begin{enumerate}
 \item Οι διεργασίες γεννιούνται κατά επίπεδο. Παρόλα αυτά, δεν είναι
@@ -49,15 +46,19 @@ forks δημιουργώντας την A.
 εκτελεστεί πριν από το C αν η χρονοδρομολόγηση το ευνοούσε.
 Ωστόσο το κβάντο χρόνου είναι τέτοιο που η εμφάνιση των
 μηνυμάτων δημιουργίας μοιάζει σχεδόν σειριακή.
+\item 2
+\item 3
+\item 4
 \end{enumerate}
 
-\subsection{Αποστολή και χειρισμός σημάτων} Ο πηγαίος κώδικας
-παρατίθεται παρακάτω:
+\subsection{Ταυτόχρονη πρόσβαση σε μοιραζόμενους πόρους} 
+Ο πηγαίος κώδικας παρατίθεται παρακάτω:
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-signals.c}
 \pagebreak
 
 Η έξοδος που προέκυψε κατά την εκτέλεση ήταν η εξής:
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-signals.out}
+
 \emph{Ερωτήσεις}
 \begin{enumerate}
 \item Είναι σαφώς καλύτερη και πιο αξιόπιστη, καθώς δε στηρίζεται στη
@@ -68,31 +69,17 @@ forks δημιουργώντας την A.
 ώστε να δεχτούν το SIGCONT.
 \end{enumerate}
 
-\subsection{Παράλληλος υπολογισμός αριθμητικής έφρασης} Ο πηγαίος κώδικας
-παρατίθεται παρακάτω:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/ask2-pipes.c}
+\subsection{Προαιρετικές ερωτήσεις (bonus)} 
 
-Η έξοδος που προέκυψε κατά την εκτέλεση ήταν η εξής:
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/ask2-pipes.out}
-\emph{Ερωτήσεις}
 \begin{enumerate}
-\item Κάθε διεργασία χρειάζεται, ένα pipe σε περίπτωση που είναι φύλλο (εκείνο
-δηλαδή που θα χρειαστεί για να γράψει στον πατέρα του), ενώ χρειάζεται τρία
-στη γενική περίπτωση που είναι κόμβος του δέντρου
-(ένα για τον πατέρα του και ένα για κάθε παιδί). Μπορούμε ωστόσο να
-χρησιμοποιήσουμε ένα pipe λιγότερο, χρησιμοποιώντας το ίδιο pipe και για τα
-δύο παιδιά. Αυτό συμβαίνει διότι στην πράξη του πολλαπλασιασμού και της πρόσθεσης
-ισχύει η αντιμεταθετική ιδιότητα. Χρησιμοποιώντας ένα μόνο pipe και για τα
-δύο παιδιά, δεν έχω τη δυνατότητα να διακρίνω ποιο παιδί έγραψε τι μέσα στο
-pipe. Συνεπώς αν θέλαμε να υποστηρίζουμε και αφαίρεση για παράδειγμα στο δέντρο μας τότε θα
-έπρεπε να χρησιμοποιήσουμε ξεχωριστά pipes για να μπορούμε να ξεχωρίσουμε τις
-μεταβλητές μας. Επίσης σημαντικός περιορισμός είναι το πλήθος των bytes που
-γράφουμε μέσα στο pipe. Δε θα μπορούσαμε να χρησιμοποιήσουμε ένα pipe για να
-μεταφέρουμε περισσότερα από 512 bytes, καθώς και πάλι δε θα μπορούσαμε με
-βεβαιότητα να διακρίνουμε ποιος έγραψε κάθε 512-δα μέσα στο pipe.
-\item Σε ένα σύστημα πολλών επεξεργαστών, σε περίπτωση που ζητήσουμε από μία
-μόνο διεργασία να υπολογίσει το δέντρο των μαθηματικών εκφράσεων δεν
-εκμεταλλευόμαστε το hardware. Η παράλληλη επεξεργασία θα μας δώσει ταχύτερη
-εκτέλεση καθώς κάθε πράξη μπορεί να γίνει ανεξάρτητα απο όλες τις υπόλοιπες.
+\item Monitors
+%tha to kanoume telika???
+
+\item Rand-fork
 \end{enumerate}
+
+\subsection{Bonus track: \\Οπτικοποίηση Mandelbrot Set με export σε εικόνα \& \\επέκταση παραλληλοποίησης σε πολλαπλούς υπολογιστές (νησιά)}
+%Do your magic greg
+CODE CODE CODE
+
 \end{document}
