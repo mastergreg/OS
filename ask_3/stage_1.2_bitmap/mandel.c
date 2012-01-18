@@ -22,7 +22,7 @@
 
 #define MANDEL_MAX_ITERATION 256
 #define PROCS 2
-#define RES 8192 
+#define RES 16384
 
 /***************************
  * Compile-time parameters *
