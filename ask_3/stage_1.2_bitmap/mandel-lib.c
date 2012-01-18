@@ -43,8 +43,8 @@ double mandel_iterations_at_point(double x, double y, int max)
 		++iter;
 	}
 
-	//return iter+1-log(log(sqrt(x*x+y*y)))/log(2);
-	return iter;
+	return iter+1-log(log(sqrt(x*x+y*y)))/log(2);
+	//return iter;
 }
 
 /*

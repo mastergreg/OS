@@ -22,7 +22,7 @@
 
 #define MANDEL_MAX_ITERATION 256
 #define PROCS 2
-#define RES 1024
+#define RES 16384
 
 /***************************
  * Compile-time parameters *
@@ -78,8 +78,9 @@ void compute_mandel_line(int line, int color_val[])
 
         /* Compute the point's color value */
         val = mandel_iterations_at_point(x, y, MANDEL_MAX_ITERATION);
-        //if (val > 255)
-        //    val = 255;
+        val*=10;
+        if (val > 255)
+            val = 255;
 
         ///* And store it in the color_val[] array */
         //val = xterm_color(val);
@@ -104,9 +105,9 @@ void output_mandel_line_to_ppm(int color_val[])
         }
         else
         {
-            rgb[2]=255-color_val[i]/2;
+            rgb[2]=color_val[i];
             rgb[1]=color_val[i]/4;
-            rgb[0]=color_val[i]/4;
+            rgb[0]=color_val[i]/2;
         }
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
         iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
