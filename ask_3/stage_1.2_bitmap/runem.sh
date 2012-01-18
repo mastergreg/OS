@@ -1,7 +1,7 @@
 #!/bin/bash
 
-STEP=512
-HEIGHT=16384
+STEP=32
+HEIGHT=1024
 let H_LIM=$HEIGHT-$STEP
 
 machines=(evia
