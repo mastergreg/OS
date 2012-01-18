@@ -27,7 +27,7 @@
  * and uses the escape time algorithm to return a color value
  * used to draw the Mandelbrot Set.
  */
-double mandel_iterations_at_point(double x, double y, int max)
+int mandel_iterations_at_point(double x, double y, int max)
 {
 	double x0 = x;
 	double y0 = y;
@@ -43,7 +43,7 @@ double mandel_iterations_at_point(double x, double y, int max)
 		++iter;
 	}
 
-	return ((double) iter+1)-log(log(sqrt(x*x+y*y)))/log(2);
+	return iter;
 }
 
 /*

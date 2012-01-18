@@ -83,7 +83,7 @@ void compute_mandel_line(int line, int color_val[])
 
         ///* And store it in the color_val[] array */
         //val = xterm_color(val);
-        color_val[n] = val*1000;
+        color_val[n] = val;
     }
 }
 
@@ -97,7 +97,7 @@ void output_mandel_line_to_ppm(int color_val[])
     for(i=0;i<x_chars;i++)
     {
         rgb[2]=color_val[i]%256;
-        rgb[1]=0;
+        rgb[1]=color_val[i]/256;
         rgb[0]=0;
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
         iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
