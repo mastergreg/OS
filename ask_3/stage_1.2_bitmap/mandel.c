@@ -20,9 +20,9 @@
 #include "mandel-lib.h"
 #include "pipesem.h"
 
-#define MANDEL_MAX_ITERATION 100000
+#define MANDEL_MAX_ITERATION 256
 #define PROCS 2
-#define RES 1024 
+#define RES 8192 
 
 /***************************
  * Compile-time parameters *
@@ -77,7 +77,7 @@ void compute_mandel_line(int line, int color_val[])
     for (x = xmin, n = 0; x <= xmax; x+= xstep, n++) {
 
         /* Compute the point's color value */
-        val = mandel_iterations_at_point(x, y, 256);
+        val = mandel_iterations_at_point(x, y, MANDEL_MAX_ITERATION);
         //if (val > 255)
         //    val = 255;
 
@@ -96,9 +96,18 @@ void output_mandel_line_to_ppm(int color_val[])
     char nl = '\n';
     for(i=0;i<x_chars;i++)
     {
-        rgb[2]=color_val[i]/128;
-        rgb[1]=0;
-        rgb[0]=255-color_val[i]/128;
+        if(color_val[i]==255)
+        {
+            rgb[2]=0;
+            rgb[1]=0;
+            rgb[0]=0;
+        }
+        else
+        {
+            rgb[2]=255-color_val[i]/2;
+            rgb[1]=color_val[i]/4;
+            rgb[0]=color_val[i]/4;
+        }
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
         iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
         if(iocheck == -1)
