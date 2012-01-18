@@ -20,8 +20,8 @@ nr=${#machines[@]}
 for i in `seq 0 32 992`
 do
     let j=i+32
-    mindex = $(($i % $nr ))
-    for k in $(((seq $mindex $nr)))
+    let mindex=i%nr
+    for k in $(seq $mindex $nr)
     do
         m=${machines[$(($k))]}
         ping -W 1 -q $m -c 1 > /dev/null
