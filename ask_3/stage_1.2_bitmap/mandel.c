@@ -96,9 +96,9 @@ void output_mandel_line_to_ppm(int color_val[])
     char nl = '\n';
     for(i=0;i<x_chars;i++)
     {
-        rgb[2]=color_val[i]%256;
-        rgb[1]=color_val[i]/256;
-        rgb[0]=0;
+        rgb[2]=color_val[i]*0.00256;
+        rgb[1]=color_val[i]*0.00256;
+        rgb[0]=color_val[i]*0.00256;
         snprintf(rgb_trio,20,"%d\t %d\t %d\t",rgb[0],rgb[1],rgb[2]); 
         iocheck = insist_write(image_fd,rgb_trio,strlen(rgb_trio));
         if(iocheck == -1)
