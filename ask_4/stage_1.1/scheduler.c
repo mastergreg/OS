@@ -17,6 +17,9 @@
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 
 
+pid_t *children;
+int running;
+int nchildren;
 /* SIGALRM handler: Gets called whenever an alarm goes off.
  * The time quantum of the currently executing process has expired,
  * so send it a SIGSTOP. The SIGCHLD handler will take care of
@@ -25,7 +28,8 @@
 static void
 sigalrm_handler(int signum)
 {
-	assert(0 && "Please fill me!");
+    kill(SIGSTOP,children[running]);
+    alarm(SCHED_TQ_SEC);
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -38,7 +42,9 @@ sigalrm_handler(int signum)
 static void
 sigchld_handler(int signum)
 {
-	assert(0 && "Please fill me!");
+    running++;
+    running%=nchildren;
+    kill(SIGCONT,children[running]);
 }
 
 /* Install two signal handlers.
@@ -79,6 +85,19 @@ install_signal_handlers(void)
 	}
 }
 
+
+void child ( char *ex )
+{
+	char *newargv[] = { ex, NULL, NULL, NULL };
+	char *newenviron[] = { NULL };
+    raise(SIGSTOP);
+    change_pname(ex);
+	execve(ex, newargv, newenviron);
+    perror("execve");
+    exit(1);
+}
+
+
 int main(int argc, char *argv[])
 {
 	int nproc;
@@ -87,7 +106,25 @@ int main(int argc, char *argv[])
 	 * create a new child process, add it to the process list.
 	 */
 
-	nproc = 0; /* number of proccesses goes here */
+	nproc = argc-1; /* number of proccesses goes here */
+    children = calloc ( nproc, sizeof(pid_t) );
+    pid_t p;
+
+    int i;
+    for ( i = 0 ; i < nproc ; ++i )
+    {
+        p = fork();
+
+        if ( p == 0 )
+        {
+            child( argv[i] );
+            exit(1);
+        }
+        else
+        {
+            children[i] = p;
+        }
+    }
 
 	/* Wait for all children to raise SIGSTOP before exec()ing. */
 	wait_for_ready_children(nproc);
@@ -102,6 +139,7 @@ int main(int argc, char *argv[])
 
 
 	/* loop forever  until we exit from inside a signal handler. */
+    alarm(SCHED_TQ_SEC);
 	while (pause())
 		;
 

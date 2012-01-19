@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
 	 * use a random delay, so that processes terminate
 	 * in random order.
 	 */
-
 	pid = getpid();
 	srand(pid);
 	delay = 30 + ((double)rand() / RAND_MAX) * DELAY;
