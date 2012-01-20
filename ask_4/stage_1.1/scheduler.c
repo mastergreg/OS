@@ -28,8 +28,10 @@ int nchildren;
 static void
 sigalrm_handler(int signum)
 {
-    kill(SIGSTOP,children[running]);
-    alarm(SCHED_TQ_SEC);
+    printf( "ALARM WENT OFF ok %d GO\n", running );
+    kill( children[running], SIGSTOP );
+    show_pstree(getpid());
+    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -42,9 +44,15 @@ sigalrm_handler(int signum)
 static void
 sigchld_handler(int signum)
 {
-    running++;
-    running%=nchildren;
-    kill(SIGCONT,children[running]);
+    int status;
+    if ( waitpid( children[ running ], &status, WNOHANG ) == children[ running ] )
+    {
+        if ( nchildren == 0 )
+            exit(0);
+        nchildren--;
+    }
+    running = ( running + 1 ) % nchildren;
+    kill( children[ running ], SIGCONT );
 }
 
 /* Install two signal handlers.
@@ -107,6 +115,7 @@ int main(int argc, char *argv[])
 	 */
 
 	nproc = argc-1; /* number of proccesses goes here */
+    nchildren = argc;
     children = calloc ( nproc, sizeof(pid_t) );
     pid_t p;
 
@@ -117,7 +126,7 @@ int main(int argc, char *argv[])
 
         if ( p == 0 )
         {
-            child( argv[i] );
+            child( argv[i+1] );
             exit(1);
         }
         else
@@ -139,6 +148,7 @@ int main(int argc, char *argv[])
 
 
 	/* loop forever  until we exit from inside a signal handler. */
+
     alarm(SCHED_TQ_SEC);
 	while (pause())
 		;
