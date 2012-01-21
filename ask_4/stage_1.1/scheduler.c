@@ -73,14 +73,11 @@ install_signal_handlers(void)
     struct sigaction sa;
 
     sa.sa_handler = sigchld_handler;
-    sa.sa_flags = SA_RESTART;
+    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP ;
     sigemptyset(&sigset);
     sigaddset(&sigset, SIGCHLD);
     sigaddset(&sigset, SIGALRM);
     sa.sa_mask = sigset;
-    // edit copied from
-    // https://www.gnu.org/software/libc/manual/html_node/Blocking-for-Handler.html#Blocking-for-Handler
-    sa.sa_flags = 0;
     if (sigaction(SIGCHLD, &sa, NULL) < 0) {
         perror("sigaction: sigchld");
         exit(1);
@@ -159,8 +156,10 @@ int main(int argc, char *argv[])
 
     /* loop forever  until we exit from inside a signal handler. */
 
+    /* start the first of my children */
     running=0;
     kill( children[ running ], SIGCONT );
+    /* set my alarm */
     alarm(SCHED_TQ_SEC);
     while (pause())
         ;
