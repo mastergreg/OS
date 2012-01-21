@@ -28,14 +28,15 @@ int nchildren;
 static void
 sigalrm_handler(int signum)
 {
+    printf( "Alarm time to stop proc %d\n", running );
+    show_pstree( getpid() );
+    /*
+     * Stop currently running process
+     * This will spawn SIGCHLD when the
+     * child is stopped
+     */
     kill( children[running], SIGSTOP );
-    int status;
-    if ( waitpid( children[ running ], &status, WNOHANG ) == children[ running ] )
-    {
-        if ( nchildren == 0 )
-            exit(0);
-        nchildren--;
-    }
+    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -48,10 +49,17 @@ sigalrm_handler(int signum)
 static void
 sigchld_handler(int signum)
 {
+    int status;
+    if ( waitpid( children[ running ], &status, WNOHANG ) == children[ running ] )
+    {
+        if ( nchildren == 0 )
+            exit(0);
+        nchildren--;
+    }
+    printf( "Proc %d stopped\n", running );
     running = ( running + 1 ) % nchildren;
-    printf( "%d\n",running);
+    printf( "Continue %d\n",running);
     kill( children[ running ], SIGCONT );
-    alarm( SCHED_TQ_SEC );
 }
 
 /* Install two signal handlers.
@@ -70,6 +78,9 @@ install_signal_handlers(void)
     sigaddset(&sigset, SIGCHLD);
     sigaddset(&sigset, SIGALRM);
     sa.sa_mask = sigset;
+    // edit copied from
+    // https://www.gnu.org/software/libc/manual/html_node/Blocking-for-Handler.html#Blocking-for-Handler
+    sa.sa_flags = 0;
     if (sigaction(SIGCHLD, &sa, NULL) < 0) {
         perror("sigaction: sigchld");
         exit(1);
