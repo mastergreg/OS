@@ -36,10 +36,6 @@ sigalrm_handler(int signum)
             exit(0);
         nchildren--;
     }
-    running = ( running + 1 ) % nchildren;
-    printf( "%d\n",running);
-    kill( children[ running ], SIGCONT );
-    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -52,6 +48,10 @@ sigalrm_handler(int signum)
 static void
 sigchld_handler(int signum)
 {
+    running = ( running + 1 ) % nchildren;
+    printf( "%d\n",running);
+    kill( children[ running ], SIGCONT );
+    alarm( SCHED_TQ_SEC );
 }
 
 /* Install two signal handlers.
@@ -61,45 +61,45 @@ sigchld_handler(int signum)
 static void
 install_signal_handlers(void)
 {
-	sigset_t sigset;
-	struct sigaction sa;
+    sigset_t sigset;
+    struct sigaction sa;
 
-	sa.sa_handler = sigchld_handler;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sigset);
-	sigaddset(&sigset, SIGCHLD);
-	sigaddset(&sigset, SIGALRM);
-	sa.sa_mask = sigset;
-	if (sigaction(SIGCHLD, &sa, NULL) < 0) {
-		perror("sigaction: sigchld");
-		exit(1);
-	}
+    sa.sa_handler = sigchld_handler;
+    sa.sa_flags = SA_RESTART;
+    sigemptyset(&sigset);
+    sigaddset(&sigset, SIGCHLD);
+    sigaddset(&sigset, SIGALRM);
+    sa.sa_mask = sigset;
+    if (sigaction(SIGCHLD, &sa, NULL) < 0) {
+        perror("sigaction: sigchld");
+        exit(1);
+    }
 
-	sa.sa_handler = sigalrm_handler;
-	if (sigaction(SIGALRM, &sa, NULL) < 0) {
-		perror("sigaction: sigalrm");
-		exit(1);
-	}
+    sa.sa_handler = sigalrm_handler;
+    if (sigaction(SIGALRM, &sa, NULL) < 0) {
+        perror("sigaction: sigalrm");
+        exit(1);
+    }
 
-	/*
-	 * Ignore SIGPIPE, so that write()s to pipes
-	 * with no reader do not result in us being killed,
-	 * and write() returns EPIPE instead.
-	 */
-	if (signal(SIGPIPE, SIG_IGN) < 0) {
-		perror("signal: sigpipe");
-		exit(1);
-	}
+    /*
+     * Ignore SIGPIPE, so that write()s to pipes
+     * with no reader do not result in us being killed,
+     * and write() returns EPIPE instead.
+     */
+    if (signal(SIGPIPE, SIG_IGN) < 0) {
+        perror("signal: sigpipe");
+        exit(1);
+    }
 }
 
 
 void child ( char *ex )
 {
-	char *newargv[] = { ex, NULL, NULL, NULL };
-	char *newenviron[] = { NULL };
+    char *newargv[] = { ex, NULL, NULL, NULL };
+    char *newenviron[] = { NULL };
     raise(SIGSTOP);
     change_pname(ex);
-	execve(ex, newargv, newenviron);
+    execve(ex, newargv, newenviron);
     perror("execve");
     exit(1);
 }
@@ -107,13 +107,13 @@ void child ( char *ex )
 
 int main(int argc, char *argv[])
 {
-	int nproc;
-	/*
-	 * For each of argv[1] to argv[argc - 1],
-	 * create a new child process, add it to the process list.
-	 */
+    int nproc;
+    /*
+     * For each of argv[1] to argv[argc - 1],
+     * create a new child process, add it to the process list.
+     */
 
-	nproc = argc-1; /* number of proccesses goes here */
+    nproc = argc-1; /* number of proccesses goes here */
     nchildren = nproc;
     children = calloc ( nproc, sizeof(pid_t) );
     pid_t p;
@@ -134,27 +134,27 @@ int main(int argc, char *argv[])
         }
     }
 
-	/* Wait for all children to raise SIGSTOP before exec()ing. */
-	wait_for_ready_children(nproc);
+    /* Wait for all children to raise SIGSTOP before exec()ing. */
+    wait_for_ready_children(nproc);
 
-	/* Install SIGALRM and SIGCHLD handlers. */
-	install_signal_handlers();
+    /* Install SIGALRM and SIGCHLD handlers. */
+    install_signal_handlers();
 
-	if (nproc == 0) {
-		fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
-		exit(1);
-	}
+    if (nproc == 0) {
+        fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
+        exit(1);
+    }
 
 
-	/* loop forever  until we exit from inside a signal handler. */
+    /* loop forever  until we exit from inside a signal handler. */
 
     running=0;
     kill( children[ running ], SIGCONT );
     alarm(SCHED_TQ_SEC);
-	while (pause())
-		;
+    while (pause())
+        ;
 
-	/* Unreachable */
-	fprintf(stderr, "Internal error: Reached unreachable point\n");
-	return 1;
+    /* Unreachable */
+    fprintf(stderr, "Internal error: Reached unreachable point\n");
+    return 1;
 }
