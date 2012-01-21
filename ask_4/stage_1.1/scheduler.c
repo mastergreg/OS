@@ -11,15 +11,15 @@
 
 #include "proc-common.h"
 #include "request.h"
+#include "queue.h"
 
 /* Compile-time parameters. */
 #define SCHED_TQ_SEC 2                /* time quantum */
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 
 
-pid_t *children;
-int running;
-int nchildren;
+queue *current_proc;
+queue *last_elem;
 /* SIGALRM handler: Gets called whenever an alarm goes off.
  * The time quantum of the currently executing process has expired,
  * so send it a SIGSTOP. The SIGCHLD handler will take care of
@@ -28,15 +28,19 @@ int nchildren;
 static void
 sigalrm_handler(int signum)
 {
-    printf( "Alarm time to stop proc %d\n", running );
-    show_pstree( getpid() );
     /*
      * Stop currently running process
      * This will spawn SIGCHLD when the
      * child is stopped
      */
-    kill( children[running], SIGSTOP );
-    alarm( SCHED_TQ_SEC );
+    if ( current_proc != NULL )
+    {
+        kill( current_proc->pid, SIGSTOP );
+        current_proc = next_q( current_proc );
+        kill( current_proc->pid, SIGCONT );
+        printf("NEEEEEEEEEEXT\n");
+        alarm( SCHED_TQ_SEC );
+    }
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -50,16 +54,12 @@ static void
 sigchld_handler(int signum)
 {
     int status;
-    if ( waitpid( children[ running ], &status, WNOHANG ) == children[ running ] )
+    if ( current_proc != NULL && waitpid( current_proc->pid, &status, WNOHANG ) == current_proc->pid  )
     {
-        if ( nchildren == 0 )
-            exit(0);
-        nchildren--;
+        print_q(current_proc,4);
+        current_proc = remove_q( current_proc );
+        printf("i just died in your arms tonight\n");
     }
-    printf( "Proc %d stopped\n", running );
-    running = ( running + 1 ) % nchildren;
-    printf( "Continue %d\n",running);
-    kill( children[ running ], SIGCONT );
 }
 
 /* Install two signal handlers.
@@ -73,7 +73,7 @@ install_signal_handlers(void)
     struct sigaction sa;
 
     sa.sa_handler = sigchld_handler;
-    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP ;
+    sa.sa_flags = SA_RESTART ;
     sigemptyset(&sigset);
     sigaddset(&sigset, SIGCHLD);
     sigaddset(&sigset, SIGALRM);
@@ -103,11 +103,14 @@ install_signal_handlers(void)
 
 void child ( char *ex )
 {
-    char *newargv[] = { ex, NULL, NULL, NULL };
+    char chld_name[TASK_NAME_SZ];
+    snprintf( chld_name, TASK_NAME_SZ, "%s", ex );
+    chld_name[strnlen(chld_name,TASK_NAME_SZ)]='\0';
+    char *newargv[] = { chld_name, NULL, NULL, NULL };
     char *newenviron[] = { NULL };
+    change_pname(chld_name);
     raise(SIGSTOP);
-    change_pname(ex);
-    execve(ex, newargv, newenviron);
+    execve(chld_name, newargv, newenviron);
     perror("execve");
     exit(1);
 }
@@ -120,10 +123,16 @@ int main(int argc, char *argv[])
      * For each of argv[1] to argv[argc - 1],
      * create a new child process, add it to the process list.
      */
+    /*
+     * initialize queue for procs
+     */
+    queue *proc_head = (queue *) malloc( sizeof(queue) );
+    queue *current;
+    current_proc = proc_head;
+    current=proc_head;
+    init_q( current );
 
     nproc = argc-1; /* number of proccesses goes here */
-    nchildren = nproc;
-    children = calloc ( nproc, sizeof(pid_t) );
     pid_t p;
 
     int i;
@@ -138,13 +147,15 @@ int main(int argc, char *argv[])
         }
         else
         {
-            children[i] = p;
+           current = insert(p,current);
         }
     }
+    print_q(proc_head,5);
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
     wait_for_ready_children(nproc);
 
+    sleep(1);
     /* Install SIGALRM and SIGCHLD handlers. */
     install_signal_handlers();
 
@@ -157,8 +168,7 @@ int main(int argc, char *argv[])
     /* loop forever  until we exit from inside a signal handler. */
 
     /* start the first of my children */
-    running=0;
-    kill( children[ running ], SIGCONT );
+    //kill( children[ running ], SIGCONT );
     /* set my alarm */
     alarm(SCHED_TQ_SEC);
     while (pause())
