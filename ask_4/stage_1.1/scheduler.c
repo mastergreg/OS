@@ -36,10 +36,6 @@ sigalrm_handler(int signum)
             exit(0);
         nchildren--;
     }
-    running = ( running + 1 ) % nchildren;
-    printf( "%d\n",running);
-    kill( children[ running ], SIGCONT );
-    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -52,6 +48,10 @@ sigalrm_handler(int signum)
 static void
 sigchld_handler(int signum)
 {
+	running = ( running + 1 ) % nchildren;
+    printf( "%d\n",running);
+    kill( children[ running ], SIGCONT );
+    alarm( SCHED_TQ_SEC );
 }
 
 /* Install two signal handlers.
