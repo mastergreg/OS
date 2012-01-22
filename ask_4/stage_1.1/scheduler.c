@@ -56,7 +56,6 @@ sigchld_handler(int signum)
     int status;
     if ( current_proc != NULL && waitpid( current_proc->pid, &status, WNOHANG ) == current_proc->pid  )
     {
-        print_q(current_proc,4);
         current_proc = remove_q( current_proc );
         printf("i just died in your arms tonight\n");
     }
@@ -127,10 +126,8 @@ int main(int argc, char *argv[])
      * initialize queue for procs
      */
     queue *proc_head = (queue *) malloc( sizeof(queue) );
-    queue *current;
     current_proc = proc_head;
-    current=proc_head;
-    init_q( current );
+    init_q( current_proc );
 
     nproc = argc-1; /* number of proccesses goes here */
     pid_t p;
@@ -147,10 +144,9 @@ int main(int argc, char *argv[])
         }
         else
         {
-           current = insert(p,current);
+           current_proc = insert(p,current_proc);
         }
     }
-    print_q(proc_head,5);
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
     wait_for_ready_children(nproc);
@@ -168,7 +164,9 @@ int main(int argc, char *argv[])
     /* loop forever  until we exit from inside a signal handler. */
 
     /* start the first of my children */
-    //kill( children[ running ], SIGCONT );
+    current_proc = proc_head;
+    kill( current_proc->pid, SIGCONT );
+    current_proc = next_q( current_proc );
     /* set my alarm */
     alarm(SCHED_TQ_SEC);
     while (pause())
