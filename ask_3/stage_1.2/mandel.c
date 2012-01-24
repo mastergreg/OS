@@ -114,6 +114,28 @@ void compute_and_output_mandel_line(int fd, int line)
     output_mandel_line(fd, color_val);
 }
 
+static void
+sigint_handler(int signum)
+{
+    reset_xterm_color(1);
+    exit(1);
+}
+static void
+install_signal_handler(void)
+{
+    sigset_t sigset;
+    struct sigaction sa;
+
+    sa.sa_handler = sigint_handler;
+    sa.sa_flags = SA_RESTART ;
+    sigemptyset(&sigset);
+    sigaddset(&sigset, SIGINT);
+    sa.sa_mask = sigset;
+    if (sigaction(SIGINT, &sa, NULL) < 0) {
+        perror("sigaction: sigint");
+        exit(1);
+    }
+}
 void child(int ch_id,struct pipesem *mysem,struct pipesem *othersem)
 {
     int line;
@@ -150,6 +172,10 @@ int main(void)
      * draw the Mandelbrot Set, one line at a time.
      * Output is sent to file descriptor '1', i.e., standard output.
      */
+    /*
+     * setup SIGINT handler
+     */
+    install_signal_handler();
     /* Create a child */
     for(i=0;i<PROCS;i++)
     {
