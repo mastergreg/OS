@@ -84,7 +84,18 @@ pipesem\_wait(semB).
 \end{enumerate}
 
 \subsection{Bonus track: \\Οπτικοποίηση Mandelbrot Set με export σε εικόνα \& \\επέκταση παραλληλοποίησης σε πολλαπλούς υπολογιστές (νησιά)}
-%Do your magic greg
-CODE CODE CODE
+\noindent Κυρίως κώδικας:
+
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/mandel_parallel.c}
+
+\noindent Bash script για την παραλληλοποίηση:
+
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/runem.sh}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{files/mandel_parallel.png}
+\caption{Image Output}
+\end{figure}
+
 
 \end{document}
