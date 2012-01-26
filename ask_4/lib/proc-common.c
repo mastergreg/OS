@@ -48,6 +48,19 @@ change_pname(const char *new_name)
     if (old_len > 0)
         argv[0][old_len] = '\0';
 }
+
+/*
+ * Find the length of STRING, but scan at most MAXLEN characters.
+ * Copyright (C) 2005, 2006, 2007 Free Software Foundation, Inc.
+ * Written by Simon Josefsson.
+ * Licence: GPL v2 or later
+ */
+size_t
+strnlen (const char *string, size_t maxlen)
+{
+  const char *end = memchr (string, '\0', maxlen);
+  return end ? (size_t) (end - string) : maxlen;
+}
 #endif
 
 void

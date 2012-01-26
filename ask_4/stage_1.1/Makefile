@@ -8,7 +8,7 @@ CC = gcc
 CFLAGS = -Wall -g
 #CFLAGS = -Wall -O2 -g
 
-all: scheduler prog execve-example strace-test 
+all: scheduler prog execve-example strace-test
 
 scheduler: scheduler.o proc-common.o queue.o
 	$(CC) -o scheduler queue.o scheduler.o proc-common.o
