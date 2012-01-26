@@ -99,7 +99,7 @@ install_signal_handlers(void)
     struct sigaction sa;
 
     sa.sa_handler = sigchld_handler;
-    sa.sa_flags = SA_RESTART ;
+    sa.sa_flags = SA_RESTART;
     sigemptyset(&sigset);
     sigaddset(&sigset, SIGCHLD);
     sigaddset(&sigset, SIGALRM);
