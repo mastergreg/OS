@@ -36,9 +36,7 @@ sigalrm_handler(int signum)
     if ( current_proc != NULL )
     {
         kill( current_proc->pid, SIGSTOP );
-        current_proc = next_q( current_proc );
-        kill( current_proc->pid, SIGCONT );
-        printf("NEEEEEEEEEEXT\n");
+//        printf("SIREN { ( < | > ) }\n");
         alarm( SCHED_TQ_SEC );
     }
 }
@@ -54,10 +52,27 @@ static void
 sigchld_handler(int signum)
 {
     int status;
-    if ( current_proc != NULL && waitpid( current_proc->pid, &status, WNOHANG ) == current_proc->pid  )
+    pid_t p;
+
+    if ( current_proc != NULL )
     {
-        current_proc = remove_q( current_proc );
-        printf("i just died in your arms tonight\n");
+        p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED );
+        if ( WIFSTOPPED( status ) )
+        {
+            current_proc = next_q( current_proc );
+            kill( current_proc->pid, SIGCONT );
+//            printf("NEEEEEEEEEEXT\n");
+        }
+        else if ( WIFEXITED( status ) )
+        {
+            current_proc = remove_q( current_proc );
+//            printf("i just died in your arms tonight\n");
+
+        }
+        else if ( WIFCONTINUED( status ) )
+        {
+//            printf("CONTINUED nothing to do\n");
+        }
     }
 }
 
@@ -166,7 +181,7 @@ int main(int argc, char *argv[])
     /* start the first of my children */
     current_proc = proc_head;
     kill( current_proc->pid, SIGCONT );
-    current_proc = next_q( current_proc );
+    //current_proc = next_q( current_proc );
     /* set my alarm */
     alarm(SCHED_TQ_SEC);
     while (pause())
