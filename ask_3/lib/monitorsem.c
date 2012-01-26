@@ -18,14 +18,14 @@
 #include "monitorsem.h"
 
 Monitor 
-void pipesem_init(struct pipesem *sem, int val)
+void monitorsem_init(struct monitorsem *sem, int val)
 {
 	freeBlock = n;
 	nextIn = 0;
 	nextOut = 0;
 }
 
-void pipesem_wait(struct pipesem *sem)
+void monitorsem_wait(struct monitorsem *sem)
 {
     if(freeBlock == n) //Nothing to read
 	reader.wait;
@@ -36,12 +36,12 @@ void pipesem_wait(struct pipesem *sem)
 	return item;
 }
 
-void pipesem_signal(struct pipesem *sem)
+void monitorsem_signal(struct monitorsem *sem)
 {
     
 }
 
-void pipesem_destroy(struct pipesem *sem)
+void monitorsem_destroy(struct monitorsem *sem)
 {
     
 }

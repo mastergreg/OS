@@ -12,10 +12,10 @@
 #ifndef MONITORSEM_H__
 #define MONITORSEM_H__
 
-struct pipesem {
+struct monitorsem {
 	/*
 	 * Two file descriptors:
-	 * one for the read and one for the write end of a pipe
+	 * one for the read and one for the write end of a monitor
 	 */
 	int rfd;
 	int wfd;
@@ -24,9 +24,9 @@ struct pipesem {
 /*
  * Function prototypes
  */
-void pipesem_init(struct pipesem *sem, int val);
-void pipesem_wait(struct pipesem *sem);
-void pipesem_signal(struct pipesem *sem);
-void pipesem_destroy(struct pipesem *sem);
+void monitorsem_init(struct monitorsem *sem, int val);
+void monitorsem_wait(struct monitorsem *sem);
+void monitorsem_signal(struct monitorsem *sem);
+void monitorsem_destroy(struct monitorsem *sem);
 
 #endif /* PIPESEM_H__ */
