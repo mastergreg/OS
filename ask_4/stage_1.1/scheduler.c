@@ -20,6 +20,7 @@
 
 queue *current_proc;
 queue *last_elem;
+int tasks;
 /* SIGALRM handler: Gets called whenever an alarm goes off.
  * The time quantum of the currently executing process has expired,
  * so send it a SIGSTOP. The SIGCHLD handler will take care of
@@ -33,12 +34,12 @@ sigalrm_handler(int signum)
      * This will spawn SIGCHLD when the
      * child is stopped
      */
-    if ( current_proc != NULL )
+    if ( tasks > 0 && current_proc )
     {
         kill( current_proc->pid, SIGSTOP );
-//        printf("SIREN { ( < | > ) }\n");
-        alarm( SCHED_TQ_SEC );
     }
+    printf("SIREN { ( < | > ) }\n");
+    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -54,24 +55,35 @@ sigchld_handler(int signum)
     int status;
     pid_t p;
 
-    if ( current_proc != NULL )
+    if ( tasks > 0 && current_proc )
     {
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED );
+        if ( WIFCONTINUED( status ) )
+        {
+            printf("CONTINUED nothing to do\n");
+            return;
+        }
+
         if ( WIFSTOPPED( status ) )
         {
             current_proc = next_q( current_proc );
-            kill( current_proc->pid, SIGCONT );
-//            printf("NEEEEEEEEEEXT\n");
+            if ( current_proc )
+            {
+                kill( current_proc->pid, SIGCONT );
+                printf("NEEEEEEEEEEXT\n");
+            }
         }
         else if ( WIFEXITED( status ) )
         {
+            tasks--;
             current_proc = remove_q( current_proc );
-//            printf("i just died in your arms tonight\n");
+            if ( current_proc )
+            {
+                kill( current_proc->pid, SIGCONT );
+                alarm( SCHED_TQ_SEC );
+                printf("i just died in your arms tonight\n");
+            }
 
-        }
-        else if ( WIFCONTINUED( status ) )
-        {
-//            printf("CONTINUED nothing to do\n");
         }
     }
 }
@@ -145,6 +157,7 @@ int main(int argc, char *argv[])
     init_q( current_proc );
 
     nproc = argc-1; /* number of proccesses goes here */
+    tasks = nproc;
     pid_t p;
 
     int i;
