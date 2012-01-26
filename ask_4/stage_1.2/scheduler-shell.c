@@ -11,11 +11,16 @@
 
 #include "proc-common.h"
 #include "request.h"
+#include "queue.h"
 
 /* Compile-time parameters. */
 #define SCHED_TQ_SEC 2                /* time quantum */
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 #define SHELL_EXECUTABLE_NAME "shell" /* executable for shell */
+
+queue *current_proc;
+queue *last_elem;
+int tasks;
 
 /* Print a list of all tasks currently being scheduled.  */
 static void
