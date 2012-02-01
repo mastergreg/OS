@@ -26,7 +26,13 @@ int tasks;
 static void
 sched_print_tasks(void)
 {
-    assert(0 && "Please fill me!");
+    queue *buf;
+    buf=current_proc;
+    int i;
+    for ( i = 0 ; i < tasks ; i ++)
+    {
+        printf("%d\n",buf->pid);
+    }
 }
 
 /* Send SIGKILL to a task determined by the value of its
@@ -43,8 +49,26 @@ sched_kill_task_by_id(int id)
 /* Create a new task.  */
 static void
 sched_create_task(char *executable)
-{
-    assert(0 && "Please fill me!");
+{   
+    pid_t p;
+    p = fork();
+    if (p < 0) {
+        perror("scheduler: fork");
+        exit(1);
+    }
+
+    if (p == 0) {
+        /* Child */
+        char *newargv[] = { executable, NULL, NULL, NULL };
+        char *newenviron[] = { NULL };
+        raise(SIGSTOP);
+        execve(executable, newargv, newenviron);
+    }
+    else {
+        insert(p,current_proc);
+        tasks++;
+    }
+    //assert(0 && "Please fill me!");
 }
 
 /* Process requests by the shell.  */
@@ -304,18 +328,21 @@ int main(int argc, char *argv[])
      * create a new child process, add it to the process list.
      */
 
-    nproc = 0; /* number of proccesses goes here */
+    tasks=0;
+    nproc = argc; /* number of proccesses goes here */
+    current_proc = (queue *) malloc(sizeof(queue));
+    init_q(current_proc);
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
     wait_for_ready_children(nproc);
 
-    /* Install SIGALRM and SIGCHLD handlers. */
+    ///* Install SIGALRM and SIGCHLD handlers. */
     install_signal_handlers();
 
-    if (nproc == 0) {
-        fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
-        exit(1);
-    }
+    //if (nproc == 0) {
+    //    fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
+    //    exit(1);
+    //}
 
     shell_request_loop(request_fd, return_fd);
 
