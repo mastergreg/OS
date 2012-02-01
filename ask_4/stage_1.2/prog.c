@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		argv[0], NMSG, delay);
 
 	for (i = 0; i < NMSG; i++) {
-		printf("%s[%d]: This is message %d\n", argv[0], pid, i);
+//		printf("%s[%d]: This is message %d\n", argv[0], pid, i);
 		compute(delay);
 	}
 

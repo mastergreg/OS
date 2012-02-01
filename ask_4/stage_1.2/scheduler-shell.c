@@ -31,7 +31,7 @@ sched_print_tasks(void)
     int i;
     for ( i = 0 ; i < tasks ; i ++)
     {
-        printf("%d\n",buf->pid);
+        fprintf(stderr,"%d\n",buf->pid);
     }
 }
 
@@ -109,7 +109,7 @@ sigalrm_handler(int signum)
     {
         kill( current_proc->pid, SIGSTOP );
     }
-    printf("SIREN { ( < | > ) }\n");
+    fprintf(stderr,"SIREN { ( < | > ) }\n");
     alarm( SCHED_TQ_SEC );
 }
 
@@ -131,7 +131,7 @@ sigchld_handler(int signum)
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED );
         if ( WIFCONTINUED( status ) )
         {
-            printf("CONTINUED nothing to do\n");
+            fprintf(stderr,"CONTINUED nothing to do\n");
             return;
         }
 
@@ -141,7 +141,7 @@ sigchld_handler(int signum)
             if ( current_proc )
             {
                 kill( current_proc->pid, SIGCONT );
-                printf("NEEEEEEEEEEXT\n");
+                fprintf(stderr,"NEEEEEEEEEEXT\n");
             }
         }
         else if ( WIFEXITED( status ) )
@@ -152,7 +152,7 @@ sigchld_handler(int signum)
             {
                 kill( current_proc->pid, SIGCONT );
                 alarm( SCHED_TQ_SEC );
-                printf("i just died in your arms tonight\n");
+                fprintf(stderr,"i just died in your arms tonight\n");
             }
 
         }
