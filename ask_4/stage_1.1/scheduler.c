@@ -175,6 +175,10 @@ int main(int argc, char *argv[])
            current_proc = insert(p,current_proc);
         }
     }
+    if (nproc == 0) {
+        fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
+        exit(1);
+    }
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
     wait_for_ready_children(nproc);
@@ -183,10 +187,6 @@ int main(int argc, char *argv[])
     /* Install SIGALRM and SIGCHLD handlers. */
     install_signal_handlers();
 
-    if (nproc == 0) {
-        fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
-        exit(1);
-    }
 
 
     /* loop forever  until we exit from inside a signal handler. */
