@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Sat 21 Jan 2012 09:28:47 PM EET
+* Last Modified : Wed 01 Feb 2012 08:21:14 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -26,7 +26,7 @@ struct __queue {
 
 void init_q(queue *head);
 void print_q(queue *q,int len);
-queue *insert(pid_t pid, queue *q);
+void insert(pid_t pid, queue *q);
 queue *remove_q(queue *q);
 queue *next_q(queue *q);
 #endif

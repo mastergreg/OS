@@ -19,7 +19,6 @@
 #define SHELL_EXECUTABLE_NAME "shell" /* executable for shell */
 
 queue *current_proc;
-queue *last_elem;
 int tasks;
 
 /* Print a list of all tasks currently being scheduled.  */
@@ -32,6 +31,7 @@ sched_print_tasks(void)
     for ( i = 0 ; i < tasks ; i ++)
     {
         fprintf(stderr,"%d\n",buf->pid);
+        buf=next_q(buf);
     }
 }
 
@@ -41,8 +41,11 @@ sched_print_tasks(void)
 static int
 sched_kill_task_by_id(int id)
 {
-    assert(0 && "Please fill me!");
-    return -ENOSYS;
+    fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
+    return ( kill(id,SIGKILL) );
+    
+    //assert(0 && "Please fill me!");
+    //return -ENOSYS;
 }
 
 
@@ -109,7 +112,7 @@ sigalrm_handler(int signum)
     {
         kill( current_proc->pid, SIGSTOP );
     }
-    fprintf(stderr,"SIREN { ( < | > ) }\n");
+    //fprintf(stderr,"SIREN { ( < | > ) }\n");
     alarm( SCHED_TQ_SEC );
 }
 
@@ -125,36 +128,48 @@ sigchld_handler(int signum)
 {
     int status;
     pid_t p;
+    queue * buf;
 
     if ( tasks > 0 && current_proc )
     {
-        p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED );
-        if ( WIFCONTINUED( status ) )
+        p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
+        if ( p )
         {
-            fprintf(stderr,"CONTINUED nothing to do\n");
-            return;
-        }
-
-        if ( WIFSTOPPED( status ) )
-        {
-            current_proc = next_q( current_proc );
-            if ( current_proc )
+            if ( WIFCONTINUED( status ) )
             {
-                kill( current_proc->pid, SIGCONT );
-                fprintf(stderr,"NEEEEEEEEEEXT\n");
-            }
-        }
-        else if ( WIFEXITED( status ) )
-        {
-            tasks--;
-            current_proc = remove_q( current_proc );
-            if ( current_proc )
-            {
-                kill( current_proc->pid, SIGCONT );
-                alarm( SCHED_TQ_SEC );
-                fprintf(stderr,"i just died in your arms tonight\n");
+                //fprintf(stderr,"CONTINUED nothing to do\n");
+                return;
             }
 
+            else if ( WIFSTOPPED( status ) )
+            {
+                current_proc = next_q( current_proc );
+                if ( current_proc )
+                {
+                    kill( current_proc->pid, SIGCONT );
+                    //fprintf(stderr,"NEEEEEEEEEEXT\n");
+                }
+            }
+            else if ( WIFEXITED( status ) || WIFEXITED( status)  )
+            {
+                buf = current_proc;
+                while( buf->pid != p )
+                    buf = next_q(buf);
+                buf = remove_q( buf );
+                tasks--;
+                if ( current_proc )
+                {
+                    kill( current_proc->pid, SIGCONT );
+                    alarm( SCHED_TQ_SEC );
+                    //fprintf(stderr,"i just died in your arms tonight\n");
+                }
+                else
+                {
+                    kill( buf->pid, SIGCONT );
+                    alarm( SCHED_TQ_SEC );
+                }
+
+            }
         }
     }
 }
@@ -330,7 +345,12 @@ int main(int argc, char *argv[])
 
     tasks=0;
     nproc = argc; /* number of proccesses goes here */
-    current_proc = (queue *) malloc(sizeof(queue));
+    current_proc = ( queue * ) malloc( sizeof(queue) );
+    if ( !current_proc )
+    {
+        perror( "main: init, bad alloc");
+        exit(1);
+    }
     init_q(current_proc);
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
