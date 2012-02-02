@@ -28,11 +28,12 @@ sched_print_tasks(void)
     queue *buf;
     buf=current_proc;
     int i;
-    for ( i = 0 ; i < tasks ; i ++)
-    {
-        fprintf(stderr,"%d\n",buf->pid);
-        buf=next_q(buf);
-    }
+    print_q(buf,tasks);
+    //for ( i = 0 ; i < tasks ; i ++)
+    //{
+    //    fprintf(stderr,"tasks here %d\n",buf->pid);
+    //    buf=next_q(buf);
+    //}
 }
 
 /* Send SIGKILL to a task determined by the value of its
@@ -42,7 +43,7 @@ static int
 sched_kill_task_by_id(int id)
 {
     fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
-    return ( kill(id,SIGKILL) );
+    return ( kill(id,SIGTERM) );
     
     //assert(0 && "Please fill me!");
     //return -ENOSYS;
@@ -135,6 +136,7 @@ sigchld_handler(int signum)
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
         if ( p )
         {
+            explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
@@ -150,22 +152,30 @@ sigchld_handler(int signum)
                     //fprintf(stderr,"NEEEEEEEEEEXT\n");
                 }
             }
-            else if ( WIFEXITED( status ) || WIFEXITED( status)  )
+            else if ( WIFEXITED( status ) || WIFSIGNALED( status )  )
             {
-                buf = current_proc;
-                while( buf->pid != p )
-                    buf = next_q(buf);
-                buf = remove_q( buf );
+                if ( p == current_proc->pid)
+                {
+                    current_proc = remove_q(current_proc);
+                }
+                else
+                {
+                    buf = current_proc;
+                    while( buf->pid != p )
+                        buf = next_q(buf);
+                    buf = remove_q( buf );
+                }
                 tasks--;
-                if ( current_proc )
+                if ( tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    alarm( SCHED_TQ_SEC );
+                    //alarm( SCHED_TQ_SEC );
                     //fprintf(stderr,"i just died in your arms tonight\n");
                 }
                 else
                 {
-                    kill( buf->pid, SIGCONT );
+                    fprintf(stderr,"empty queue\n");
+                    fflush(stderr);
                     alarm( SCHED_TQ_SEC );
                 }
 

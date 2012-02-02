@@ -107,7 +107,10 @@ void compute(int count)
 void
 explain_wait_status(pid_t pid, int status)
 {
-	if (WIFEXITED(status))
+	if (WIFCONTINUED(status))
+		fprintf(stderr, "My PID = %ld: Child PID = %ld continues normally\n",
+			(long)getpid(), (long)pid);
+    else if (WIFEXITED(status))
 		fprintf(stderr, "My PID = %ld: Child PID = %ld terminated normally, exit status = %d\n",
 			(long)getpid(), (long)pid, WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

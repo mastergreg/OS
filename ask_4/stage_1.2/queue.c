@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Wed 01 Feb 2012 10:31:01 PM EET
+* Last Modified : Thu 02 Feb 2012 12:05:30 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -57,11 +57,11 @@ queue *remove_q(queue *q)
      * deletes an element and
      * returns the next one
      */
-    queue *p = q->next;
-    p->prev = q->prev;
-    p = q->next;
-    p->prev = q->prev;
-    if ( p->pid == q->pid )
+    queue *p = q -> prev;
+    p -> next = q -> next;
+    p = p -> next;
+    p -> prev = q -> prev;
+    if ( p -> pid == q -> pid )
     {
         free(q);
         return NULL;
@@ -83,7 +83,7 @@ void print_q(queue *q,int len)
     int i;
     for ( i = 0 ; i < len ; ++i )
     {
-        printf("%p <- %p -> %p\n",q->prev,q,q->next);
+        printf("%d <- %d -> %d\n",q->prev->pid,q->pid,q->next->pid);
         q=next_q(q);
     }
 }
