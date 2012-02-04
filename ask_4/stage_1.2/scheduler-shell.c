@@ -27,7 +27,6 @@ sched_print_tasks(void)
 {
     queue *buf;
     buf=current_proc;
-    int i;
     print_q(buf,tasks);
     //for ( i = 0 ; i < tasks ; i ++)
     //{
@@ -136,7 +135,7 @@ sigchld_handler(int signum)
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
         if ( p )
         {
-            explain_wait_status(p,status);
+            //explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
@@ -150,7 +149,15 @@ sigchld_handler(int signum)
                 {
                     kill( current_proc->pid, SIGCONT );
                     //fprintf(stderr,"NEEEEEEEEEEXT\n");
+                    alarm( SCHED_TQ_SEC );
                 }
+                else
+                {
+                    fprintf(stderr,"empty queue\n");
+                    fflush(stderr);
+                    alarm( SCHED_TQ_SEC );
+                }
+
             }
             else if ( WIFEXITED( status ) || WIFSIGNALED( status )  )
             {
@@ -169,7 +176,7 @@ sigchld_handler(int signum)
                 if ( tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    //alarm( SCHED_TQ_SEC );
+                    alarm( SCHED_TQ_SEC );
                     //fprintf(stderr,"i just died in your arms tonight\n");
                 }
                 else
@@ -304,6 +311,8 @@ sched_create_shell(char *executable, int *request_fd, int *return_fd)
         assert(0);
     }
     /* Parent */
+    insert(p,current_proc);
+    tasks++;
     close(pfds_rq[1]);
     close(pfds_ret[0]);
     *request_fd = pfds_rq[0];
@@ -344,6 +353,15 @@ int main(int argc, char *argv[])
     /* Two file descriptors for communication with the shell */
     static int request_fd, return_fd;
 
+    tasks=0;
+    nproc = 1; /* number of proccesses goes here */
+    current_proc = ( queue * ) malloc( sizeof(queue) );
+    if ( !current_proc )
+    {
+        perror( "main: init, bad alloc");
+        exit(1);
+    }
+    init_q(current_proc);
     /* Create the shell. */
     sched_create_shell(SHELL_EXECUTABLE_NAME, &request_fd, &return_fd);
     /* TODO: add the shell to the scheduler's tasks */
@@ -353,15 +371,6 @@ int main(int argc, char *argv[])
      * create a new child process, add it to the process list.
      */
 
-    tasks=0;
-    nproc = argc; /* number of proccesses goes here */
-    current_proc = ( queue * ) malloc( sizeof(queue) );
-    if ( !current_proc )
-    {
-        perror( "main: init, bad alloc");
-        exit(1);
-    }
-    init_q(current_proc);
 
     /* Wait for all children to raise SIGSTOP before exec()ing. */
     wait_for_ready_children(nproc);
@@ -373,6 +382,8 @@ int main(int argc, char *argv[])
     //    fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
     //    exit(1);
     //}
+    kill(current_proc->pid,SIGCONT);
+    alarm( SCHED_TQ_SEC );
 
     shell_request_loop(request_fd, return_fd);
 
