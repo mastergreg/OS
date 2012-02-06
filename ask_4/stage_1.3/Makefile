@@ -5,7 +5,7 @@
 #
 
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -Wextra -Wuninitialized -g
 #CFLAGS = -Wall -O2 -g
 
 all: scheduler-shell prog execve-example strace-test shell

@@ -18,12 +18,16 @@
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 #define SHELL_EXECUTABLE_NAME "shell" /* executable for shell */
 
+#define HIGH_STATE 1
+#define LOW_STATE 0
+
 static queue *current_proc;
 static queue *high_proc;
 static queue *low_proc;
 static int *current_tasks;
 static int high_tasks;
 static int low_tasks;
+static int current_state;
 
 /* Print a list of all tasks currently being scheduled.  */
 static void
@@ -56,17 +60,19 @@ sched_kill_task_by_id(int id)
 static void
 state_check(void)
 {
-    if ( high_tasks > 0 )
+    if ( high_tasks > 0 && current_state == LOW_STATE )
     {
         //fprintf(stderr,"high tasks only\n");
         current_tasks = &high_tasks;
         current_proc = high_proc;
+        current_state = HIGH_STATE;
     }
-    else
+    else if ( high_tasks == 0 && current_state == HIGH_STATE )
     {
         //fprintf(stderr,"low tasks allowed\n");
         current_tasks = &low_tasks;
         current_proc = low_proc;
+        current_state = LOW_STATE;
     }
 }
 /* Create a new task.  */
@@ -94,55 +100,53 @@ sched_create_task(char *executable)
     //assert(0 && "Please fill me!");
 }
 
-//this will lower the priority of a task
+/* this will lower the priority of a task */
 static void
 sched_low_task_by_id(int id)
 {
     if ( high_proc -> pid == id )
     {
         high_proc = remove_q( high_proc );
-        //if ( ! high_proc )
-        //{
-        //    high_proc = ( queue * ) malloc( sizeof(queue) );
-        //    init_q( high_proc );
-        //}
+        high_tasks--;
+        insert_q(id,low_proc);
+        low_tasks++;
     }
     else
     {
-        queue *buf = high_proc;
-        while( buf-> pid != id)
-            buf = next_q( buf );
-        remove_q( buf );
+        queue *buf = find_q ( id, high_proc, high_tasks );
+        if ( buf != NULL )
+        {
+            remove_q( buf );
+            high_tasks--;
+            insert_q(id,low_proc);
+            low_tasks++;
+        }
     }
-    high_tasks--;
-    insert_q(id,low_proc);
-    low_tasks++;
     state_check();
 }
 
-//this will get the priority of a task set to high
+/* this will get the priority of a task set to high */
 static void
 sched_high_task_by_id(int id)
 {
     if ( low_proc -> pid == id )
     {
         low_proc = remove_q( low_proc );
-        if ( ! low_proc )
-        {
-            low_proc = ( queue * ) malloc( sizeof(queue) );
-            init_q( low_proc );
-        }
+        low_tasks--;
+        insert_q(id,high_proc);
+        high_tasks++;
     }
     else
     {
-        queue *buf = low_proc;
-        while( buf-> pid != id)
-            buf = next_q( buf );
-        remove_q( buf );
+        queue *buf = find_q ( id, low_proc, low_tasks );
+        if ( buf != NULL )
+        {
+            remove_q( buf );
+            low_tasks--;
+            insert_q(id,high_proc);
+            high_tasks++;
+        }
     }
-    low_tasks--;
-    insert_q(id,high_proc);
-    high_tasks++;
     state_check();
 }
 
@@ -187,9 +191,9 @@ sigalrm_handler(int signum)
      * child is stopped
      */
     //state_check();
-    if ( ( (*current_tasks) > 0 )&& ( current_proc != NULL ) )
+    if ( ( (*current_tasks) > 0 )&& current_proc  )
     {
-        fprintf(stderr,"STOOOOOOOOOP\n");
+        fprintf(stderr,"STOOOOOOOOOP %d\n",current_proc->pid);
         kill( current_proc->pid, SIGSTOP );
     }
     alarm( SCHED_TQ_SEC );
@@ -216,7 +220,7 @@ sigchld_handler(int signum)
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
         if ( p )
         {
-            //explain_wait_status(p,status);
+            explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
@@ -234,35 +238,29 @@ sigchld_handler(int signum)
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
+                else
+                {
+                    fprintf(stderr,"Talk to the trunk!\n");
+                    fflush(stderr);
+                    return;
+                }
             }
             else if ( WIFEXITED( status ) )
             {
                 current_proc = remove_q( current_proc );
                 *current_tasks = *current_tasks-1;
+                state_check();
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
                     alarm( SCHED_TQ_SEC );
                     return;
-                    //fprintf(stderr,"i just died in your arms tonight\n");
                 }
                 else
                 {
-                    state_check();
-                    if ( *current_tasks )
-                    {
-                        kill( current_proc->pid, SIGCONT );
-                        alarm( SCHED_TQ_SEC );
-                        return;
-                        //fprintf(stderr,"i just died in your arms tonight\n");
-                    }
-                    else
-                    {
-                        fprintf(stderr,"both queues are empty\n");
-                        fflush(stderr);
-                        alarm( SCHED_TQ_SEC );
-                        return;
-                    }
+                    fprintf(stderr,"both queues are empty\n");
+                    fflush(stderr);
+                    exit(0);
                 }
 
             }
@@ -297,6 +295,7 @@ sigchld_handler(int signum)
                         }
                     }
                 }
+                state_check();
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
@@ -307,22 +306,9 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    state_check();
-                    if ( *current_tasks )
-                    {
-                        kill( current_proc->pid, SIGCONT );
-                        if ( refresh_alarm )
-                            alarm( SCHED_TQ_SEC );
-                        return;
-                        //fprintf(stderr,"i just died in your arms tonight\n");
-                    }
-                    else
-                    {
-                        fprintf(stderr,"both queues are empty\n");
-                        fflush(stderr);
-                        alarm( SCHED_TQ_SEC );
-                        return;
-                    }
+                    fprintf(stderr,"both queues are empty\n");
+                    fflush(stderr);
+                    exit(0);
                 }
 
             }
@@ -482,7 +468,7 @@ shell_request_loop(int request_fd, int return_fd)
         if (write(return_fd, &ret, sizeof(ret)) != sizeof(ret)) {
             perror("scheduler: write to shell");
             fprintf(stderr, "Scheduler: giving up on shell request processing.\n");
-                        fflush(stderr);
+            fflush(stderr);
             break;
         }
     }
@@ -496,6 +482,7 @@ int main(int argc, char *argv[])
 
     low_tasks=0;
     current_tasks = &low_tasks;
+    current_state = LOW_STATE;
     high_tasks=0;
     nproc = argc; /* number of proccesses goes here */
     low_proc = ( queue * ) malloc( sizeof(queue) );
