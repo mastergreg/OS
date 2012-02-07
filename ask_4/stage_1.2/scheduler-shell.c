@@ -66,6 +66,8 @@ sched_create_task(char *executable)
         char *newenviron[] = { NULL };
         raise(SIGSTOP);
         execve(executable, newargv, newenviron);
+        perror( "execve failed!!" );
+        exit( EXIT_FAILURE );
     }
     else {
         insert(p,current_proc);
@@ -132,8 +134,7 @@ sigchld_handler(int signum)
 
     if ( tasks > 0 && current_proc )
     {
-        p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
-        if ( p )
+        while( ( p = waitpid(-1, &status, WUNTRACED | WCONTINUED | WNOHANG ) ) > 0 )
         {
             //explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )

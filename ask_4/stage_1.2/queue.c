@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Thu 02 Feb 2012 12:05:30 PM EET
+* Last Modified : Tue 07 Feb 2012 01:51:20 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -42,7 +42,7 @@ void insert(pid_t pid, queue *q)
 }
 
 inline
-queue *next_q(queue *q)
+queue * next_q(queue *q)
 {
     /*
      * returns the next element
@@ -51,7 +51,7 @@ queue *next_q(queue *q)
     return q->next;
 }
 
-queue *remove_q(queue *q)
+queue * remove_q(queue *q)
 {
     /* 
      * deletes an element and
@@ -70,7 +70,8 @@ queue *remove_q(queue *q)
     return p;
 }
 
-void init_q(queue *head) {
+void init_q(queue *head) 
+{
     /*
      * initialize the queue
      */
@@ -78,6 +79,7 @@ void init_q(queue *head) {
     head->prev=head;
     head->next=head;
 }
+
 void print_q(queue *q,int len)
 {
     int i;

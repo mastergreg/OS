@@ -13,7 +13,7 @@ all: scheduler-shell prog execve-example strace-test shell
 scheduler-shell: scheduler-shell.o proc-common.o queue.o
 	$(CC) -o scheduler-shell $^
 prog: prog.o proc-common.o
-	$(CC) -o prog %^
+	$(CC) -o prog $^
 
 execve-example: execve-example.o
 	$(CC) -o execve-example execve-example.o
