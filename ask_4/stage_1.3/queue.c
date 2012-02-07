@@ -6,18 +6,18 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Tue 07 Feb 2012 02:24:19 PM EET
+* Last Modified : Tue  7 Feb 20:19:14 2012
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 #include "queue.h"
 
-void insert_q(pid_t pid, queue *q)
+void insert_q( pid_t pid, queue *q )
 {
     /*
      * insert a new pid in the queue
-     * before q 
+     * before q
      * this way it is appended at the end
      * for round robin implementation
      */
@@ -26,12 +26,12 @@ void insert_q(pid_t pid, queue *q)
         queue *nq = ( queue *) malloc ( sizeof( queue ) );
         if( nq == NULL )
         {
-            perror("queue:insert, bad allocation");
-            exit(EXIT_FAILURE);
+            perror( "queue:insert, bad allocation" );
+            exit( EXIT_FAILURE );
         }
         nq->next = q;
         nq->prev = q->prev;
-        (q->prev)->next = nq;
+        ( q->prev )->next = nq;
         q->prev = nq;
         nq->pid = pid;
     }
@@ -42,7 +42,7 @@ void insert_q(pid_t pid, queue *q)
 }
 
 inline
-queue *next_q(queue *q)
+queue *next_q( queue *q )
 {
     /*
      * returns the next element
@@ -51,9 +51,9 @@ queue *next_q(queue *q)
     return q->next;
 }
 
-queue *remove_q(queue *q)
+queue *remove_q( queue *q )
 {
-    /* 
+    /*
      * deletes an element and
      * returns the next one
      */
@@ -63,14 +63,14 @@ queue *remove_q(queue *q)
     p -> prev = q -> prev;
     if ( p -> pid == q -> pid )
     {
-        init_q(q);
+        init_q( q );
         return q;
     }
-    free(q);
+    free( q );
     return p;
 }
 
-void init_q(queue *head) 
+void init_q( queue *head )
 {
     /*
      * initialize the queue
@@ -79,7 +79,8 @@ void init_q(queue *head)
     head -> prev = head;
     head -> next = head;
 }
-void print_q(queue *q,int len)
+
+void print_q( queue *q, int len )
 {
     int i;
     for ( i = 0 ; i < len ; ++i )
@@ -88,7 +89,7 @@ void print_q(queue *q,int len)
         q = next_q( q );
     }
 }
-queue *find_q(pid_t p,queue *q,int len)
+queue *find_q( pid_t p,queue *q, int len )
 {
     queue *buf = q;
     int i;
