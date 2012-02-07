@@ -48,7 +48,7 @@ sched_print_tasks(void)
     static int
 sched_kill_task_by_id(int id)
 {
-    fprintf( stderr, "DIE DIE DIE!!!!! %d\n", id );
+    fprintf( stderr, "\t\tDIE DIE DIE!!!!! %d\n", id );
     fflush( stderr );
     return kill( id, SIGTERM );
 
@@ -126,7 +126,7 @@ sched_low_task_by_id(int id)
         }
         else
         {
-            fprintf( stderr, "Process not found in high priority queue\n" );
+            fprintf( stderr, "\t\tProcess not found in high priority queue\n" );
             fflush( stderr );
         }
     }
@@ -156,7 +156,7 @@ sched_high_task_by_id(int id)
         }
         else
         {
-            fprintf( stderr, "Process not found in low priority queue\n" );
+            fprintf( stderr, "\t\tProcess not found in low priority queue\n" );
             fflush( stderr );
         }
     }
@@ -190,7 +190,7 @@ process_request(struct request_struct *rq)
     }
 }
 
-/* SIGALRM handler: Gets called whenever an alarm goes off.
+/* SIGALRM handler: Gets called whenever an a\t\tlarm goes off.
  * The time quantum of the currently executing process has expired,
  * so send it a SIGSTOP. The SIGCHLD handler will take care of
  * activating the next in line.
@@ -206,8 +206,9 @@ sigalrm_handler(int signum)
     //state_check();
     if ( ( (*current_tasks) > 0 ) && current_proc  )
     {
-        fprintf( stderr, "STOOOOOOOOOP %d\n", current_proc->pid );
-        kill( current_proc->pid, SIGSTOP );
+        //fprintf( stderr, "\t\t%d\n", kill( current_proc->pid, SIGCONT ) );
+        fprintf( stderr, "\t\tSTOOOOOOOOOP almonds!! %d\n", current_proc->pid );
+        //fprintf( stderr, "\t\t%d\n", kill( current_proc->pid, SIGSTOP ) );
     }
     alarm( SCHED_TQ_SEC );
 }
@@ -230,7 +231,7 @@ sigchld_handler(int signum)
     {
         while( ( p = waitpid( -1, &status, WUNTRACED | WCONTINUED | WNOHANG ) ) > 0 )
         {
-            explain_wait_status(p,status);
+            //explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
@@ -242,15 +243,15 @@ sigchld_handler(int signum)
                 if ( p == current_proc->pid )
                 {
                     current_proc = next_q( current_proc );
-                    fprintf( stderr, "%d\n", current_proc->pid);
+                    fprintf( stderr, "\t\t%d\n", current_proc->pid);
                     kill( current_proc->pid, SIGCONT );
-                    fprintf(stderr, "NEEEEEEEEEEXT\n");
+                    fprintf( stderr, "\t\tNEEEEEEEEEEXT\n");
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
                 else
                 {
-                    fprintf( stderr, "Talk to the trunk!\n" );
+                    fprintf( stderr, "\t\tTalk to the trunk!\n" );
                     fflush( stderr );
                     return;
                 }
@@ -259,6 +260,10 @@ sigchld_handler(int signum)
             {
                 current_proc = remove_q( current_proc );
                 *current_tasks = *current_tasks-1;
+                if ( current_state  == HIGH_STATE )
+                    high_proc = current_proc;
+                else
+                    low_proc = current_proc;
                 state_check();
                 if ( *current_tasks )
                 {
@@ -268,7 +273,7 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    fprintf( stderr, "both queues are empty\n" );
+                    fprintf( stderr, "\t\tboth queues are empty\n" );
                     fflush( stderr );
                     exit( 0 );
                 }
@@ -310,7 +315,7 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    fprintf(stderr,"both queues are empty\n");
+                    fprintf(stderr,"\t\tboth queues are empty\n");
                     fflush(stderr);
                     exit(0);
                 }
@@ -383,7 +388,7 @@ install_signal_handlers(void)
      * with no reader do not result in us being killed,
      * and write() returns EPIPE instead.
      */
-    if (signal(SIGPIPE, SIG_IGN) < 0) {
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
         perror("signal: sigpipe");
         exit(1);
     }
@@ -521,8 +526,8 @@ int main(void)
     ///* Install SIGALRM and SIGCHLD handlers. */
     install_signal_handlers();
 
-    fprintf(stderr,"handlers installed, now running\n");
-    fflush(stderr);
+    fprintf( stderr, "\t\thandlers installed, now running\n" );
+    fflush( stderr );
     kill(low_proc->pid, SIGCONT );
     alarm( SCHED_TQ_SEC );
 
