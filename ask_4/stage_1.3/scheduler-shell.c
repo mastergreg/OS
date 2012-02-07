@@ -30,7 +30,7 @@ static int low_tasks;
 static int current_state;
 
 /* Print a list of all tasks currently being scheduled.  */
-static void
+    static void
 sched_print_tasks(void)
 {
     queue *buf;
@@ -45,19 +45,19 @@ sched_print_tasks(void)
 /* Send SIGKILL to a task determined by the value of its
  * scheduler-specific id.
  */
-static int
+    static int
 sched_kill_task_by_id(int id)
 {
     fprintf( stderr, "DIE DIE DIE!!!!! %d\n", id );
     fflush( stderr );
     return kill( id, SIGTERM );
-    
+
     //assert(0 && "Please fill me!");
     //return -ENOSYS;
 }
 
 
-static void
+    static void
 state_check(void)
 {
     if ( high_tasks > 0 && current_state == LOW_STATE )
@@ -79,7 +79,7 @@ state_check(void)
     }
 }
 /* Create a new task.  */
-static void
+    static void
 sched_create_task(char *executable)
 {   
     pid_t p;
@@ -104,7 +104,7 @@ sched_create_task(char *executable)
 }
 
 /* this will lower the priority of a task */
-static void
+    static void
 sched_low_task_by_id(int id)
 {
     if ( high_proc -> pid == id )
@@ -134,7 +134,7 @@ sched_low_task_by_id(int id)
 }
 
 /* this will get the priority of a task set to high */
-static void
+    static void
 sched_high_task_by_id(int id)
 {
     if ( low_proc -> pid == id )
@@ -164,7 +164,7 @@ sched_high_task_by_id(int id)
 }
 
 /* Process requests by the shell.  */
-static int
+    static int
 process_request(struct request_struct *rq)
 {
     switch (rq->request_no) {
@@ -195,7 +195,7 @@ process_request(struct request_struct *rq)
  * so send it a SIGSTOP. The SIGCHLD handler will take care of
  * activating the next in line.
  */
-static void
+    static void
 sigalrm_handler(int signum)
 {
     /*
@@ -219,13 +219,11 @@ sigalrm_handler(int signum)
  * it means its time quantum has expired and a new one has
  * to be activated.
  */
-static void
+    static void
 sigchld_handler(int signum)
 {
     int status;
     pid_t p;
-    int refresh_alarm=0;
-    int pid_not_found;
     queue * buf;
 
     if ( *current_tasks > 0 && current_proc )
@@ -244,16 +242,16 @@ sigchld_handler(int signum)
                 if ( p == current_proc->pid )
                 {
                     current_proc = next_q( current_proc );
-                    fprintf(stderr,"%d\n",current_proc->pid);
+                    fprintf( stderr, "%d\n", current_proc->pid);
                     kill( current_proc->pid, SIGCONT );
-                    fprintf(stderr,"NEEEEEEEEEEXT\n");
+                    fprintf(stderr, "NEEEEEEEEEEXT\n");
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
                 else
                 {
-                    fprintf(stderr,"Talk to the trunk!\n");
-                    fflush(stderr);
+                    fprintf( stderr, "Talk to the trunk!\n" );
+                    fflush( stderr );
                     return;
                 }
             }
@@ -270,9 +268,9 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    fprintf(stderr,"both queues are empty\n");
-                    fflush(stderr);
-                    exit(0);
+                    fprintf( stderr, "both queues are empty\n" );
+                    fflush( stderr );
+                    exit( 0 );
                 }
 
             }
@@ -282,11 +280,8 @@ sigchld_handler(int signum)
                 {
                     current_proc = remove_q(current_proc);
                     *current_tasks = *current_tasks-1;
-                    if ( high_tasks > 0 )
-                        high_proc = current_proc;
-                    else
-                        low_proc = current_proc;
-                    refresh_alarm = 1;
+                    state_check();
+                    alarm( SCHED_TQ_SEC );
                 }
                 else
                 {
@@ -295,9 +290,8 @@ sigchld_handler(int signum)
                     {
                         remove_q(buf);
                         high_tasks--;
-                        pid_not_found = 1;
                     }
-                    if ( pid_not_found )
+                    else
                     {
                         buf = find_q( p, low_proc, low_tasks );
                         if ( buf != NULL )
@@ -306,13 +300,11 @@ sigchld_handler(int signum)
                             low_tasks--;
                         }
                     }
+                    state_check();
                 }
-                state_check();
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    if ( refresh_alarm )
-                        alarm( SCHED_TQ_SEC );
                     return;
                     //fprintf(stderr,"i just died in your arms tonight\n");
                 }
@@ -329,7 +321,7 @@ sigchld_handler(int signum)
 }
 
 /* Disable delivery of SIGALRM and SIGCHLD. */
-static void
+    static void
 signals_disable(void)
 {
     sigset_t sigset;
@@ -344,7 +336,7 @@ signals_disable(void)
 }
 
 /* Enable delivery of SIGALRM and SIGCHLD.  */
-static void
+    static void
 signals_enable(void)
 {
     sigset_t sigset;
@@ -363,7 +355,7 @@ signals_enable(void)
  * One for SIGCHLD, one for SIGALRM.
  * Make sure both signals are masked when one of them is running.
  */
-static void
+    static void
 install_signal_handlers(void)
 {
     sigset_t sigset;
@@ -397,7 +389,7 @@ install_signal_handlers(void)
     }
 }
 
-static void
+    static void
 do_shell(char *executable, int wfd, int rfd)
 {
     char arg1[10], arg2[10];
@@ -423,7 +415,7 @@ do_shell(char *executable, int wfd, int rfd)
  * two pipes are created for communication and passed
  * as command-line arguments to the executable.
  */
-static void
+    static void
 sched_create_shell(char *executable, int *request_fd, int *return_fd)
 {
     pid_t p;
@@ -456,7 +448,7 @@ sched_create_shell(char *executable, int *request_fd, int *return_fd)
     *return_fd = pfds_ret[1];
 }
 
-static void
+    static void
 shell_request_loop(int request_fd, int return_fd)
 {
     int ret;
@@ -469,7 +461,7 @@ shell_request_loop(int request_fd, int return_fd)
         if (read(request_fd, &rq, sizeof(rq)) != sizeof(rq)) {
             perror("scheduler: read from shell");
             fprintf(stderr, "Scheduler: giving up on shell request processing.\n");
-                        fflush(stderr);
+            fflush(stderr);
             break;
         }
 
@@ -486,7 +478,7 @@ shell_request_loop(int request_fd, int return_fd)
     }
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
     int nproc;
     /* Two file descriptors for communication with the shell */
