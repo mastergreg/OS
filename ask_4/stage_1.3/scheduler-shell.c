@@ -34,12 +34,12 @@ static void
 sched_print_tasks(void)
 {
     queue *buf;
-    printf("high priority\n");
-    buf=high_proc;
-    print_q(buf,high_tasks);
-    printf("low priority\n");
-    buf=low_proc;
-    print_q(buf,low_tasks);
+    printf( "high priority\n" );
+    buf = high_proc;
+    print_q( buf, high_tasks );
+    printf( "low priority\n" );
+    buf = low_proc;
+    print_q( buf, low_tasks );
 }
 
 /* Send SIGKILL to a task determined by the value of its
@@ -48,9 +48,9 @@ sched_print_tasks(void)
 static int
 sched_kill_task_by_id(int id)
 {
-    fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
-                        fflush(stderr);
-    return ( kill(id,SIGTERM) );
+    fprintf( stderr, "DIE DIE DIE!!!!! %d\n", id );
+    fflush( stderr );
+    return kill( id, SIGTERM );
     
     //assert(0 && "Please fill me!");
     //return -ENOSYS;
@@ -63,6 +63,7 @@ state_check(void)
     if ( high_tasks > 0 && current_state == LOW_STATE )
     {
         //fprintf(stderr,"high tasks only\n");
+        low_proc = current_proc;
         current_tasks = &high_tasks;
         current_proc = high_proc;
         current_state = HIGH_STATE;
@@ -70,6 +71,8 @@ state_check(void)
     else if ( high_tasks == 0 && current_state == HIGH_STATE )
     {
         //fprintf(stderr,"low tasks allowed\n");
+        high_proc = current_proc;
+        //comment this out later
         current_tasks = &low_tasks;
         current_proc = low_proc;
         current_state = LOW_STATE;
@@ -121,6 +124,11 @@ sched_low_task_by_id(int id)
             insert_q(id,low_proc);
             low_tasks++;
         }
+        else
+        {
+            fprintf( stderr, "Process not found in high priority queue\n" );
+            fflush( stderr );
+        }
     }
     state_check();
 }
@@ -145,6 +153,11 @@ sched_high_task_by_id(int id)
             low_tasks--;
             insert_q(id,high_proc);
             high_tasks++;
+        }
+        else
+        {
+            fprintf( stderr, "Process not found in low priority queue\n" );
+            fflush( stderr );
         }
     }
     state_check();
@@ -191,9 +204,9 @@ sigalrm_handler(int signum)
      * child is stopped
      */
     //state_check();
-    if ( ( (*current_tasks) > 0 )&& current_proc  )
+    if ( ( (*current_tasks) > 0 ) && current_proc  )
     {
-        fprintf(stderr,"STOOOOOOOOOP %d\n",current_proc->pid);
+        fprintf( stderr, "STOOOOOOOOOP %d\n", current_proc->pid );
         kill( current_proc->pid, SIGSTOP );
     }
     alarm( SCHED_TQ_SEC );
@@ -217,8 +230,7 @@ sigchld_handler(int signum)
 
     if ( *current_tasks > 0 && current_proc )
     {
-        p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED | WNOHANG );
-        if ( p )
+        while( ( p = waitpid( -1, &status, WUNTRACED | WCONTINUED | WNOHANG ) ) > 0 )
         {
             explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
@@ -484,15 +496,20 @@ int main(int argc, char *argv[])
     current_tasks = &low_tasks;
     current_state = LOW_STATE;
     high_tasks=0;
-    nproc = argc; /* number of proccesses goes here */
+    nproc = 1;
     low_proc = ( queue * ) malloc( sizeof(queue) );
-    high_proc = ( queue * ) malloc( sizeof(queue) );
-    current_proc = low_proc;
-    if ( !current_proc )
+    if ( !low_proc )
     {
         perror( "main: init, bad alloc");
         exit(1);
     }
+    high_proc = ( queue * ) malloc( sizeof(queue) );
+    if ( !high_proc )
+    {
+        perror( "main: init, bad alloc");
+        exit(1);
+    }
+    current_proc = low_proc;
     init_q(low_proc);
     init_q(high_proc);
     /* Create the shell. */
@@ -513,7 +530,7 @@ int main(int argc, char *argv[])
     install_signal_handlers();
 
     fprintf(stderr,"handlers installed, now running\n");
-                        fflush(stderr);
+    fflush(stderr);
     kill(low_proc->pid, SIGCONT );
     alarm( SCHED_TQ_SEC );
 
@@ -534,6 +551,6 @@ int main(int argc, char *argv[])
 
     /* Unreachable */
     fprintf(stderr, "Internal error: Reached unreachable point\n");
-                        fflush(stderr);
+    fflush(stderr);
     return 1;
 }

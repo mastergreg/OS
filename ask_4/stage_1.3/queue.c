@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Sat 04 Feb 2012 02:28:59 AM EET
+* Last Modified : Tue 07 Feb 2012 02:24:19 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -75,17 +75,17 @@ void init_q(queue *head)
     /*
      * initialize the queue
      */
-    head->pid=0;
-    head->prev=head;
-    head->next=head;
+    head -> pid = 0;
+    head -> prev = head;
+    head -> next = head;
 }
 void print_q(queue *q,int len)
 {
     int i;
     for ( i = 0 ; i < len ; ++i )
     {
-        printf("%d <- %d -> %d\n",q->prev->pid,q->pid,q->next->pid);
-        q=next_q(q);
+        printf( "%d <- %d -> %d\n", q->prev->pid, q->pid, q->next->pid );
+        q = next_q( q );
     }
 }
 queue *find_q(pid_t p,queue *q,int len)
@@ -98,6 +98,7 @@ queue *find_q(pid_t p,queue *q,int len)
         {
             return buf;
         }
+        buf = next_q( buf );
     }
     return NULL;
 }
