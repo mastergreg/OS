@@ -134,7 +134,7 @@ sigchld_handler(int signum)
 
     if ( tasks > 0 && current_proc )
     {
-        while( ( p = waitpid(-1, &status, WUNTRACED | WCONTINUED | WNOHANG ) ) > 0 )
+        while( ( p = waitpid( -1, &status, WUNTRACED | WCONTINUED | WNOHANG ) ) > 0 )
         {
             //explain_wait_status(p,status);
             if ( WIFCONTINUED( status ) )
@@ -143,7 +143,7 @@ sigchld_handler(int signum)
                 return;
             }
 
-            else if ( WIFSTOPPED( status ) )
+            else if ( WIFSTOPPED( status ) && ( p == current_proc -> pid ) )
             {
                 current_proc = next_q( current_proc );
                 if ( current_proc )
@@ -165,6 +165,7 @@ sigchld_handler(int signum)
                 if ( p == current_proc->pid)
                 {
                     current_proc = remove_q(current_proc);
+                    alarm( SCHED_TQ_SEC );
                 }
                 else
                 {
@@ -177,8 +178,6 @@ sigchld_handler(int signum)
                 if ( tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    alarm( SCHED_TQ_SEC );
-                    //fprintf(stderr,"i just died in your arms tonight\n");
                 }
                 else
                 {
