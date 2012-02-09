@@ -20,19 +20,13 @@
 
 queue *current_proc;
 int tasks;
+sid_t super_id;
 
 /* Print a list of all tasks currently being scheduled.  */
 static void
 sched_print_tasks(void)
 {
-    queue *buf;
-    buf=current_proc;
-    print_q(buf,tasks);
-    //for ( i = 0 ; i < tasks ; i ++)
-    //{
-    //    fprintf(stderr,"tasks here %d\n",buf->pid);
-    //    buf=next_q(buf);
-    //}
+    print_q( current_proc, tasks );
 }
 
 /* Send SIGKILL to a task determined by the value of its
@@ -41,11 +35,16 @@ sched_print_tasks(void)
 static int
 sched_kill_task_by_id(int id)
 {
+    if ( id == 0 )
+    {
+        fprintf(stderr,"Cannot kill shell\n");
+        return -1;
+    }
     fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
-    return ( kill(id,SIGTERM) );
-    
-    //assert(0 && "Please fill me!");
-    //return -ENOSYS;
+    queue *buf = find_q( id, current_proc, tasks ); 
+    if ( buf != NULL )
+        return ( kill( buf->pid, SIGTERM ) );
+    return -1;
 }
 
 
@@ -70,7 +69,7 @@ sched_create_task(char *executable)
         exit( EXIT_FAILURE );
     }
     else {
-        insert(p,current_proc);
+        insert( p, super_id++, current_proc );
         tasks++;
     }
     //assert(0 && "Please fill me!");
@@ -169,10 +168,9 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    buf = current_proc;
-                    while( buf->pid != p )
-                        buf = next_q(buf);
-                    buf = remove_q( buf );
+                    buf = find_q_with_pid( p, current_proc, tasks );
+                    if ( buf )
+                        buf = remove_q( buf );
                 }
                 tasks--;
                 if ( tasks )
@@ -311,7 +309,7 @@ sched_create_shell(char *executable, int *request_fd, int *return_fd)
         assert(0);
     }
     /* Parent */
-    insert(p,current_proc);
+    insert(p, super_id++, current_proc);
     tasks++;
     close(pfds_rq[1]);
     close(pfds_ret[0]);
@@ -354,6 +352,7 @@ int main(int argc, char *argv[])
     static int request_fd, return_fd;
 
     tasks=0;
+    super_id = 0;
     nproc = 1; /* number of proccesses goes here */
     current_proc = ( queue * ) malloc( sizeof(queue) );
     if ( !current_proc )

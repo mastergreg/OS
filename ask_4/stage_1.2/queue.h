@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Wed 01 Feb 2012 08:21:14 PM EET
+* Last Modified : Thu 09 Feb 2012 11:29:10 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -18,15 +18,20 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <stdio.h>
 
 typedef struct __queue queue;
+typedef int sid_t;
+//super_id
 struct __queue {
     pid_t pid;
+    sid_t id;
     queue * prev;
     queue * next;
 };
 
 void init_q(queue *head);
 void print_q(queue *q,int len);
-void insert(pid_t pid, queue *q);
+void insert(pid_t pid,sid_t id, queue *q);
+queue *find_q(sid_t p,queue *q,int len);
+queue *find_q_with_pid(pid_t p,queue *q,int len);
 queue *remove_q(queue *q);
 queue *next_q(queue *q);
 #endif

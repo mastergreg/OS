@@ -6,14 +6,14 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Tue 07 Feb 2012 01:51:20 PM EET
+* Last Modified : Thu 09 Feb 2012 11:26:03 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 #include "queue.h"
 
-void insert(pid_t pid, queue *q)
+void insert(pid_t pid, sid_t id, queue *q)
 {
     /*
      * insert a new pid in the queue
@@ -34,10 +34,12 @@ void insert(pid_t pid, queue *q)
         (q->prev)->next = nq;
         q->prev = nq;
         nq->pid = pid;
+        nq->id = id;
     }
     else
     {
         q->pid = pid;
+        q->id = id;
     }
 }
 
@@ -75,9 +77,10 @@ void init_q(queue *head)
     /*
      * initialize the queue
      */
-    head->pid=0;
-    head->prev=head;
-    head->next=head;
+    head->pid = 0;
+    head->id  = 0;
+    head->prev = head;
+    head->next = head;
 }
 
 void print_q(queue *q,int len)
@@ -85,7 +88,37 @@ void print_q(queue *q,int len)
     int i;
     for ( i = 0 ; i < len ; ++i )
     {
-        printf("%d <- %d -> %d\n",q->prev->pid,q->pid,q->next->pid);
+        printf("%d <- %d -> %d\n",q->prev->id,q->id,q->next->id);
         q=next_q(q);
     }
+}
+
+queue *find_q( sid_t id,queue *q, int len )
+{
+    queue *buf = q;
+    int i;
+    for( i = 0 ; i < len ; ++i )
+    {
+        if ( buf->id == id )
+        {
+            return buf;
+        }
+        buf = next_q( buf );
+    }
+    return NULL;
+}
+
+queue *find_q_with_pid( pid_t pid,queue *q, int len )
+{
+    queue *buf = q;
+    int i;
+    for( i = 0 ; i < len ; ++i )
+    {
+        if ( buf->pid == pid )
+        {
+            return buf;
+        }
+        buf = next_q( buf );
+    }
+    return NULL;
 }

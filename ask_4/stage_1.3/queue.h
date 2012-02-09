@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Fri 03 Feb 2012 09:39:02 PM EET
+* Last Modified : Thu 09 Feb 2012 01:54:29 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -20,6 +20,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 typedef struct __queue queue;
 struct __queue {
     pid_t pid;
+    int id;
     queue * prev;
     queue * next;
 };
