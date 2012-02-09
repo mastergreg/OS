@@ -28,6 +28,7 @@ static int *current_tasks;
 static int high_tasks;
 static int low_tasks;
 static int current_state;
+static sid_t super_id;
 
 /* Print a list of all tasks currently being scheduled.  */
 static void
@@ -46,14 +47,24 @@ sched_print_tasks( void )
  * scheduler-specific id.
  */
 static int
-sched_kill_task_by_id( int id )
+sched_kill_task_by_id(int id)
 {
-    fprintf( stderr, "\t\tDIE DIE DIE!!!!! %d\n", id );
-    fflush( stderr );
-    return kill( id, SIGTERM );
-
-    //assert(0 && "Please fill me!");
-    //return -ENOSYS;
+    if ( id == 0 )
+    {
+        fprintf(stderr,"Cannot kill shell\n");
+        return -1;
+    }
+    fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
+    queue *buf = find_q( id, low_proc, low_tasks ); 
+    if ( buf != NULL )
+        return ( kill( buf->pid, SIGTERM ) );
+    else
+    {
+        queue *buf = find_q( id, high_proc, high_tasks ); 
+        if ( buf != NULL )
+            return ( kill( buf->pid, SIGTERM ) );
+    }
+    return -1;
 }
 
 
@@ -62,7 +73,7 @@ state_check( void )
 {
     if ( high_tasks > 0 && current_state == LOW_STATE )
     {
-        //fprintf(stderr,"high tasks only\n");
+        fprintf(stderr,"high tasks only\n");
         low_proc = current_proc;
         current_tasks = &high_tasks;
         current_proc = high_proc;
@@ -70,7 +81,7 @@ state_check( void )
     }
     else if ( high_tasks == 0 && current_state == HIGH_STATE )
     {
-        //fprintf(stderr,"low tasks allowed\n");
+        fprintf(stderr,"low tasks allowed\n");
         high_proc = current_proc;
         //comment this out later
         current_tasks = &low_tasks;
@@ -98,7 +109,7 @@ sched_create_task( char *executable )
         execve( executable, newargv, newenviron );
     }
     else {
-        insert_q( p, low_proc );
+        insert_q( p, super_id++, low_proc );
         low_tasks++;
     }
     //assert(0 && "Please fill me!");
@@ -108,11 +119,13 @@ sched_create_task( char *executable )
 static void
 sched_low_task_by_id( int id )
 {
-    if ( high_proc -> pid == id )
+    pid_t pid_to_be;
+    if ( high_proc -> id == id )
     {
+        pid_to_be = high_proc->pid;
         high_proc = remove_q( high_proc );
         high_tasks--;
-        insert_q( id, low_proc );
+        insert_q( pid_to_be, id, low_proc );
         low_tasks++;
     }
     else
@@ -120,9 +133,10 @@ sched_low_task_by_id( int id )
         queue *buf = find_q ( id, high_proc, high_tasks );
         if ( buf != NULL )
         {
+            pid_to_be = buf->pid;
             remove_q( buf );
             high_tasks--;
-            insert_q( id,low_proc );
+            insert_q( pid_to_be, id, low_proc );
             low_tasks++;
         }
         else
@@ -138,11 +152,13 @@ sched_low_task_by_id( int id )
 static void
 sched_high_task_by_id( int id )
 {
-    if ( low_proc -> pid == id )
+    pid_t pid_to_be;
+    if ( low_proc -> id == id )
     {
+        pid_to_be = low_proc -> pid;
         low_proc = remove_q( low_proc );
         low_tasks--;
-        insert_q( id, high_proc );
+        insert_q( pid_to_be, id, high_proc );
         high_tasks++;
     }
     else
@@ -150,9 +166,10 @@ sched_high_task_by_id( int id )
         queue *buf = find_q ( id, low_proc, low_tasks );
         if ( buf != NULL )
         {
+            pid_to_be = buf -> pid;
             remove_q( buf );
             low_tasks--;
-            insert_q( id, high_proc );
+            insert_q( pid_to_be, id, high_proc );
             high_tasks++;
         }
         else
@@ -204,9 +221,9 @@ sigalrm_handler( int signum )
     //state_check();
     if ( ( (*current_tasks) > 0 ) && current_proc  )
     {
-        //fprintf( stderr, "\t\t%d\n", kill( current_proc->pid, SIGCONT ) );
-        fprintf( stderr, "\t\tSTOOOOOOOOOP almonds!! %d\n", current_proc->pid );
-        //fprintf( stderr, "\t\t%d\n", kill( current_proc->pid, SIGSTOP ) );
+        kill( current_proc->pid, SIGCONT );
+        fprintf( stderr, "\t\tSTOOOOOOOOOP almonds!! %d\n", current_proc->id );
+        kill( current_proc->pid, SIGSTOP );
     }
     alarm( SCHED_TQ_SEC );
 }
@@ -288,7 +305,7 @@ sigchld_handler( int signum )
                 }
                 else
                 {
-                    buf = find_q( p, high_proc, high_tasks );
+                    buf = find_q_with_pid( p, high_proc, high_tasks );
                     if ( buf != NULL )
                     {
                         remove_q( buf );
@@ -296,7 +313,7 @@ sigchld_handler( int signum )
                     }
                     else
                     {
-                        buf = find_q( p, low_proc, low_tasks );
+                        buf = find_q_with_pid( p, low_proc, low_tasks );
                         if ( buf != NULL )
                         {
                             remove_q( buf );
@@ -322,13 +339,11 @@ sigchld_handler( int signum )
         }
     }
 }
-
 /* Disable delivery of SIGALRM and SIGCHLD. */
 static void
 signals_disable( void )
 {
     sigset_t sigset;
-
     sigemptyset( &sigset );
     sigaddset( &sigset, SIGALRM );
     sigaddset( &sigset, SIGCHLD );
@@ -443,7 +458,7 @@ sched_create_shell( char *executable, int *request_fd, int *return_fd )
         assert( 0 );
     }
     /* Parent */
-    insert_q( p, low_proc );
+    insert_q( p, super_id++, low_proc );
     low_tasks++;
     close( pfds_rq[1] );
     close( pfds_ret[0] );
@@ -488,6 +503,7 @@ int main(void)
     static int request_fd, return_fd;
 
     low_tasks=0;
+    super_id = 0;
     current_tasks = &low_tasks;
     current_state = LOW_STATE;
     high_tasks=0;

@@ -6,18 +6,18 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Tue  7 Feb 20:19:14 2012
+* Last Modified : Thu 09 Feb 2012 12:02:09 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
 _._._._._._._._._._._._._._._._._._._._._.*/
 #include "queue.h"
 
-void insert_q( pid_t pid, queue *q )
+void insert_q( pid_t pid, sid_t id, queue *q )
 {
     /*
      * insert a new pid in the queue
-     * before q
+     * before q 
      * this way it is appended at the end
      * for round robin implementation
      */
@@ -26,18 +26,20 @@ void insert_q( pid_t pid, queue *q )
         queue *nq = ( queue *) malloc ( sizeof( queue ) );
         if( nq == NULL )
         {
-            perror( "queue:insert, bad allocation" );
-            exit( EXIT_FAILURE );
+            perror("queue:insert, bad allocation");
+            exit(EXIT_FAILURE);
         }
         nq->next = q;
         nq->prev = q->prev;
-        ( q->prev )->next = nq;
+        (q->prev)->next = nq;
         q->prev = nq;
         nq->pid = pid;
+        nq->id = id;
     }
     else
     {
         q->pid = pid;
+        q->id = id;
     }
 }
 
@@ -76,26 +78,43 @@ void init_q( queue *head )
      * initialize the queue
      */
     head -> pid = 0;
+    head -> id = -1;
     head -> prev = head;
     head -> next = head;
 }
 
-void print_q( queue *q, int len )
+void print_q(queue *q,int len)
 {
     int i;
     for ( i = 0 ; i < len ; ++i )
     {
-        printf( "%d <- %d -> %d\n", q->prev->pid, q->pid, q->next->pid );
-        q = next_q( q );
+        printf("%d <- %d -> %d\n",q->prev->id,q->id,q->next->id);
+        q=next_q(q);
     }
 }
-queue *find_q( pid_t p,queue *q, int len )
+
+queue *find_q( sid_t id,queue *q, int len )
 {
     queue *buf = q;
     int i;
-    for( i = 0 ; i < len ; i++ )
+    for( i = 0 ; i < len ; ++i )
     {
-        if ( buf->pid == p )
+        if ( buf->id == id )
+        {
+            return buf;
+        }
+        buf = next_q( buf );
+    }
+    return NULL;
+}
+
+queue *find_q_with_pid( pid_t pid,queue *q, int len )
+{
+    queue *buf = q;
+    int i;
+    for( i = 0 ; i < len ; ++i )
+    {
+        if ( buf->pid == pid )
         {
             return buf;
         }
