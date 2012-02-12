@@ -120,10 +120,15 @@ static void
 sched_low_task_by_id( int id )
 {
     pid_t pid_to_be;
+
     if ( high_proc -> id == id )
     {
         pid_to_be = high_proc->pid;
         high_proc = remove_q( high_proc );
+            if ( current_proc -> id == id )
+            {
+                current_proc = high_proc;
+            }
         high_tasks--;
         insert_q( pid_to_be, id, low_proc );
         low_tasks++;
@@ -134,7 +139,14 @@ sched_low_task_by_id( int id )
         if ( buf != NULL )
         {
             pid_to_be = buf->pid;
-            remove_q( buf );
+            if ( current_proc -> id == id )
+            {
+                current_proc = remove_q( buf );
+            }
+            else
+            {
+                remove_q( buf );
+            }
             high_tasks--;
             insert_q( pid_to_be, id, low_proc );
             low_tasks++;
@@ -157,6 +169,10 @@ sched_high_task_by_id( int id )
     {
         pid_to_be = low_proc -> pid;
         low_proc = remove_q( low_proc );
+            if ( current_proc -> id == id )
+            {
+                current_proc = low_proc;
+            }
         low_tasks--;
         insert_q( pid_to_be, id, high_proc );
         high_tasks++;
@@ -167,7 +183,14 @@ sched_high_task_by_id( int id )
         if ( buf != NULL )
         {
             pid_to_be = buf -> pid;
-            remove_q( buf );
+            if ( current_proc -> id == id )
+            {
+                current_proc = remove_q( buf );
+            }
+            else
+            {
+                remove_q( buf );
+            }
             low_tasks--;
             insert_q( pid_to_be, id, high_proc );
             high_tasks++;

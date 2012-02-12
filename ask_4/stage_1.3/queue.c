@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Thu 09 Feb 2012 12:02:09 PM EET
+* Last Modified : Mon 13 Feb 2012 12:37:06 AM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -24,20 +24,22 @@ void insert_q( pid_t pid, sid_t id, queue *q )
     if( q->pid != 0 )
     {
         queue *nq = ( queue *) malloc ( sizeof( queue ) );
+        queue *prq = q -> prev;
         if( nq == NULL )
         {
             perror("queue:insert, bad allocation");
             exit(EXIT_FAILURE);
         }
-        nq->next = q;
-        nq->prev = q->prev;
-        (q->prev)->next = nq;
-        q->prev = nq;
-        nq->pid = pid;
-        nq->id = id;
+        nq -> next = q;
+        nq -> prev = prq;
+        prq -> next = nq;
+        q -> prev = nq;
+        nq -> pid = pid;
+        nq -> id = id;
     }
     else
     {
+        init_q( q );
         q->pid = pid;
         q->id = id;
     }
@@ -59,17 +61,19 @@ queue *remove_q( queue *q )
      * deletes an element and
      * returns the next one
      */
-    queue *p = q -> prev;
-    p -> next = q -> next;
-    p = p -> next;
-    p -> prev = q -> prev;
-    if ( p -> pid == q -> pid )
+    //p -> next = q -> next;
+    if ( q == q -> next )
     {
         init_q( q );
         return q;
     }
+    queue *nq = q -> next;
+    queue *pq = q -> prev;
+    nq -> prev = pq;
+    pq -> next = nq;
+
     free( q );
-    return p;
+    return nq;
 }
 
 void init_q( queue *head )
