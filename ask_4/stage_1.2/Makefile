@@ -41,4 +41,4 @@ shell: shell.o
 #	$(CC) $(CFLAGS) -o strace-test.o -c strace-test.c
 
 clean:
-	rm -f scheduler prog execve-example strace-test *.o
+	rm -f scheduler prog execve-example strace-test scheduler-shell shell *.o

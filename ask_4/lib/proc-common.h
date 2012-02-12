@@ -36,4 +36,8 @@ void show_pstree(pid_t p);
  */
 void *create_shared_memory_area(unsigned int numbytes);
 
+#ifdef __APPLE__
+size_t strnlen(const char *string, size_t maxlen);
+#endif
+
 #endif /* PROC_COMMON_H */

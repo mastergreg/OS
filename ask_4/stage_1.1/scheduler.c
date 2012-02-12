@@ -10,7 +10,6 @@
 #include <sys/types.h>
 
 #include "proc-common.h"
-#include "request.h"
 #include "queue.h"
 
 /* Compile-time parameters. */
