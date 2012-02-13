@@ -14,7 +14,7 @@
 #include "queue.h"
 
 /* Compile-time parameters. */
-#define SCHED_TQ_SEC 4                /* time quantum */
+#define SCHED_TQ_SEC 2                /* time quantum */
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 #define SHELL_EXECUTABLE_NAME "shell" /* executable for shell */
 
