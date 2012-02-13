@@ -111,7 +111,13 @@ sched_create_task( char *executable )
         execve( executable, newargv, newenviron );
     }
     else {
-        insert_q( p, super_id++, low_proc );
+        //this inserts the new proc in the right order
+        //before the running proc (if on low)
+        //or before low_proc (if running high)
+        if ( current_state == LOW_STATE )
+            insert_q( p, super_id++, current_proc );
+        else
+            insert_q( p, super_id++, low_proc );
         low_tasks++;
     }
     //assert(0 && "Please fill me!");
