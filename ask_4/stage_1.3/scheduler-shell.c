@@ -14,7 +14,7 @@
 #include "queue.h"
 
 /* Compile-time parameters. */
-#define SCHED_TQ_SEC 2                /* time quantum */
+#define SCHED_TQ_SEC 4                /* time quantum */
 #define TASK_NAME_SZ 60               /* maximum size for a task's name */
 #define SHELL_EXECUTABLE_NAME "shell" /* executable for shell */
 
@@ -121,6 +121,7 @@ sched_low_task_by_id( int id )
 {
     pid_t pid_to_be;
 
+    kill( current_proc -> pid, SIGSTOP );
     if ( high_proc -> id == id )
     {
         pid_to_be = high_proc->pid;
@@ -158,6 +159,7 @@ sched_low_task_by_id( int id )
         }
     }
     state_check();
+    kill( current_proc -> pid, SIGCONT );
 }
 
 /* this will get the priority of a task set to high */
@@ -165,6 +167,7 @@ static void
 sched_high_task_by_id( int id )
 {
     pid_t pid_to_be;
+        kill( current_proc -> pid, SIGSTOP );
     if ( low_proc -> id == id )
     {
         pid_to_be = low_proc -> pid;
@@ -202,6 +205,7 @@ sched_high_task_by_id( int id )
         }
     }
     state_check();
+    kill( current_proc -> pid, SIGCONT );
 }
 
 /* Process requests by the shell.  */
@@ -244,8 +248,8 @@ sigalrm_handler( int signum )
     //state_check();
     if ( ( (*current_tasks) > 0 ) && current_proc  )
     {
-        kill( current_proc->pid, SIGCONT );
-        fprintf( stderr, "\t\tSTOOOOOOOOOP almonds!! %d\n", current_proc->id );
+        fprintf( stderr, "\t\tSTOP\t\tid:%d\n", current_proc->id );
+        fflush( stderr );
         kill( current_proc->pid, SIGSTOP );
     }
     alarm( SCHED_TQ_SEC );
@@ -281,21 +285,22 @@ sigchld_handler( int signum )
                 if ( p == current_proc->pid )
                 {
                     current_proc = next_q( current_proc );
-                    fprintf( stderr, "\t\t%d\n", current_proc->pid);
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\tNEEEEEEEEEEXT\n");
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
                 else
                 {
-                    fprintf( stderr, "\t\tTalk to the trunk!\n" );
+                    fprintf( stderr, "\t\tSIGSTOP irrelevant\n" );
                     fflush( stderr );
                     return;
                 }
             }
             else if ( WIFEXITED( status ) )
             {
+                fprintf( stderr, "\t\tDEAD\t\tid:%d\n", current_proc -> id );
+                fflush( stderr );
                 current_proc = remove_q( current_proc );
                 *current_tasks = *current_tasks-1;
                 if ( current_state  == HIGH_STATE )
@@ -306,6 +311,7 @@ sigchld_handler( int signum )
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
+                    fprintf( stderr, "\t\tNEXT id:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
@@ -348,6 +354,7 @@ sigchld_handler( int signum )
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
                     return;
                     //fprintf(stderr,"i just died in your arms tonight\n");
                 }
@@ -565,6 +572,7 @@ int main(void)
     fprintf( stderr, "\t\thandlers installed, now running\n" );
     fflush( stderr );
     kill( low_proc->pid, SIGCONT );
+    fprintf( stderr, "\t\tNEXT id:%d\n", low_proc -> id);
     alarm( SCHED_TQ_SEC );
 
     //if (nproc == 0) {
