@@ -301,7 +301,7 @@ sigchld_handler( int signum )
             }
             else if ( WIFEXITED( status ) )
             {
-                fprintf( stderr, "\t\t\033[1;33DEAD\033[0m\t\tid:%d\n", current_proc -> id );
+                fprintf( stderr, "\t\t\033[1;33mDEAD\033[0m\t\tid:%d\n", current_proc -> id );
                 fflush( stderr );
                 current_proc = remove_q( current_proc );
                 *current_tasks = *current_tasks-1;
