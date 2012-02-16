@@ -76,11 +76,16 @@ sigchld_handler(int signum)
         {
             tasks--;
             current_proc = remove_q( current_proc );
-            if ( current_proc )
+            if ( tasks )
             {
                 kill( current_proc->pid, SIGCONT );
                 alarm( SCHED_TQ_SEC );
                 printf("i just died in your arms tonight\n");
+            }
+            else
+            {
+                printf("no more tasks\n");
+                exit( EXIT_SUCCESS );
             }
 
         }
@@ -171,7 +176,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-           current_proc = insert(p,current_proc);
+           insert_q(p,i,current_proc);
         }
     }
     if (nproc == 0) {

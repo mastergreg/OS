@@ -69,7 +69,7 @@ sched_create_task(char *executable)
         exit( EXIT_FAILURE );
     }
     else {
-        insert( p, super_id++, current_proc );
+        insert_q( p, super_id++, current_proc );
         tasks++;
     }
     //assert(0 && "Please fill me!");
@@ -179,9 +179,10 @@ sigchld_handler(int signum)
                 }
                 else
                 {
-                    fprintf(stderr,"empty queue\n");
+                    fprintf(stderr,"empty queue, exiting\n");
                     fflush(stderr);
-                    alarm( SCHED_TQ_SEC );
+                    exit( EXIT_SUCCESS );
+
                 }
 
             }
@@ -309,7 +310,7 @@ sched_create_shell(char *executable, int *request_fd, int *return_fd)
         assert(0);
     }
     /* Parent */
-    insert(p, super_id++, current_proc);
+    insert_q(p, super_id++, current_proc);
     tasks++;
     close(pfds_rq[1]);
     close(pfds_ret[0]);
