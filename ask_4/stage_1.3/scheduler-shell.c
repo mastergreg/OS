@@ -319,7 +319,7 @@ sigchld_handler( int signum )
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\tNEXT id:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                     return;
                 }

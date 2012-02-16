@@ -10,6 +10,18 @@
 \usepackage{float} \setmainfont[Mapping=TeX-text]{FreeSerif}
 \begin{document}
 
+\def\thesubsection {Άσκηση \arabic{section}.\arabic{subsection}}
 \include{title/title}
 \emph{Ερωτήσεις}
+\emph{Κοινή βιβλιοθήκη για διαχείρηση διπλά συνδεδεμένης, κυκλικής λίστας}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/queue.h}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/queue.c}
+\section*{}
+\setcounter{section}{1}
+\subsection{}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/scheduler_1.1.c}
+\subsection{}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/scheduler-shell_1.2.c}
+\subsection{}
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/scheduler-shell_1.3.c}
 \end{document}
