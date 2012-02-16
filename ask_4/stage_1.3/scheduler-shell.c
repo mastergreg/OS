@@ -109,6 +109,9 @@ sched_create_task( char *executable )
         char *newenviron[] = { NULL };
         raise( SIGSTOP );
         execve( executable, newargv, newenviron );
+        //kill( getpid(), SIGKILL );
+        exit( -1 );
+        
     }
     else {
         //this inserts the new proc in the right order
@@ -309,13 +312,35 @@ sigchld_handler( int signum )
             {
                 fprintf( stderr, "\t\t\033[1;33mDEAD\033[0m\t\tid:%d\n", current_proc -> id );
                 fflush( stderr );
-                current_proc = remove_q( current_proc );
-                *current_tasks = *current_tasks-1;
-                if ( current_state  == HIGH_STATE )
-                    high_proc = current_proc;
-                else
-                    low_proc = current_proc;
-                state_check();
+                if ( current_proc -> pid == p )
+                {
+                    current_proc = remove_q( current_proc );
+                    *current_tasks = *current_tasks-1;
+                    if ( current_state  == HIGH_STATE )
+                        high_proc = current_proc;
+                    else
+                        low_proc = current_proc;
+                    state_check();
+                }
+                else 
+                {
+                    buf = find_q_with_pid( p, high_proc, high_tasks );
+                    if ( buf != NULL )
+                    {
+                        remove_q( buf );
+                        high_tasks--;
+                    }
+                    else
+                    {
+                        buf = find_q_with_pid( p, low_proc, low_tasks );
+                        if ( buf != NULL )
+                        {
+                            remove_q( buf );
+                            low_tasks--;
+                        }
+                    }
+                    state_check();
+                }
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );

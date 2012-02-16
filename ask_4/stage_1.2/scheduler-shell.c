@@ -112,8 +112,9 @@ sigalrm_handler(int signum)
     if ( tasks > 0 && current_proc )
     {
         kill( current_proc->pid, SIGSTOP );
+        fprintf( stderr, "\t\t\033[1;31mSTOP\033[0m\t\tid:%d\n", current_proc->id );
+        fflush( stderr );
     }
-    //fprintf(stderr,"SIREN { ( < | > ) }\n");
     alarm( SCHED_TQ_SEC );
 }
 
@@ -139,6 +140,7 @@ sigchld_handler(int signum)
             if ( WIFCONTINUED( status ) )
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
+                fprintf( stderr, "\t\tSIGSTOP irrelevant\n" );
                 return;
             }
 
@@ -149,6 +151,7 @@ sigchld_handler(int signum)
                 {
                     kill( current_proc->pid, SIGCONT );
                     //fprintf(stderr,"NEEEEEEEEEEXT\n");
+                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                 }
                 else
@@ -161,6 +164,8 @@ sigchld_handler(int signum)
             }
             else if ( WIFEXITED( status ) || WIFSIGNALED( status )  )
             {
+                fprintf( stderr, "\t\t\033[1;33mDEAD\033[0m\t\tid:%d\n", current_proc -> id );
+                fflush( stderr );
                 if ( p == current_proc->pid)
                 {
                     current_proc = remove_q(current_proc);
@@ -176,6 +181,7 @@ sigchld_handler(int signum)
                 if ( tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
+                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
                 }
                 else
                 {

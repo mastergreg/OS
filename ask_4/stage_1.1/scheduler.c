@@ -38,7 +38,6 @@ sigalrm_handler(int signum)
         kill( current_proc->pid, SIGSTOP );
     }
     printf("SIREN { ( < | > ) }\n");
-    alarm( SCHED_TQ_SEC );
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -69,6 +68,7 @@ sigchld_handler(int signum)
             if ( current_proc )
             {
                 kill( current_proc->pid, SIGCONT );
+                alarm( SCHED_TQ_SEC );
                 printf("NEEEEEEEEEEXT\n");
             }
         }
