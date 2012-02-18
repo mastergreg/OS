@@ -259,7 +259,7 @@ sigalrm_handler( int signum )
     //state_check();
     if ( ( (*current_tasks) > 0 ) && current_proc  )
     {
-        fprintf( stderr, "\t\t\033[1;31mSTOP\033[0m\t\tid:%d\n", current_proc->id );
+        fprintf( stderr, "\t\tSTOP\t\tid:%d\n", current_proc->id );
         fflush( stderr );
         kill( current_proc->pid, SIGSTOP );
     }
@@ -297,7 +297,7 @@ sigchld_handler( int signum )
                 {
                     current_proc = next_q( current_proc );
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
@@ -310,7 +310,7 @@ sigchld_handler( int signum )
             }
             else if ( WIFEXITED( status ) )
             {
-                fprintf( stderr, "\t\t\033[1;33mDEAD\033[0m\t\tid:%d\n", current_proc -> id );
+                fprintf( stderr, "\t\tDEAD\t\tid:%d\n", current_proc -> id );
                 fflush( stderr );
                 if ( current_proc -> pid == p )
                 {
@@ -344,7 +344,7 @@ sigchld_handler( int signum )
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
                     alarm( SCHED_TQ_SEC );
                     return;
                 }
@@ -391,7 +391,7 @@ sigchld_handler( int signum )
                 if ( *current_tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
                     return;
                     //fprintf(stderr,"i just died in your arms tonight\n");
                 }
@@ -609,7 +609,7 @@ int main(void)
     fprintf( stderr, "\t\thandlers installed, now running\n" );
     fflush( stderr );
     kill( low_proc->pid, SIGCONT );
-    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", low_proc -> id);
+    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", low_proc -> id);
     alarm( SCHED_TQ_SEC );
 
     //if (nproc == 0) {

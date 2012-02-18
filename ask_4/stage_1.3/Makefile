@@ -27,3 +27,5 @@ shell: shell.o
 	$(CC) $(CFLAGS) -o $@ -c $<
 clean:
 	rm -f scheduler-shell shell prog execve-example strace-test *.o
+test:	all
+	./scheduler-shell 3>&1 2>&1 | tee scheduler-shell.out

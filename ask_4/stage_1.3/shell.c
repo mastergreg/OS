@@ -52,6 +52,8 @@ void get_cmdline(FILE *fp, char *buf, int bufsz)
 	}
 	if (buf[strlen(buf) - 1] == '\n')
 		buf[strlen(buf) - 1] = '\0';
+    fprintf( stderr, "%s\n", buf );
+    fflush(stderr);
 }
 
 /* print help */

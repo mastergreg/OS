@@ -4,7 +4,7 @@
 
 #include "proc-common.h"
 
-#define NMSG 200
+#define NMSG 50
 #define DELAY 130
 
 int main(int argc, char *argv[])
@@ -23,7 +23,8 @@ int main(int argc, char *argv[])
 		argv[0], NMSG, delay);
 
 	for (i = 0; i < NMSG; i++) {
-		printf("%s[%d]: This is message %d\n", argv[0], pid, i);
+		fprintf(stdout,"%s[%d]: This is message %d\n", argv[0], pid, i);
+        fflush(stdout);
 		compute(delay);
 	}
 
