@@ -17,6 +17,7 @@ void issue_request(int wfd, int rfd, struct request_struct *rq)
 
 	/* Issue the request */
 	fprintf(stderr, "Shell: issuing request...\n");
+    fflush( stderr );
 	if (write(wfd, rq, sizeof(*rq)) != sizeof(*rq)) {
 		perror("Shell: write request struct");
 		exit(1);
@@ -24,6 +25,7 @@ void issue_request(int wfd, int rfd, struct request_struct *rq)
 
 	/* Block until a reply has been received */
 	fprintf(stderr, "Shell: receiving request return value...\n");
+    fflush( stderr );
 
 	if (read(rfd, &ret, sizeof(ret)) != sizeof(ret)) {
 		perror("Shell: read request return value");
@@ -45,6 +47,7 @@ void get_cmdline(FILE *fp, char *buf, int bufsz)
 {
 	if (fgets(buf, bufsz, fp) == NULL) {
 		fprintf(stderr, "Shell: could not read command line, exiting.\n");
+        fflush( stderr );
 		exit(1);
 	}
 	if (buf[strlen(buf) - 1] == '\n')
@@ -82,6 +85,7 @@ void process_cmdline(char *cmdline, int wfd, int rfd)
 	/* Quit */
 	if (strcmp(cmdline, "q") == 0 || strcmp(cmdline, "Q") == 0) {
 		fprintf(stderr, "Shell: Exiting. Goodbye.\n");
+        fflush( stderr );
 		exit(0);
 	}
 
@@ -147,6 +151,7 @@ int main(int argc, char *argv[])
 
 	if (argc != 3) {
 		fprintf(stderr, "Shell: must be called with exactly two arguments.\n");
+        fflush( stderr );
 		exit(1);
 	}
 
@@ -155,6 +160,7 @@ int main(int argc, char *argv[])
 	if (!wfd || !rfd) {
 		fprintf(stderr, "Shell: descriptors must be non-zero: wfd = %d, rfd = %d\n",
 			wfd, rfd);
+        fflush( stderr );
 		exit(1);
 	}
 
@@ -172,5 +178,6 @@ int main(int argc, char *argv[])
 
 	/* Unreachable */
 	fprintf(stderr, "Shell: reached unreachable point.\n");
+    fflush( stderr );
 	return 1;
 }

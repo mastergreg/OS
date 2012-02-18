@@ -43,7 +43,7 @@ sched_kill_task_by_id(int id)
     fprintf(stderr,"DIE DIE DIE!!!!! %d\n",id);
     queue *buf = find_q( id, current_proc, tasks ); 
     if ( buf != NULL )
-        return ( kill( buf->pid, SIGTERM ) );
+        return ( kill( buf->pid, SIGKILL ) );
     return -1;
 }
 
@@ -112,7 +112,7 @@ sigalrm_handler(int signum)
     if ( tasks > 0 && current_proc )
     {
         kill( current_proc->pid, SIGSTOP );
-        fprintf( stderr, "\t\t\033[1;31mSTOP\033[0m\t\tid:%d\n", current_proc->id );
+        fprintf( stderr, "\t\tSTOP\t\tid:%d\n", current_proc->id );
         fflush( stderr );
     }
     alarm( SCHED_TQ_SEC );
@@ -141,6 +141,7 @@ sigchld_handler(int signum)
             {
                 //fprintf(stderr,"CONTINUED nothing to do\n");
                 fprintf( stderr, "\t\tSIGSTOP irrelevant\n" );
+                fflush( stderr );
                 return;
             }
 
@@ -151,7 +152,8 @@ sigchld_handler(int signum)
                 {
                     kill( current_proc->pid, SIGCONT );
                     //fprintf(stderr,"NEEEEEEEEEEXT\n");
-                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
+                    fflush( stderr );
                     alarm( SCHED_TQ_SEC );
                 }
                 else
@@ -164,7 +166,7 @@ sigchld_handler(int signum)
             }
             else if ( WIFEXITED( status ) || WIFSIGNALED( status )  )
             {
-                fprintf( stderr, "\t\t\033[1;33mDEAD\033[0m\t\tid:%d\n", current_proc -> id );
+                fprintf( stderr, "\t\tDEAD\t\tid:%d\n", current_proc -> id );
                 fflush( stderr );
                 if ( p == current_proc->pid)
                 {
@@ -181,7 +183,8 @@ sigchld_handler(int signum)
                 if ( tasks )
                 {
                     kill( current_proc->pid, SIGCONT );
-                    fprintf( stderr, "\t\t\033[1;32mNEXT\033[0m\t\tid:%d\n", current_proc -> id);
+                    fprintf( stderr, "\t\tNEXT\t\tid:%d\n", current_proc -> id);
+                    fflush( stderr );
                 }
                 else
                 {

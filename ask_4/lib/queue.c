@@ -6,7 +6,7 @@
 
 * Creation Date : 21-01-2012
 
-* Last Modified : Thu Feb 16 11:37:45 2012
+* Last Modified : Sat 18 Feb 2012 06:36:17 PM EET
 
 * Created By : Greg Liras <gregliras@gmail.com>
 
@@ -92,7 +92,8 @@ void print_q(queue *q,int len)
     int i;
     for ( i = 0 ; i < len ; ++i )
     {
-        printf("sid:\t%d pid:\t%d prog\n",q->id,q->pid);
+        fprintf( stdout, "sid:\t%d pid:\t%d prog\n",q->id,q->pid);
+        fflush( stdout );
         q=next_q(q);
     }
 }
