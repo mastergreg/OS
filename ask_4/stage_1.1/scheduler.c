@@ -37,7 +37,8 @@ sigalrm_handler(int signum)
     {
         kill( current_proc->pid, SIGSTOP );
     }
-    printf("SIREN { ( < | > ) }\n");
+    fprintf(stderr,"SIREN { ( < | > ) }\n");
+    fflush(stderr);
 }
 
 /* SIGCHLD handler: Gets called whenever a process is stopped,
@@ -58,7 +59,8 @@ sigchld_handler(int signum)
         p = waitpid(current_proc->pid, &status, WUNTRACED | WCONTINUED );
         if ( WIFCONTINUED( status ) )
         {
-            printf("CONTINUED nothing to do\n");
+            fprintf(stderr,"CONTINUED nothing to do\n");
+            fflush(stderr);
             return;
         }
 
@@ -69,7 +71,8 @@ sigchld_handler(int signum)
             {
                 kill( current_proc->pid, SIGCONT );
                 alarm( SCHED_TQ_SEC );
-                printf("NEEEEEEEEEEXT\n");
+                fprintf(stderr,"NEEEEEEEEEEXT\n");
+                fflush(stderr);
             }
         }
         else if ( WIFEXITED( status ) )
@@ -80,11 +83,13 @@ sigchld_handler(int signum)
             {
                 kill( current_proc->pid, SIGCONT );
                 alarm( SCHED_TQ_SEC );
-                printf("i just died in your arms tonight\n");
+                fprintf(stderr,"i just died in your arms tonight\n");
+                fflush(stderr);
             }
             else
             {
-                printf("no more tasks\n");
+                fprintf(stderr,"no more tasks\n");
+                fflush(stderr);
                 exit( EXIT_SUCCESS );
             }
 
@@ -181,6 +186,7 @@ int main(int argc, char *argv[])
     }
     if (nproc == 0) {
         fprintf(stderr, "Scheduler: No tasks. Exiting...\n");
+        fflush(stderr);
         exit(1);
     }
 

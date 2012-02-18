@@ -8,6 +8,8 @@ CC = gcc
 CFLAGS = -Wall -g
 #CFLAGS = -Wall -O2 -g
 
+.PHONY: all clean test
+
 all: scheduler prog
 
 scheduler: scheduler.o proc-common.o queue.o
@@ -19,3 +21,5 @@ prog: prog.o proc-common.o
 	$(CC) $(CFLAGS) -o $@ -c $<
 clean:
 	rm -f scheduler prog execve-example strace-test *.o
+test:	all
+	./scheduler prog prog prog 2>&1 | tee scheduler.log

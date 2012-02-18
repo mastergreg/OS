@@ -10,6 +10,7 @@
 \usepackage{float} \setmainfont[Mapping=TeX-text]{FreeSerif}
 \begin{document}
 
+\renewcommand{\theenumi}{\roman{enumi}}
 \include{title/title}
 \section*{Ερωτήσεις}
 \setcounter{section}{3}
@@ -75,7 +76,12 @@ counter που θα δείχνει πόσα κβάντα χρόνου έχουν
 μία διεργασία έφτανε ένα προκαθορισμένο αριθμό στον counter, θα ανέβαινε σε
 high\_priority ώστε να αρχίζει να εκτελείται.
 \subsection{}
-c
+\begin{enumerate}
+    \item 
+    \item 
+    \item 
+    \item 
+\end{enumerate}
 
 
 \vspace{1cm}
@@ -97,7 +103,7 @@ c
 \def\thesubsection {Πρόγραμμα \arabic{section}.\arabic{subsection}:}
 \setcounter{subsection}{0}
 \subsection{Scheduler}
-a
+\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler_1.1.out}
 \subsection{Scheduler with shell}
 b
 \subsection{Scheduler with shell \& priorities}
