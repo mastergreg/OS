@@ -10,14 +10,70 @@
 \usepackage{float} \setmainfont[Mapping=TeX-text]{FreeSerif}
 \begin{document}
 
-\def\thesubsection {Άσκηση \arabic{section}.\arabic{subsection}}
 \include{title/title}
-\emph{Ερωτήσεις}
+\section*{Ερωτήσεις}
+\setcounter{section}{3}
+\subsection{Άσκηση 1.1}
+\subsubsection{}
+Στην περίπτωση που έρθει ένα σήμα κατά την εκτέλεση της ρουτίνας ενός signal
+handler, αυτό αγνοείται προσωρινά, αφού γίνονται masked όταν ένας από τους 2
+τρέχει.
+\subsubsection{}
+Τα SIGCHLD συνήθως προέρχονται από running παιδιά που δέχονται SIGSTOP από τον
+scheduler όταν τελειώσει το κβάντο χρόνου τους (οπότε φέρνουμε για εκτέλεση
+την επόμενη διεργασία) ή SIGCONT (όταν μια ready διεργασία επιλεγεί για
+εκτέλεση, που το αγνοούμε). Επίσης έρχεται 1 σήμα SIGCHILD (κατα τη δημιουργία
+μιας διεργασίας, όπου κάνει raise SIGSTOP στον εαυτό της) και 1 όταν κάνει
+έξοδο. Με τη χρήση μιας global μεταβλητής current\_proc, όπου διατηρούμε το pid
+της διεργασίας που εκτελείται κάθε στιγμή, μπορούμε να
+\subsubsection{}
+b
+
+\subsection{Άσκηση 1.2}
+\subsubsection{}
+Εμφανίζεται πάντα ο φλοιός ως current\_proc, αφού προκειμένου να εκτελέσει τις
+εντολές που του δώθηκαν (μαζί και την 'p'), πρέπει να είναι running. Δε
+γίνεται να αποφευχθεί αυτό, αφού οι εντολές του πρέπει αυστηρά να εκτελούνται
+μέσα στο κβαντο χρόνου που του αντιστοιχεί.
+\subsubsection{}
+Αν δε γινόταν απενεργοποιήση των σημάτων πριν την υλοποίηση των συναρτήσεων
+του φλοιού θα ήταν πιθανό να έρθει ένα σήμα που θα μεταβάλει την κατάσταση της
+ουράς εκτέλεσης την ώρα που ο φλοιός (για παράδειγμα) διέγραφε μια διεργασία.
+Αυτό το race condition μπορούσε να προκαλέσει σφάλματα όπως διαγραφή λάθος
+διεργασίας, ή (χειρότερα) κατάρρευση της ουράς με λάθος ανάθεση των pointers
+στις επόμενες διεργασίες.
+
+\subsection{Άσκηση 1.3}
+\subsubsection{}
+Θα ήταν δυνατόν να λιμοκτονήσει μια low\_priority διεργασία αν συνεχώς
+δημιουργούσαμε και θέταμε ως high priority διεργασίες. Αφού η λίστα των υψηλής
+προτεραιότητας διεργασιών θα είχε πάντα στοιχεία, ο χρονοδρομολογητής δε θα
+επέλεγε ποτε τις διεργασίες με χαμηλή προτεραιότητα.
+
+\section*{Προαιρετικές Ερωτήσεις}
+\setcounter{section}{4}
+\setcounter{subsection}{0}
+\subsection{}
+a
+\subsection{}
+Θα ήταν δυνατόν να διατηρείται στη λίστα με τις low\_priority διεργασίες ένας
+counter που θα δείχνει πόσα κβάντα χρόνου έχουν περάσει από την δημιουργία
+τους, ενώ υπάρχουν high\_priority διεργασίες. Ο counter αυτός θα αυξανόταν μέσα
+στον SIGALRM handler (δίνοντας βέβαια αρκετή καθυστέρηση στο πρόγραμμα). Όταν
+μία διεργασία έφτανε ένα προκαθορισμένο αριθμό στον counter, θα ανέβαινε σε
+high\_priority ώστε να αρχίζει να εκτελείται.
+\subsection{}
+c
+
+
+\vspace{1cm}
+\def\thesubsection {Άσκηση \arabic{section}.\arabic{subsection}}
+\section*{Πηγαίος κώδικας ασκήσεων}
 \emph{Κοινή βιβλιοθήκη για διαχείρηση διπλά συνδεδεμένης, κυκλικής λίστας}
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/queue.h}
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/queue.c}
-\section*{}
 \setcounter{section}{1}
+\setcounter{subsection}{0}
 \subsection{}
 \inputminted[linenos,fontsize=\footnotesize,frame=leftline]{c}{files/scheduler_1.1.c}
 \subsection{}
