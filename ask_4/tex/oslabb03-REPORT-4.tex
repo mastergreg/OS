@@ -107,10 +107,10 @@ high\_priority ώστε να αρχίζει να εκτελείται.
 \def\thesubsection {Πρόγραμμα \arabic{section}.\arabic{subsection}:}
 \setcounter{subsection}{0}
 \subsection{Scheduler}
-\lstset{emph={PID, NMSG, delay, id},emphstyle=\color{blue}}
-\lstset{emph={SIREN},emphstyle=\color{yellow}}
-\lstset{emph={DIE, DEAD, STOP},emphstyle=\color{red}}
-\lstset{emph={NEXT, NEEEEEEEEEEXT},emphstyle=\color{ForestGreen}}
+\lstset{emph={PID, NMSG, delay, id, Shell},emphstyle=\color{blue}}
+\lstset{emph={[2]SIREN, DEAD, DIE},emphstyle={[2]\color{BurntOrange}}}
+\lstset{emph={[3]STOP},emphstyle={[3]\color{red}}}
+\lstset{emph={[4]NEXT, NEEEEEEEEEEXT},emphstyle={[4]\color{ForestGreen}}}
 \lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{files/scheduler_1.1.out}
 %\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler_1.1.out}
 \subsection{Scheduler with shell}
