@@ -2,8 +2,12 @@
 \marginsize{2cm}{2cm}{1cm}{1cm}
 %\textwidth 6.0in \textheight = 664pt
 \usepackage{xltxtra}
-\usepackage{xunicode} \usepackage{graphicx}
-\usepackage{color} \usepackage{xgreek} \usepackage{fancyvrb}
+\usepackage{xunicode}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{xgreek}
+\usepackage{fancyvrb}
 \usepackage{minted}
 \usepackage{listings}
 \usepackage{enumitem} \usepackage{framed} \usepackage{relsize}
@@ -61,8 +65,8 @@ scheduler όταν τελειώσει το κβάντο χρόνου τους (�
 \setcounter{subsection}{0}
 \subsection{}
 Η επικοινωνία γίνεται με τη χρήση σωληνώσεων (pipes). Ο πατέρας (scheduler)
-περιμένει στο άκρο ανάγνωσης του pipe του παιδιού για να λάβει κάποια αίτηση 
-(request) όπως αυτή ορίζεται στο request.h. Όταν τη λάβει, απενεργοποιεί τα σήματα, 
+περιμένει στο άκρο ανάγνωσης του pipe του παιδιού για να λάβει κάποια αίτηση
+(request) όπως αυτή ορίζεται στο request.h. Όταν τη λάβει, απενεργοποιεί τα σήματα,
 και την εξυπηρετεί. Στη συνέχεια ενεργοποιεί και πάλι τα σήματα και γράφει στο άκρο
 εγγραφής του δικού του pipe. Στην άλλη μεριά το shell περιμένει στο άκρο
 ανάγνωσης του pipe του πατέρα για να λάβει την απόκριση του scheduler.
@@ -77,10 +81,10 @@ counter που θα δείχνει πόσα κβάντα χρόνου έχουν
 high\_priority ώστε να αρχίζει να εκτελείται.
 \subsection{}
 \begin{enumerate}
-    \item 
-    \item 
-    \item 
-    \item 
+    \item
+    \item
+    \item
+    \item
 \end{enumerate}
 
 
@@ -103,10 +107,17 @@ high\_priority ώστε να αρχίζει να εκτελείται.
 \def\thesubsection {Πρόγραμμα \arabic{section}.\arabic{subsection}:}
 \setcounter{subsection}{0}
 \subsection{Scheduler}
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler_1.1.out}
+\lstset{emph={PID, NMSG, delay, id},emphstyle=\color{blue}}
+\lstset{emph={SIREN},emphstyle=\color{yellow}}
+\lstset{emph={DIE, DEAD, STOP},emphstyle=\color{red}}
+\lstset{emph={NEXT, NEEEEEEEEEEXT},emphstyle=\color{ForestGreen}}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{files/scheduler_1.1.out}
+%\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler_1.1.out}
 \subsection{Scheduler with shell}
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler-shell_1.2.out}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{files/scheduler-shell_1.2.out}
+%\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler-shell_1.2.out}
 \subsection{Scheduler with shell \& priorities}
-\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler-shell_1.3.out}
+\lstinputlisting[numbers=left,numberstyle=\tiny,basicstyle=\footnotesize\ttfamily,breaklines=true]{files/scheduler-shell_1.3.out}
+%\inputminted[linenos,fontsize=\footnotesize,frame=leftline]{bash}{files/scheduler-shell_1.3.out}
 
 \end{document}
