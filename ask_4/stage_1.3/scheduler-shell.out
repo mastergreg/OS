@@ -15,7 +15,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 sid:	1 pid:	31312 prog
 Shell> 		STOP		id:0
 		NEXT		id:1
@@ -37,7 +37,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 Shell> 		STOP		id:0
 		NEXT		id:0
 e prog
@@ -49,7 +49,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 sid:	2 pid:	31332 prog
 Shell> 		STOP		id:0
 		NEXT		id:2
@@ -69,7 +69,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 sid:	2 pid:	31332 prog
 sid:	3 pid:	31345 prog
 Shell> 		SIGSTOP irrelevant
@@ -81,7 +81,7 @@ Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
 high priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 low priority
 sid:	2 pid:	31332 prog
 sid:	3 pid:	31345 prog
@@ -95,7 +95,7 @@ p
 Shell: issuing request...
 Shell: receiving request return value...
 high priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 low priority
 sid:	2 pid:	31332 prog
 sid:	3 pid:	31345 prog
@@ -111,7 +111,7 @@ Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
 high priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 sid:	2 pid:	31332 prog
 low priority
 sid:	3 pid:	31345 prog
@@ -136,7 +136,7 @@ p
 Shell: issuing request...
 Shell: receiving request return value...
 high priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 low priority
 sid:	3 pid:	31345 prog
 sid:	4 pid:	31358 prog
@@ -170,7 +170,7 @@ high priority
 low priority
 sid:	3 pid:	31345 prog
 sid:	4 pid:	31358 prog
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 Shell> 		STOP		id:0
 		NEXT		id:3
 prog[31345]: This is message 7
@@ -239,7 +239,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 sid:	3 pid:	31345 prog
 Shell> 		STOP		id:0
 		NEXT		id:3
@@ -269,7 +269,7 @@ Shell: issuing request...
 Shell: receiving request return value...
 high priority
 low priority
-sid:	0 pid:	31305 prog
+sid:	0 pid:	31305 schell
 		STOP		id:0
 		NEXT		id:0
 Shell> q

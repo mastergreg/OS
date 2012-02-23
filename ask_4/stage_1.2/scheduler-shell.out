@@ -9,14 +9,14 @@ Shell> 		STOP		id:0
 p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 Shell> 	e prog
 Shell: issuing request...
 Shell: receiving request return value...
 Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 sid:	1 pid:	24466 prog
 Shell> 		STOP		id:0
 		NEXT		id:1
@@ -36,13 +36,13 @@ Shell: receiving request return value...
 Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 sid:	1 pid:	24466 prog
 sid:	2 pid:	24479 prog
 Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 sid:	1 pid:	24466 prog
 sid:	2 pid:	24479 prog
 Shell> 		STOP		id:0
@@ -72,7 +72,7 @@ DIE DIE DIE!!!!! 2
 Shell> p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 sid:	1 pid:	24466 prog
 sid:	2 pid:	24479 prog
 Shell> 		DEAD		id:0
@@ -80,7 +80,7 @@ Shell> 		DEAD		id:0
 p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 sid:	1 pid:	24466 prog
 Shell> 		STOP		id:0
 		NEXT		id:1
@@ -105,7 +105,7 @@ prog[24466]: This is message 49
 p
 Shell: issuing request...
 Shell: receiving request return value...
-sid:	0 pid:	24440 prog
+sid:	0 pid:	24440 schell
 Shell> 		STOP		id:0
 		NEXT		id:0
 		SIGSTOP irrelevant
