@@ -10,20 +10,7 @@ p
 Shell: issuing request...
 Shell: receiving request return value...
 sid:	0 pid:	24440 prog
-Shell> 		STOP		id:0
-		NEXT		id:0
-		SIGSTOP irrelevant
-		STOP		id:0
-		NEXT		id:0
-		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-Shell> 		STOP		id:0
-		NEXT		id:0
-		SIGSTOP irrelevant
-e prog
+Shell> 	e prog
 Shell: issuing request...
 Shell: receiving request return value...
 Shell> p
@@ -37,17 +24,7 @@ Shell> 		STOP		id:0
 prog: Starting, NMSG = 50, delay = 42
 prog[24466]: This is message 0
 prog[24466]: This is message 1
-prog[24466]: This is message 2
-prog[24466]: This is message 3
-prog[24466]: This is message 4
-prog[24466]: This is message 5
-prog[24466]: This is message 6
-prog[24466]: This is message 7
-prog[24466]: This is message 8
-prog[24466]: This is message 9
-prog[24466]: This is message 10
-prog[24466]: This is message 11
-prog[24466]: This is message 12
+	...
 prog[24466]: This is message 13
 prog[24466]: This is message 14
 		STOP		id:1
@@ -73,17 +50,7 @@ Shell> 		STOP		id:0
 		SIGSTOP irrelevant
 prog[24466]: This is message 15
 prog[24466]: This is message 16
-prog[24466]: This is message 17
-prog[24466]: This is message 18
-prog[24466]: This is message 19
-prog[24466]: This is message 20
-prog[24466]: This is message 21
-prog[24466]: This is message 22
-prog[24466]: This is message 23
-prog[24466]: This is message 24
-prog[24466]: This is message 25
-prog[24466]: This is message 26
-prog[24466]: This is message 27
+	...
 prog[24466]: This is message 28
 prog[24466]: This is message 29
 		STOP		id:1
@@ -92,8 +59,7 @@ prog[24466]: This is message 29
 prog: Starting, NMSG = 50, delay = 128
 prog[24479]: This is message 0
 prog[24479]: This is message 1
-prog[24479]: This is message 2
-prog[24479]: This is message 3
+	...
 prog[24479]: This is message 4
 prog[24479]: This is message 5
 		STOP		id:2
@@ -121,31 +87,11 @@ Shell> 		STOP		id:0
 		SIGSTOP irrelevant
 prog[24466]: This is message 30
 prog[24466]: This is message 31
-prog[24466]: This is message 32
-prog[24466]: This is message 33
-prog[24466]: This is message 34
-prog[24466]: This is message 35
-prog[24466]: This is message 36
-prog[24466]: This is message 37
-prog[24466]: This is message 38
-prog[24466]: This is message 39
-prog[24466]: This is message 40
-prog[24466]: This is message 41
-prog[24466]: This is message 42
+	....
 prog[24466]: This is message 43
 prog[24466]: This is message 44
 		STOP		id:1
 		NEXT		id:0
-		SIGSTOP irrelevant
-e prog
-Shell: issuing request...
-Shell: receiving request return value...
-Shell> p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	1 pid:	24466 prog
-sid:	3 pid:	24510 prog
 Shell> 		STOP		id:0
 		NEXT		id:1
 		SIGSTOP irrelevant
@@ -155,270 +101,7 @@ prog[24466]: This is message 47
 prog[24466]: This is message 48
 prog[24466]: This is message 49
 		DEAD		id:1
-		NEXT		id:3
-		SIGSTOP irrelevant
-prog: Starting, NMSG = 50, delay = 142
-prog[24510]: This is message 0
-prog[24510]: This is message 1
-prog[24510]: This is message 2
-prog[24510]: This is message 3
-prog[24510]: This is message 4
-		STOP		id:3
 		NEXT		id:0
-		SIGSTOP irrelevant
-k 1
-Shell: issuing request...
-Shell: receiving request return value...
-DIE DIE DIE!!!!! 1
-Shell: request return value ret = -1
-       Operation not permitted
-Shell> p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	3 pid:	24510 prog
-Shell> 		STOP		id:0
-		NEXT		id:3
-		SIGSTOP irrelevant
-prog[24510]: This is message 5
-prog[24510]: This is message 6
-prog[24510]: This is message 7
-prog[24510]: This is message 8
-		STOP		id:3
-		NEXT		id:0
-		SIGSTOP irrelevant
-k 3
-Shell: issuing request...
-Shell: receiving request return value...
-DIE DIE DIE!!!!! 3
-Shell> p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	3 pid:	24510 prog
-Shell> 		DEAD		id:0
-		NEXT		id:0
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-Shell> 		STOP		id:0
-		NEXT		id:0
-		SIGSTOP irrelevant
-e prog
-Shell: issuing request...
-Shell: receiving request return value...
-Shell> 		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog: Starting, NMSG = 50, delay = 92
-prog[24548]: This is message 0
-prog[24548]: This is message 1
-prog[24548]: This is message 2
-prog[24548]: This is message 3
-prog[24548]: This is message 4
-prog[24548]: This is message 5
-prog[24548]: This is message 6
-		STOP		id:4
-		NEXT		id:0
-		SIGSTOP irrelevant
-e prog
-Shell: issuing request...
-Shell: receiving request return value...
-Shell> p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	4 pid:	24548 prog
-sid:	5 pid:	24555 prog
-Shell> 		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 7
-prog[24548]: This is message 8
-prog[24548]: This is message 9
-prog[24548]: This is message 10
-prog[24548]: This is message 11
-prog[24548]: This is message 12
-prog[24548]: This is message 13
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog: Starting, NMSG = 50, delay = 94
-prog[24555]: This is message 0
-prog[24555]: This is message 1
-prog[24555]: This is message 2
-prog[24555]: This is message 3
-prog[24555]: This is message 4
-prog[24555]: This is message 5
-prog[24555]: This is message 6
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 14
-prog[24548]: This is message 15
-prog[24548]: This is message 16
-prog[24548]: This is message 17
-prog[24548]: This is message 18
-prog[24548]: This is message 19
-prog[24548]: This is message 20
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 7
-prog[24555]: This is message 8
-prog[24555]: This is message 9
-prog[24555]: This is message 10
-prog[24555]: This is message 11
-prog[24555]: This is message 12
-prog[24555]: This is message 13
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 21
-prog[24548]: This is message 22
-prog[24548]: This is message 23
-prog[24548]: This is message 24
-prog[24548]: This is message 25
-prog[24548]: This is message 26
-prog[24548]: This is message 27
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 14
-prog[24555]: This is message 15
-prog[24555]: This is message 16
-prog[24555]: This is message 17
-prog[24555]: This is message 18
-prog[24555]: This is message 19
-prog[24555]: This is message 20
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	4 pid:	24548 prog
-sid:	5 pid:	24555 prog
-Shell> 		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 28
-prog[24548]: This is message 29
-prog[24548]: This is message 30
-prog[24548]: This is message 31
-prog[24548]: This is message 32
-prog[24548]: This is message 33
-prog[24548]: This is message 34
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 21
-prog[24555]: This is message 22
-prog[24555]: This is message 23
-prog[24555]: This is message 24
-prog[24555]: This is message 25
-prog[24555]: This is message 26
-prog[24555]: This is message 27
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 35
-prog[24548]: This is message 36
-prog[24548]: This is message 37
-prog[24548]: This is message 38
-prog[24548]: This is message 39
-prog[24548]: This is message 40
-prog[24548]: This is message 41
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 28
-prog[24555]: This is message 29
-prog[24555]: This is message 30
-prog[24555]: This is message 31
-prog[24555]: This is message 32
-prog[24555]: This is message 33
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-		STOP		id:0
-		NEXT		id:4
-		SIGSTOP irrelevant
-prog[24548]: This is message 42
-prog[24548]: This is message 43
-prog[24548]: This is message 44
-prog[24548]: This is message 45
-prog[24548]: This is message 46
-prog[24548]: This is message 47
-		STOP		id:4
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 34
-prog[24555]: This is message 35
-prog[24555]: This is message 36
-prog[24555]: This is message 37
-prog[24555]: This is message 38
-prog[24555]: This is message 39
-prog[24555]: This is message 40
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	4 pid:	24548 prog
-sid:	5 pid:	24555 prog
-Shell> k 4
-Shell: issuing request...
-Shell: receiving request return value...
-DIE DIE DIE!!!!! 4
-Shell> 		DEAD		id:0
-		NEXT		id:0
-		STOP		id:0
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 41
-prog[24555]: This is message 42
-prog[24555]: This is message 43
-prog[24555]: This is message 44
-prog[24555]: This is message 45
-prog[24555]: This is message 46
-prog[24555]: This is message 47
-		STOP		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-sid:	5 pid:	24555 prog
-Shell> 		STOP		id:0
-		NEXT		id:5
-		SIGSTOP irrelevant
-prog[24555]: This is message 48
-prog[24555]: This is message 49
-		DEAD		id:5
-		NEXT		id:0
-		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
-Shell> 		STOP		id:0
-		NEXT		id:0
-		SIGSTOP irrelevant
 p
 Shell: issuing request...
 Shell: receiving request return value...
@@ -429,15 +112,9 @@ Shell> 		STOP		id:0
 		STOP		id:0
 		NEXT		id:0
 		SIGSTOP irrelevant
-[
-command `[': Bad Command.
 Shell> 		STOP		id:0
 		NEXT		id:0
 		SIGSTOP irrelevant
-p
-Shell: issuing request...
-Shell: receiving request return value...
-sid:	0 pid:	24440 prog
 Shell> q
 Shell: Exiting. Goodbye.
 		DEAD		id:0
