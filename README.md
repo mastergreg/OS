@@ -1,4 +1,4 @@
-Operating System for NTUA.
+Operating Systems Course for NTUA.
 
 [Course website] http://www.cslab.ece.ntua.gr/courses/os/
 
